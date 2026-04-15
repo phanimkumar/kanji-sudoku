@@ -9,6 +9,52 @@ body {
   color: #222;
 }
 
+/* ================= TITLE ================= */
+
+.game-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 10px 0 5px 0;
+
+  /* gradient text */
+  background: linear-gradient(45deg, #ff7a18, #ffb347, #6dd5fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  letter-spacing: 1px;
+
+  /* soft glow */
+  text-shadow: 0 2px 6px rgba(0,0,0,0.15);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* kanji accent */
+.game-title .kanji {
+  font-size: 22px;
+  color: #444;
+  -webkit-text-fill-color: #444;
+  opacity: 0.8;
+}
+
+/* subtle animation */
+.game-title {
+  animation: glowFade 3s ease-in-out infinite alternate;
+}
+
+@keyframes glowFade {
+  from {
+    text-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+  to {
+    text-shadow: 0 4px 12px rgba(255, 150, 50, 0.4);
+  }
+}
+
+
 /* ================= CONTAINER ================= */
 
 .container {
