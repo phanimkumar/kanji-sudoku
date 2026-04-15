@@ -3,36 +3,57 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Web Sudoku</title>
+  <title>Kanji Sudoku</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Kanji Sudoku</h1>
 
-  <div id="board"></div>
+  <div class="container">
 
-  <div id="controls">
-    <button id="new-game-btn">New Game</button>
+    <h1>Kanji Sudoku</h1>
 
-<button id="reward-hint-btn">+1 Hint (Watch Ad)</button>
-<button id="hint-btn">Hint</button>
+    <!-- TOP INFO -->
+    <div class="top-bar">
+      <div id="lives">❤️❤️❤️</div>
+      <div id="timer">00:00</div>
+    </div>
+
+    <!-- GAME BOARD -->
+    <div id="board"></div>
+
+    <!-- CONTROLS -->
+    <div class="controls">
+
+      <div class="controls-top">
+        <button id="new-game-btn">New Game</button>
+        <button id="reward-hint-btn">+1 Hint</button>
+        <button id="hint-btn">Hint</button>
+      </div>
+
+      <div class="controls-bottom">
+        <button id="notes-btn">Notes OFF</button>
+
+        <select id="difficulty">
+          <option value="easy">Easy</option>
+          <option value="medium" selected>Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+      </div>
+
+    </div>
+
+    <!-- NUMPAD -->
+    <div id="numpad"></div>
+
   </div>
-<button id="notes-btn">Notes OFF</button>
 
-<div id="ad-overlay" class="hidden">
-  <div class="spinner"></div>
-  <p>Loading Ad...</p>
-</div>
+  <!-- AD OVERLAY -->
+  <div id="ad-overlay" class="hidden">
+    <div class="spinner"></div>
+    <p>Loading Ad...</p>
+  </div>
 
-
-<div id="numpad"></div>
   <script src="script.js"></script>
-<select id="difficulty">
-  <option value="easy">Easy</option>
-  <option value="medium" selected>Medium</option>
-  <option value="hard">Hard</option>
-</select>
-<div id="lives">❤️❤️❤️</div>
-<div id="timer">00:00</div>
+
 </body>
 </html>
