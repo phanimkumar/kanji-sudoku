@@ -26,9 +26,8 @@ let lives = 3;
 const MAX_LIVES = 3;
 
 // HINTS
-let hintsUsed = 0;
 const FREE_HINTS = 2;
-let lastHintDate = null;
+let hintsUsed = 0;
 
 // NOTES
 let notesMode = false;
@@ -43,7 +42,6 @@ function renderBoard() {
 
   for (let row = 0; row < 9; row++) {
     for (let col = 0; col < 9; col++) {
-
       const cell = document.createElement("div");
       cell.className = "cell";
 
@@ -55,6 +53,8 @@ function renderBoard() {
         cell.innerHTML = `<div class="notes">${
           [...notes[row][col]].map(n => SYMBOLS[n]).join("")
         }</div>`;
+      } else {
+        cell.textContent = "";
       }
 
       cell.addEventListener("click", () => {
@@ -129,7 +129,9 @@ function createNumpad() {
 
         if (isBoardComplete()) {
           gameOver = true;
+          selectedCell = null;
           stopTimer();
+          renderBoard();
           setTimeout(() => alert("Game Completed!"), 100);
           return;
         }
@@ -143,7 +145,6 @@ function createNumpad() {
     numpad.appendChild(btn);
   }
 
-  // CLEAR
   const clearBtn = document.createElement("button");
   clearBtn.className = "num-btn";
   clearBtn.textContent = "X";
@@ -253,58 +254,105 @@ function updateTimerDisplay() {
   const m = String(Math.floor(s / 60)).padStart(2, "0");
   const sec = String(s % 60).padStart(2, "0");
 
-  document.getElementById("timer").textContent = `${m}:${sec}`;
+  const timerEl = document.getElementById("timer");
+  if (timerEl) timerEl.textContent = `${m}:${sec}`;
 }
 
 /* ================= HELPERS ================= */
 
 function updateLivesDisplay() {
-  document.getElementById("lives").textContent = "❤️".repeat(lives);
+  const livesEl = document.getElementById("lives");
+  if (livesEl) livesEl.textContent = "❤️".repeat(lives);
 }
 
 function isBoardComplete() {
   return board.every(row => row.every(cell => cell !== 0));
 }
 
-/* ================= HINT ================= */
+function showGameOverOption() {
+  if (confirm("Game Over!\nWatch Ad to continue?")) revivePlayer();
+}
 
-function giveHint() {
-  if (gameOver) return;
+function revivePlayer() {
+  lives = 1;
+  gameOver = false;
+  startTimer();
+  updateLivesDisplay();
+  saveGame();
+  renderBoard();
+}
 
-  // CASE 1: user selected a cell
+/* ================= HINTS ================= */
+
+function findHintTarget() {
+  // 1) selected cell if valid target
   if (selectedCell) {
     const { row, col } = selectedCell;
-
-    if (fixedCells[row][col]) return;
-
-    // fill correct value
-    board[row][col] = solution[row][col];
-    notes[row][col].clear();
-
-    selectedCell = null;   // 🔥 important → force UI refresh correctly
-    renderBoard();
-    saveGame();
-    return;
+    if (!fixedCells[row][col] && board[row][col] !== solution[row][col]) {
+      return { row, col };
+    }
   }
 
-  // CASE 2: no selection → fallback
+  // 2) fallback: first unsolved cell
   for (let r = 0; r < 9; r++) {
     for (let c = 0; c < 9; c++) {
-      if (board[r][c] === 0) {
-        board[r][c] = solution[r][c];
-        notes[r][c].clear();
-
-        renderBoard();
-        saveGame();
-        return;
+      if (!fixedCells[r][c] && board[r][c] !== solution[r][c]) {
+        return { row: r, col: c };
       }
     }
   }
+
+  return null;
 }
+
+function applyHintToTarget(target) {
+  if (!target) return;
+
+  const { row, col } = target;
+  board[row][col] = solution[row][col];
+  notes[row][col].clear();
+
+  selectedCell = { row, col }; // keep focus on hinted cell
+  saveGame();
+  renderBoard();
+
+  if (isBoardComplete()) {
+    gameOver = true;
+    stopTimer();
+    setTimeout(() => alert("Game Completed!"), 100);
+  }
+}
+
+function handleHintRequest() {
+  if (gameOver) return;
+
+  const target = findHintTarget();
+  if (!target) return;
+
+  if (hintsUsed < FREE_HINTS) {
+    hintsUsed++;
+    applyHintToTarget(target);
+    return;
+  }
+
+  const watchAd = confirm("No free hints left.\nWatch Ad for 1 extra hint?");
+  if (!watchAd) return;
+
+  simulateAd(() => {
+    hintsUsed++; // each extra hint consumes one more count and one ad
+    applyHintToTarget(target);
+  });
+}
+
 /* ================= AD ================= */
 
 function simulateAd(callback) {
   const overlay = document.getElementById("ad-overlay");
+  if (!overlay) {
+    callback();
+    return;
+  }
+
   overlay.classList.remove("hidden");
 
   setTimeout(() => {
@@ -313,11 +361,47 @@ function simulateAd(callback) {
   }, 2000);
 }
 
+/* ================= SAVE ================= */
+
+function saveGame() {
+  localStorage.setItem("kanjiSudoku", JSON.stringify({
+    board,
+    solution,
+    fixedCells,
+    elapsedTime,
+    lives,
+    hintsUsed,
+    notes: notes.map(row => row.map(set => [...set]))
+  }));
+}
+
+function loadGame() {
+  const saved = localStorage.getItem("kanjiSudoku");
+  if (!saved) return false;
+
+  const data = JSON.parse(saved);
+
+  board = data.board;
+  solution = data.solution;
+  fixedCells = data.fixedCells;
+  elapsedTime = data.elapsedTime || 0;
+  lives = data.lives ?? MAX_LIVES;
+  hintsUsed = data.hintsUsed ?? 0;
+  gameOver = false;
+
+  notes = Array.from({ length: 9 }, (_, r) =>
+    Array.from({ length: 9 }, (_, c) => new Set(data.notes?.[r]?.[c] || []))
+  );
+
+  return true;
+}
+
 /* ================= GAME ================= */
 
 function newGame(level = "medium") {
   solution = generateSolvedBoard();
-  board = createPuzzle(solution, 32);
+  const clues = level === "easy" ? 40 : level === "hard" ? 26 : 32;
+  board = createPuzzle(solution, clues);
 
   fixedCells = board.map(r => r.map(v => v !== 0));
 
@@ -325,13 +409,16 @@ function newGame(level = "medium") {
     Array.from({ length: 9 }, () => new Set())
   );
 
-  lives = MAX_LIVES;
-  elapsedTime = 0;
+  selectedCell = null;
   gameOver = false;
+  lives = MAX_LIVES;
+  hintsUsed = 0;
+  elapsedTime = 0;
 
   startTimer();
+  updateTimerDisplay();
   updateLivesDisplay();
-
+  saveGame();
   renderBoard();
   createNumpad();
 }
@@ -339,23 +426,28 @@ function newGame(level = "medium") {
 /* ================= EVENTS ================= */
 
 document.addEventListener("DOMContentLoaded", () => {
-
-  document.getElementById("new-game-btn").onclick = () => {
-    const level = document.getElementById("difficulty").value;
+  document.getElementById("new-game-btn")?.addEventListener("click", () => {
+    const level = document.getElementById("difficulty")?.value || "medium";
     newGame(level);
-  };
+  });
 
-  document.getElementById("hint-btn").onclick = giveHint;
+  document.getElementById("hint-btn")?.addEventListener("click", handleHintRequest);
 
-  document.getElementById("reward-hint-btn").onclick = () => {
-    simulateAd(() => giveHint());
-  };
-
-  document.getElementById("notes-btn").onclick = () => {
+  document.getElementById("notes-btn")?.addEventListener("click", () => {
     notesMode = !notesMode;
     document.getElementById("notes-btn").textContent =
       notesMode ? "Notes ON" : "Notes OFF";
-  };
+  });
 
-  newGame();
+  createNumpad();
+
+  if (!loadGame()) {
+    newGame();
+  } else {
+    startTimer();
+    updateTimerDisplay();
+    updateLivesDisplay();
+    renderBoard();
+    createNumpad();
+  }
 });
