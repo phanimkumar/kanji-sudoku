@@ -6,43 +6,37 @@
   <title>Kanji Sudoku</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
   <div class="container">
 
     <h1>Kanji Sudoku</h1>
 
-    <!-- TOP INFO -->
+    <!-- TOP BAR -->
     <div class="top-bar">
       <div id="lives">❤️❤️❤️</div>
       <div id="timer">00:00</div>
     </div>
 
-    <!-- GAME BOARD -->
+    <!-- BOARD -->
     <div id="board"></div>
 
-    <!-- CONTROLS -->
+    <!-- CONTROLS (SINGLE LINE) -->
     <div class="controls">
+      <button id="new-game-btn">New</button>
+      <button id="reward-hint-btn">+1 Hint</button>
+      <button id="hint-btn">Hint</button>
+      <button id="notes-btn">Notes OFF</button>
 
-      <div class="controls-top">
-        <button id="new-game-btn">New Game</button>
-        <button id="reward-hint-btn">+1 Hint</button>
-        <button id="hint-btn">Hint</button>
-      </div>
-
-      <div class="controls-bottom">
-        <button id="notes-btn">Notes OFF</button>
-
-        <select id="difficulty">
-          <option value="easy">Easy</option>
-          <option value="medium" selected>Medium</option>
-          <option value="hard">Hard</option>
-        </select>
-      </div>
-
+      <select id="difficulty">
+        <option value="easy">Easy</option>
+        <option value="medium" selected>Medium</option>
+        <option value="hard">Hard</option>
+      </select>
     </div>
 
-    <!-- NUMPAD -->
+    <!-- NUMPAD (FORCED SINGLE LINE) -->
     <div id="numpad"></div>
 
   </div>
