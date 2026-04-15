@@ -41,7 +41,6 @@ body {
   -webkit-text-fill-color: transparent;
 
   display: flex;
-  align-items: center;
   gap: 8px;
 }
 
@@ -83,7 +82,6 @@ body {
   border: 1px solid #888;
   cursor: pointer;
   background: #f9f9f9;
-  transition: all 0.15s ease;
 }
 
 .cell:nth-child(3n) { border-right: 2px solid black; }
@@ -98,44 +96,10 @@ body {
   border-top: 2px solid black;
 }
 
-/* ================= STATES ================= */
-
-.fixed {
-  background: #e0e0e0;
-  font-weight: bold;
-}
-
-.selected {
-  background: #cde7ff !important;
-}
-
-.same-value {
-  background: #fff3b0;
-}
-
-.conflict {
-  background: #ffcccc;
-}
-
-/* ================= ANIMATION ================= */
-
-.cell span {
-  display: inline-block;
-  animation: inkReveal 0.25s ease-out;
-}
-
-@keyframes inkReveal {
-  0% {
-    opacity: 0;
-    transform: scale(1.3);
-    filter: blur(5px);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-    filter: blur(0);
-  }
-}
+.fixed { background: #e0e0e0; font-weight: bold; }
+.selected { background: #cde7ff !important; }
+.same-value { background: #fff3b0; }
+.conflict { background: #ffcccc; }
 
 /* ================= CONTROLS ================= */
 
@@ -158,32 +122,46 @@ body {
   cursor: pointer;
 }
 
-.controls button:hover {
-  background: #f0f0f0;
-}
-
 /* ================= NUMPAD ================= */
 
 #numpad {
   display: flex;
-  gap: 5px;
+  gap: 6px;
   margin-top: 10px;
   flex-wrap: nowrap;
   justify-content: center;
 }
 
+/* 🔥 COLORFUL KEYPAD */
+
 .num-btn {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   font-size: 16px;
-  border-radius: 6px;
-  border: 1px solid #aaa;
-  background: white;
+  border-radius: 8px;
+  border: none;
   cursor: pointer;
+  color: white;
+  font-weight: bold;
+}
+
+/* each button color */
+.num-btn:nth-child(1) { background: #4facfe; }  /* water */
+.num-btn:nth-child(2) { background: #43e97b; }  /* wood */
+.num-btn:nth-child(3) { background: #fa709a; }  /* fire */
+.num-btn:nth-child(4) { background: #a18cd1; }  /* mountain */
+.num-btn:nth-child(5) { background: #00c9ff; }  /* sky */
+.num-btn:nth-child(6) { background: #f7971e; }  /* moon */
+.num-btn:nth-child(7) { background: #ff6a88; }  /* flower */
+.num-btn:nth-child(8) { background: #667eea; }  /* wind */
+.num-btn:nth-child(9) { background: #f5576c; }  /* sun */
+
+.num-btn:last-child {
+  background: #333; /* clear button */
 }
 
 .num-btn:hover {
-  background: #f0f0f0;
+  transform: scale(1.05);
 }
 
 /* ================= OVERLAY ================= */
