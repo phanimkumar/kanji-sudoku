@@ -271,19 +271,36 @@ function isBoardComplete() {
 function giveHint() {
   if (gameOver) return;
 
+  // CASE 1: user selected a cell
+  if (selectedCell) {
+    const { row, col } = selectedCell;
+
+    if (fixedCells[row][col]) return;
+
+    // fill correct value
+    board[row][col] = solution[row][col];
+    notes[row][col].clear();
+
+    selectedCell = null;   // 🔥 important → force UI refresh correctly
+    renderBoard();
+    saveGame();
+    return;
+  }
+
+  // CASE 2: no selection → fallback
   for (let r = 0; r < 9; r++) {
     for (let c = 0; c < 9; c++) {
       if (board[r][c] === 0) {
         board[r][c] = solution[r][c];
-        hintsUsed++;
-        saveGame();
+        notes[r][c].clear();
+
         renderBoard();
+        saveGame();
         return;
       }
     }
   }
 }
-
 /* ================= AD ================= */
 
 function simulateAd(callback) {
