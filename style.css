@@ -5,6 +5,8 @@ body {
   margin: 0;
   padding: 10px;
   text-align: center;
+  background: #f5f7fb;
+  color: #222;
 }
 
 /* ================= CONTAINER ================= */
@@ -30,6 +32,7 @@ h1 {
   width: 260px;
   margin-bottom: 5px;
   font-weight: bold;
+  color: #444;
 }
 
 /* ================= BOARD ================= */
@@ -39,6 +42,11 @@ h1 {
   grid-template-columns: repeat(9, 40px);
   grid-template-rows: repeat(9, 40px);
   margin: 10px 0;
+
+  background: #ffffff;
+  padding: 8px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
 /* ================= CELLS ================= */
@@ -51,8 +59,11 @@ h1 {
   border: 1px solid #999;
   cursor: pointer;
   box-sizing: border-box;
+  transition: all 0.15s ease;
+  font-weight: 500;
 }
 
+/* 3x3 borders */
 .cell:nth-child(3n) { border-right: 2px solid black; }
 .cell:nth-child(9n + 1) { border-left: 2px solid black; }
 
@@ -65,18 +76,43 @@ h1 {
   border-top: 2px solid black;
 }
 
-/* STATES */
-.fixed { background: #eee; font-weight: bold; }
-.conflict { background: #ffcccc; }
-.same-value { background: #fff3b0; }
-.selected { background: #d0e7ff !important; }
+/* subtle alternate feel */
+.cell:nth-child(odd) {
+  background: #fafafa;
+}
+
+/* hover */
+.cell:hover {
+  background: #eaf2ff;
+}
+
+/* ================= STATES ================= */
+
+.fixed {
+  background: #e9eef6;
+  font-weight: bold;
+}
+
+.conflict {
+  background: #ffd6d6;
+  color: #a10000;
+}
+
+.same-value {
+  background: #fff4cc;
+}
+
+.selected {
+  background: #cfe3ff !important;
+  border: 2px solid #4a90e2;
+}
 
 /* ================= CONTROLS ================= */
 
 .controls {
   display: flex;
   gap: 8px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: center;
   margin: 5px 0;
 }
@@ -85,6 +121,26 @@ h1 {
 .controls select {
   height: 32px;
   font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+  padding: 0 8px;
+  transition: all 0.2s;
+}
+
+/* hover */
+.controls button:hover,
+.controls select:hover {
+  background: #4a90e2;
+  color: white;
+  border-color: #4a90e2;
+}
+
+/* active notes */
+#notes-btn.active {
+  background: #4a90e2;
+  color: white;
 }
 
 /* ================= KEYPAD ================= */
@@ -92,7 +148,7 @@ h1 {
 #numpad {
   display: flex;
   justify-content: center;
-  flex-wrap: nowrap;   /* 🔥 force single line */
+  flex-wrap: nowrap;   /* force single line */
   gap: 5px;
   margin-top: 10px;
 }
@@ -101,6 +157,16 @@ h1 {
   width: 36px;
   height: 36px;
   font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.num-btn:hover {
+  background: #4a90e2;
+  color: white;
 }
 
 /* ================= NOTES ================= */
