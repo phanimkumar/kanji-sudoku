@@ -1,7 +1,29 @@
+/* ================= BASE ================= */
+
 body {
   font-family: Arial, "Noto Sans JP", sans-serif;
+  margin: 0;
+  padding: 20px;
   text-align: center;
-  margin-top: 30px;
+}
+
+/* ================= CONTAINER ================= */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ================= TOP BAR ================= */
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  width: 300px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 /* ================= BOARD ================= */
@@ -26,6 +48,7 @@ body {
   user-select: none;
   box-sizing: border-box;
   transition: background 0.15s;
+  font-weight: 500;
 }
 
 /* 3x3 borders */
@@ -57,40 +80,58 @@ body {
   background-color: #ffcccc;
 }
 
+.same-value {
+  background-color: #fff3b0;
+}
+
 .selected {
   background-color: #d0e7ff !important;
-}
-
-.selected {
-  background-color: #d0e7ff;
-}
-
-.cell:hover {
-  background-color: #f2f2f2;
 }
 
 .cell:hover {
   background-color: #e8f0ff;
 }
 
-.cell {
-  font-weight: 500;
+/* ================= NOTES ================= */
+
+.notes {
+  font-size: 10px;
+  line-height: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ================= CONTROLS ================= */
+
+.controls {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.controls-top {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.controls-bottom {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
 /* ================= NUMPAD ================= */
 
-#timer {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-
 #numpad {
   margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 500px;
 }
-
-
 
 .num-btn {
   width: 48px;
@@ -100,7 +141,13 @@ body {
   cursor: pointer;
 }
 
+/* ================= TIMER ================= */
 
+#timer {
+  font-size: 18px;
+}
+
+/* ================= AD OVERLAY ================= */
 
 #ad-overlay {
   position: fixed;
@@ -122,11 +169,14 @@ body {
 
   transition: opacity 0.3s ease;
 }
+
 .hidden {
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
 }
+
+/* ================= SPINNER ================= */
 
 .spinner {
   width: 40px;
