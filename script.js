@@ -437,10 +437,11 @@ document.addEventListener("DOMContentLoaded", () => {
     notesMode = !notesMode;
     document.getElementById("notes-btn").textContent =
       notesMode ? "Notes ON" : "Notes OFF";
-  document.getElementById("difficulty")?.addEventListener("change", (e) => {
-  newGame(e.target.value);
-  
-  });
+document.getElementById("difficulty")?.addEventListener("change", (e) => {
+  if (confirm("Start new game with new difficulty?")) {
+    newGame(e.target.value);
+  }
+});
 
   createNumpad();
 
