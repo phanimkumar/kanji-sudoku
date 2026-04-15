@@ -1,11 +1,14 @@
 const boardElement = document.getElementById("board");
-const newGameBtn = document.getElementById("new-game-btn");
+
+/* ================= SYMBOLS ================= */
 
 const SYMBOLS = {
   1: "水", 2: "木", 3: "火",
   4: "山", 5: "空", 6: "月",
   7: "花", 8: "風", 9: "日"
 };
+
+/* ================= STATE ================= */
 
 let board = [];
 let selectedCell = null;
@@ -18,12 +21,13 @@ let startTime = null;
 let elapsedTime = 0;
 let timerInterval = null;
 
+// LIVES
 let lives = 3;
 const MAX_LIVES = 3;
 
+// HINTS
 let hintsUsed = 0;
 const FREE_HINTS = 2;
-
 let lastHintDate = null;
 
 // NOTES
@@ -39,20 +43,18 @@ function renderBoard() {
 
   for (let row = 0; row < 9; row++) {
     for (let col = 0; col < 9; col++) {
+
       const cell = document.createElement("div");
       cell.className = "cell";
 
       const value = board[row][col];
 
-      // ✅ VALUE OR NOTES
       if (value !== 0) {
         cell.textContent = SYMBOLS[value];
       } else if (notes[row][col].size > 0) {
         cell.innerHTML = `<div class="notes">${
           [...notes[row][col]].map(n => SYMBOLS[n]).join("")
         }</div>`;
-      } else {
-        cell.textContent = "";
       }
 
       cell.addEventListener("click", () => {
@@ -84,21 +86,6 @@ function renderBoard() {
   }
 }
 
-/* ================= DATE ================= */
-
-function getTodayDate() {
-  return new Date().toISOString().split("T")[0];
-}
-
-function checkDailyHintReset() {
-  const today = getTodayDate();
-  if (lastHintDate !== today) {
-    hintsUsed = 0;
-    lastHintDate = today;
-    saveGame();
-  }
-}
-
 /* ================= NUMPAD ================= */
 
 function createNumpad() {
@@ -116,7 +103,6 @@ function createNumpad() {
       const { row, col } = selectedCell;
       if (fixedCells[row][col]) return;
 
-      // NOTES MODE
       if (notesMode) {
         const set = notes[row][col];
         set.has(i) ? set.delete(i) : set.add(i);
@@ -124,7 +110,6 @@ function createNumpad() {
         return;
       }
 
-      // NORMAL MODE
       board[row][col] = i;
 
       if (solution[row][col] !== i) {
@@ -136,17 +121,15 @@ function createNumpad() {
           gameOver = true;
           stopTimer();
           renderBoard();
-          setTimeout(() => showGameOverOption(), 100);
+          setTimeout(showGameOverOption, 100);
           return;
         }
       } else {
-        notes[row][col].clear(); // ✅ clear notes
+        notes[row][col].clear();
 
         if (isBoardComplete()) {
           gameOver = true;
-          selectedCell = null;
           stopTimer();
-          renderBoard();
           setTimeout(() => alert("Game Completed!"), 100);
           return;
         }
@@ -232,7 +215,7 @@ function generateSolvedBoard() {
   return b;
 }
 
-function createPuzzle(solution, clues) {
+function createPuzzle(solution, clues = 32) {
   let p = solution.map(r => [...r]);
   let cells = shuffle([...Array(81).keys()]);
   let remove = 81 - clues;
@@ -273,13 +256,44 @@ function updateTimerDisplay() {
   document.getElementById("timer").textContent = `${m}:${sec}`;
 }
 
-/* ================= SAVE ================= */
+/* ================= HELPERS ================= */
 
-function saveGame() {
-  localStorage.setItem("kanjiSudoku", JSON.stringify({
-    board, solution, fixedCells,
-    elapsedTime, lives, hintsUsed, lastHintDate
-  }));
+function updateLivesDisplay() {
+  document.getElementById("lives").textContent = "❤️".repeat(lives);
+}
+
+function isBoardComplete() {
+  return board.every(row => row.every(cell => cell !== 0));
+}
+
+/* ================= HINT ================= */
+
+function giveHint() {
+  if (gameOver) return;
+
+  for (let r = 0; r < 9; r++) {
+    for (let c = 0; c < 9; c++) {
+      if (board[r][c] === 0) {
+        board[r][c] = solution[r][c];
+        hintsUsed++;
+        saveGame();
+        renderBoard();
+        return;
+      }
+    }
+  }
+}
+
+/* ================= AD ================= */
+
+function simulateAd(callback) {
+  const overlay = document.getElementById("ad-overlay");
+  overlay.classList.remove("hidden");
+
+  setTimeout(() => {
+    overlay.classList.add("hidden");
+    callback();
+  }, 2000);
 }
 
 /* ================= GAME ================= */
@@ -295,45 +309,36 @@ function newGame(level = "medium") {
   );
 
   lives = MAX_LIVES;
-  hintsUsed = 0;
-  lastHintDate = getTodayDate();
-
   elapsedTime = 0;
-  startTimer();
+  gameOver = false;
 
+  startTimer();
   updateLivesDisplay();
-  saveGame();
 
   renderBoard();
   createNumpad();
 }
 
-/* ================= HELPERS ================= */
-
-function updateLivesDisplay() {
-  document.getElementById("lives").textContent = "❤️".repeat(lives);
-}
-
-function showGameOverOption() {
-  if (confirm("Game Over!\nWatch Ad to continue?")) revivePlayer();
-}
-
-function revivePlayer() {
-  lives = 1;
-  gameOver = false;
-  startTimer();
-  updateLivesDisplay();	
-  renderBoard();
-}
-
-/* ================= NOTES TOGGLE ================= */
-
-document.getElementById("notes-btn")?.addEventListener("click", () => {
-  notesMode = !notesMode;
-});
-
-/* ================= INIT ================= */
+/* ================= EVENTS ================= */
 
 document.addEventListener("DOMContentLoaded", () => {
+
+  document.getElementById("new-game-btn").onclick = () => {
+    const level = document.getElementById("difficulty").value;
+    newGame(level);
+  };
+
+  document.getElementById("hint-btn").onclick = giveHint;
+
+  document.getElementById("reward-hint-btn").onclick = () => {
+    simulateAd(() => giveHint());
+  };
+
+  document.getElementById("notes-btn").onclick = () => {
+    notesMode = !notesMode;
+    document.getElementById("notes-btn").textContent =
+      notesMode ? "Notes ON" : "Notes OFF";
+  };
+
   newGame();
 });
