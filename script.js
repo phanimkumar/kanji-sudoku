@@ -253,17 +253,15 @@ function handleHintRequest() {
 /* ================= AD ================= */
 
 function simulateAd(callback) {
-  if (!isUserClick) return;
-
   if (typeof callback !== "function") return;
 
   const overlay = document.getElementById("ad-overlay");
   if (!overlay) return;
 
-  overlay.classList.remove("hidden");
+  overlay.classList.add("show");
 
   setTimeout(() => {
-    overlay.classList.add("hidden");
+    overlay.classList.remove("show");
     callback();
   }, 2000);
 }
