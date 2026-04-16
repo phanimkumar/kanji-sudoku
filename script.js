@@ -172,7 +172,7 @@ function renderBoard() {
   selectedCell = { row: r, col: c };
 
   // 🔥 ALWAYS update meaning
-  showSymbolMeaning(board[r][c]);
+ showSymbolMeaning(solution[r][c]);
 
   renderBoard();
 };
