@@ -26,6 +26,18 @@ const MAX_LIVES = 3;
 const FREE_HINTS = 2;
 let hintsUsed = 0;
 
+const SYMBOL_MEANINGS = {
+  1: "Water 💧",
+  2: "Tree 🌳",
+  3: "Fire 🔥",
+  4: "Mountain ⛰️",
+  5: "Sky ☁️",
+  6: "Moon 🌙",
+  7: "Flower 🌸",
+  8: "Wind 🌬️",
+  9: "Sun ☀️"
+};
+
 /* ================= HELPERS ================= */
 
 function deepCopyBoard(b) {
