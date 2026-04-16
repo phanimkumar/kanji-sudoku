@@ -149,6 +149,8 @@ function renderBoard() {
     for (let c = 0; c < 9; c++) {
       const cell = document.createElement("div");
       cell.className = "cell";
+      cell.dataset.row = r;
+      cell.dataset.col = c;
 
       const val = board[r][c];
 
@@ -164,23 +166,39 @@ function renderBoard() {
         }
       }
 
-      if (fixedCells[r][c]) cell.classList.add("fixed");
-
-      cell.onclick = () => {
-        if (gameOver) return;
-
-        selectedCell = { row: r, col: c };
-
-        const valToShow = board[r][c] || solution[r][c];
-        showSymbolMeaning(valToShow);
-
-        renderBoard();
-      };
+      if (fixedCells[r][c]) {
+        cell.classList.add("fixed");
+      }
 
       boardElement.appendChild(cell);
     }
   }
+
+  // 🔥 Meaning always synced from state
+  if (selectedCell) {
+    const value =
+      board[selectedCell.row][selectedCell.col] ||
+      solution[selectedCell.row][selectedCell.col];
+
+    showSymbolMeaning(value);
+  } else {
+    showSymbolMeaning(0);
+  }
 }
+
+/* ================= BOARD CLICK ================= */
+
+boardElement.addEventListener("click", (e) => {
+  const cell = e.target.closest(".cell");
+  if (!cell || gameOver) return;
+
+  selectedCell = {
+    row: Number(cell.dataset.row),
+    col: Number(cell.dataset.col)
+  };
+
+  renderBoard();
+});
 
 /* ================= NUMPAD ================= */
 
@@ -200,7 +218,6 @@ function createNumpad() {
       if (fixedCells[row][col]) return;
 
       board[row][col] = i;
-      showSymbolMeaning(i);
 
       if (solution[row][col] !== i) {
         lives--;
@@ -235,72 +252,10 @@ function createNumpad() {
     if (fixedCells[row][col]) return;
 
     board[row][col] = 0;
-    showSymbolMeaning(solution[row][col]);
     renderBoard();
   };
 
   numpad.appendChild(clearBtn);
-}
-
-/* ================= HINT ================= */
-
-function findHintTarget() {
-  if (selectedCell && board[selectedCell.row][selectedCell.col] === 0) {
-    return selectedCell;
-  }
-
-  for (let r = 0; r < 9; r++) {
-    for (let c = 0; c < 9; c++) {
-      if (board[r][c] === 0) return { row: r, col: c };
-    }
-  }
-
-  return null;
-}
-
-function applyHint(target) {
-  board[target.row][target.col] = solution[target.row][target.col];
-  selectedCell = { row: target.row, col: target.col };
-  showSymbolMeaning(solution[target.row][target.col]);
-  renderBoard();
-}
-
-function handleHintRequest() {
-  if (gameOver) return;
-
-  const target = findHintTarget();
-  if (!target) return;
-
-  if (hintsUsed < FREE_HINTS) {
-    hintsUsed++;
-    applyHint(target);
-    updateHintsDisplay();
-  } else {
-    const watchAd = confirm("Watch ad for extra hint?");
-    if (!watchAd) return;
-
-    simulateAd(() => {
-      hintsUsed++;
-      applyHint(target);
-    });
-  }
-}
-
-/* ================= AD ================= */
-
-function simulateAd(callback) {
-  const overlay = document.getElementById("ad-overlay");
-  if (!overlay) {
-    if (callback) callback();
-    return;
-  }
-
-  overlay.classList.add("show");
-
-  setTimeout(() => {
-    overlay.classList.remove("show");
-    if (callback) callback();
-  }, 2000);
 }
 
 /* ================= UTIL ================= */
@@ -357,12 +312,10 @@ function newGame(level = "medium") {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const hintBtn = document.getElementById("hint-btn");
   const newBtn = document.getElementById("new-game-btn");
   const difficulty = document.getElementById("difficulty");
 
-  if (hintBtn) hintBtn.onclick = handleHintRequest;
-  if (newBtn) newBtn.onclick = () => newGame(difficulty ? difficulty.value : "medium");
+  if (newBtn) newBtn.onclick = () => newGame(difficulty.value);
   if (difficulty) difficulty.onchange = (e) => newGame(e.target.value);
 
   newGame();
