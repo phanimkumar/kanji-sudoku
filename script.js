@@ -167,15 +167,15 @@ function renderBoard() {
       if (fixedCells[r][c]) cell.classList.add("fixed");
 
       cell.onclick = () => {
-  if (gameOver) return;
+        if (gameOver) return;
 
-  selectedCell = { row: r, col: c };
+        selectedCell = { row: r, col: c };
 
-  // 🔥 ALWAYS update meaning
- showSymbolMeaning(solution[r][c]);
+        const valToShow = board[r][c] || solution[r][c];
+        showSymbolMeaning(valToShow);
 
-  renderBoard();
-};
+        renderBoard();
+      };
 
       boardElement.appendChild(cell);
     }
@@ -200,8 +200,7 @@ function createNumpad() {
       if (fixedCells[row][col]) return;
 
       board[row][col] = i;
-
-      showSymbolMeaning(i); // 🔥 FIX
+      showSymbolMeaning(i);
 
       if (solution[row][col] !== i) {
         lives--;
@@ -213,7 +212,6 @@ function createNumpad() {
           stopTimer();
           alert("Game Over");
         }
-
       } else if (isBoardComplete()) {
         gameOver = true;
         stopTimer();
@@ -225,6 +223,23 @@ function createNumpad() {
 
     numpad.appendChild(btn);
   }
+
+  const clearBtn = document.createElement("button");
+  clearBtn.className = "num-btn";
+  clearBtn.textContent = "X";
+
+  clearBtn.onclick = () => {
+    if (!selectedCell || gameOver) return;
+
+    const { row, col } = selectedCell;
+    if (fixedCells[row][col]) return;
+
+    board[row][col] = 0;
+    showSymbolMeaning(solution[row][col]);
+    renderBoard();
+  };
+
+  numpad.appendChild(clearBtn);
 }
 
 /* ================= HINT ================= */
@@ -239,11 +254,14 @@ function findHintTarget() {
       if (board[r][c] === 0) return { row: r, col: c };
     }
   }
+
+  return null;
 }
 
 function applyHint(target) {
   board[target.row][target.col] = solution[target.row][target.col];
-  showSymbolMeaning(solution[target.row][target.col]); // 🔥 FIX
+  selectedCell = { row: target.row, col: target.col };
+  showSymbolMeaning(solution[target.row][target.col]);
   renderBoard();
 }
 
@@ -272,6 +290,11 @@ function handleHintRequest() {
 
 function simulateAd(callback) {
   const overlay = document.getElementById("ad-overlay");
+  if (!overlay) {
+    if (callback) callback();
+    return;
+  }
+
   overlay.classList.add("show");
 
   setTimeout(() => {
@@ -293,9 +316,11 @@ function showSymbolMeaning(value) {
 
   el.textContent = `${SYMBOLS[value]} = ${SYMBOL_MEANINGS[value]}`;
 }
+
 function highlightError(row, col) {
   const index = row * 9 + col;
   const cell = boardElement.children[index];
+  if (!cell) return;
 
   cell.classList.add("conflict");
   setTimeout(() => cell.classList.remove("conflict"), 400);
@@ -319,20 +344,26 @@ function newGame(level = "medium") {
   hintsUsed = 0;
   selectedCell = null;
   gameOver = false;
+  elapsedTime = 0;
 
   startTimer();
+  updateTimerDisplay();
   updateLivesDisplay();
   updateHintsDisplay();
+  showSymbolMeaning(0);
 
   renderBoard();
   createNumpad();
-  showSymbolMeaning(0);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("hint-btn").onclick = handleHintRequest;
-  document.getElementById("new-game-btn").onclick = () => newGame();
-  document.getElementById("difficulty").onchange = (e) => newGame(e.target.value);
+  const hintBtn = document.getElementById("hint-btn");
+  const newBtn = document.getElementById("new-game-btn");
+  const difficulty = document.getElementById("difficulty");
+
+  if (hintBtn) hintBtn.onclick = handleHintRequest;
+  if (newBtn) newBtn.onclick = () => newGame(difficulty ? difficulty.value : "medium");
+  if (difficulty) difficulty.onchange = (e) => newGame(e.target.value);
 
   newGame();
 });
