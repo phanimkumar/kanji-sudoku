@@ -13,11 +13,11 @@ html, body {
 }
 
 .container {
-  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start; /* 🔥 FIX */
+  gap: 8px; /* spacing control */
 }
 
 /* TITLE */
