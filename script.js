@@ -206,10 +206,19 @@ function createNumpad() {
 
       board[row][col] = i;
 
-      if (solution[row][col] !== i) {
-        lives--;
-        updateLivesDisplay();
+     if (solution[row][col] !== i) {
+  lives--;
+  updateLivesDisplay();
 
+  // 🔥 highlight wrong cell
+  highlightError(row, col);
+
+  if (lives <= 0) {
+    gameOver = true;
+    stopTimer();
+    alert("Game Over");
+  }
+}
         if (lives <= 0) {
           gameOver = true;
           stopTimer();
