@@ -375,4 +375,15 @@ function showSymbolMeaning(value) {
   el.textContent = `${SYMBOLS[value]} = ${SYMBOL_MEANINGS[value]}`;
 }
 
+function highlightError(row, col) {
+  const index = row * 9 + col;
+  const cell = boardElement.children[index];
 
+  if (!cell) return;
+
+  cell.classList.add("conflict");
+
+  setTimeout(() => {
+    cell.classList.remove("conflict");
+  }, 500);
+}
