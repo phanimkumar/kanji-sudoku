@@ -1,21 +1,26 @@
 body {
   font-family: Arial, "Noto Sans JP", sans-serif;
   margin: 0;
-  padding: 10px;
+  padding: 8px;
   text-align: center;
   background: linear-gradient(to bottom, #f5f7fa, #e4e8ee);
 }
 
-/* ================= CONTAINER ================= */
+/* 🔥 FIX: single screen layout */
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
 
 .container {
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
 }
 
-/* ================= TITLE ================= */
-
+/* TITLE */
 .title-container {
   display: flex;
   flex-direction: column;
@@ -23,127 +28,113 @@ body {
 }
 
 .app-logo {
-  width: 80px;
-  height: 80px;
-  border-radius: 18px;
-  margin-bottom: 6px;
+  width: 70px;
+  height: 70px;
+  border-radius: 16px;
+  margin-bottom: 5px;
   box-shadow: 0 6px 15px rgba(0,0,0,0.25);
 }
 
 .game-title {
-  font-size: 26px;
+  font-size: 24px;
   font-weight: bold;
   background: linear-gradient(45deg, #ff7a18, #ffb347, #6dd5fa);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: flex;
-  gap: 8px;
+  gap: 6px;
 }
 
 .game-title .kanji {
-  font-size: 20px;
+  font-size: 18px;
   color: #444;
   -webkit-text-fill-color: #444;
 }
 
-/* ================= TOP ================= */
-
+/* TOP */
 .top-bar {
   display: flex;
   justify-content: space-between;
   width: 260px;
-  margin: 8px 0;
+  margin: 5px 0;
   font-weight: bold;
 }
 
-/* ================= BOARD ================= */
-
+/* BOARD */
 #board {
   display: grid;
-  grid-template-columns: repeat(9, 42px);
-  grid-template-rows: repeat(9, 42px);
-  gap: 2px; /* 🔥 FIX: prevents visual collapse */
-  padding: 10px;
+  grid-template-columns: repeat(9, 38px);
+  grid-template-rows: repeat(9, 38px);
+  gap: 2px;
+  padding: 8px;
   border-radius: 12px;
   background: #dcdcdc;
-  margin-top: 10px;
 }
 
-/* ================= CELLS ================= */
-
+/* CELLS */
 .cell {
-  width: 42px;
-  height: 42px;
-  line-height: 42px;
-  font-size: 20px;
+  width: 38px;
+  height: 38px;
+  line-height: 38px;
+  font-size: 18px;
   border: 1px solid #888;
-  background: #ffffff;
-  color: #000; /* 🔥 CRITICAL: ensures visibility */
+  background: #fff;
+  color: #000;
   cursor: pointer;
   user-select: none;
-  transition: background 0.2s ease, transform 0.1s ease;
+  transition: 0.15s;
 }
 
 .cell:active {
-  transform: scale(0.92);
+  transform: scale(0.9);
 }
 
-/* STATES */
+.fixed { background: #e0e0e0; font-weight: bold; }
+.selected { background: #cde7ff !important; }
+.same-value { background: #eef6ff; }
+.conflict { background: #ffcccc; }
 
-.fixed {
-  background: #e0e0e0;
-  font-weight: bold;
-}
-
-.selected {
-  background: #cde7ff !important;
-}
-
-.same-value {
-  background: #eef6ff;
-}
-
-.conflict {
-  background: #ffcccc;
-}
-
-/* ================= CONTROLS ================= */
-
+/* CONTROLS */
 .controls {
-  margin: 10px 0;
+  margin: 5px 0;
   display: flex;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
   justify-content: center;
 }
 
-/* ================= KEYPAD ================= */
+/* SYMBOL MEANING */
+#symbol-meaning {
+  font-size: 13px;
+  color: #444;
+  margin-top: 3px;
+  min-height: 18px;
+}
 
+/* KEYPAD */
 #numpad {
   display: flex;
-  gap: 5px;
-  margin-top: 10px;
-  flex-wrap: nowrap; /* 🔥 force single line */
+  gap: 4px;
+  flex-wrap: nowrap;
   justify-content: center;
+  margin-bottom: 8px;
 }
 
 .num-btn {
-  width: 36px;
-  height: 36px;
+  width: 30px;
+  height: 30px;
   border-radius: 6px;
   color: white;
   border: none;
+  font-size: 14px;
   cursor: pointer;
-  font-size: 16px;
-  transition: transform 0.1s ease;
 }
 
 .num-btn:active {
   transform: scale(0.9);
 }
 
-/* Colors */
-
+/* COLORS */
 .num-btn:nth-child(1){background:#4facfe;}
 .num-btn:nth-child(2){background:#43e97b;}
 .num-btn:nth-child(3){background:#fa709a;}
@@ -155,16 +146,7 @@ body {
 .num-btn:nth-child(9){background:#f5576c;}
 .num-btn:last-child{background:#333;}
 
-/* ================= SYMBOL MEANING ================= */
-
-#symbol-meaning {
-  margin-top: 10px;
-  font-size: 14px;
-  color: #444;
-}
-
-/* ================= AD OVERLAY ================= */
-
+/* AD */
 #ad-overlay {
   position: fixed;
   top: 0;
@@ -183,33 +165,6 @@ body {
 #ad-overlay.show {
   display: flex;
 }
-
-/* ================= WIN OVERLAY ================= */
-
-#win-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6);
-  display: none;
-  justify-content: center;
-  align-items: center;
-}
-
-#win-overlay.show {
-  display: flex;
-}
-
-.win-box {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  text-align: center;
-}
-
-/* ================= FALLBACK ================= */
 
 .hidden {
   display: none;
