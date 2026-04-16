@@ -26,19 +26,10 @@ const MAX_LIVES = 3;
 const FREE_HINTS = 2;
 let hintsUsed = 0;
 
-let notesMode = false;
-let notes = createEmptyNotes();
-
-// 🔥 CRITICAL FIX
+// 🔴 CRITICAL FLAG
 let isUserClick = false;
 
 /* ================= HELPERS ================= */
-
-function createEmptyNotes() {
-  return Array.from({ length: 9 }, () =>
-    Array.from({ length: 9 }, () => new Set())
-  );
-}
 
 function deepCopyBoard(b) {
   return b.map(r => [...r]);
@@ -236,6 +227,9 @@ function applyHint(target) {
 }
 
 function handleHintRequest() {
+  // 🔴 HARD BLOCK
+  if (!isUserClick) return;
+
   if (gameOver) return;
 
   const target = findHintTarget();
@@ -259,7 +253,7 @@ function handleHintRequest() {
 /* ================= AD ================= */
 
 function simulateAd(callback) {
-  if (!isUserClick) return; // 🔥 BLOCK AUTO
+  if (!isUserClick) return;
 
   if (typeof callback !== "function") return;
 
