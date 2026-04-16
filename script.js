@@ -44,10 +44,6 @@ function deepCopyBoard(b) {
   return b.map(r => [...r]);
 }
 
-function shuffle(arr) {
-  return [...arr].sort(() => Math.random() - 0.5);
-}
-
 function updateLivesDisplay() {
   document.getElementById("lives").textContent = "❤️".repeat(lives);
 }
@@ -62,7 +58,6 @@ function updateTimerDisplay() {
 function updateHintsDisplay() {
   const el = document.getElementById("hints");
   if (!el) return;
-
   const remaining = Math.max(0, FREE_HINTS - hintsUsed);
   el.textContent = `Hints: ${remaining}`;
 }
@@ -175,7 +170,11 @@ function renderBoard() {
         if (gameOver) return;
 
         selectedCell = { row: r, col: c };
-        showSymbolMeaning(board[r][c]);
+
+        if (board[r][c] !== 0) {
+          showSymbolMeaning(board[r][c]); // 🔥 FIX
+        }
+
         renderBoard();
       };
 
@@ -203,14 +202,23 @@ function createNumpad() {
 
       board[row][col] = i;
 
+      showSymbolMeaning(i); // 🔥 FIX
+
       if (solution[row][col] !== i) {
         lives--;
         updateLivesDisplay();
         highlightError(row, col);
+
+        if (lives <= 0) {
+          gameOver = true;
+          stopTimer();
+          alert("Game Over");
+        }
+
       } else if (isBoardComplete()) {
         gameOver = true;
         stopTimer();
-        showWin();
+        alert("You Win!");
       }
 
       renderBoard();
@@ -236,10 +244,13 @@ function findHintTarget() {
 
 function applyHint(target) {
   board[target.row][target.col] = solution[target.row][target.col];
+  showSymbolMeaning(solution[target.row][target.col]); // 🔥 FIX
   renderBoard();
 }
 
 function handleHintRequest() {
+  if (gameOver) return;
+
   const target = findHintTarget();
   if (!target) return;
 
@@ -248,7 +259,13 @@ function handleHintRequest() {
     applyHint(target);
     updateHintsDisplay();
   } else {
-    simulateAd(() => applyHint(target));
+    const watchAd = confirm("Watch ad for extra hint?");
+    if (!watchAd) return;
+
+    simulateAd(() => {
+      hintsUsed++;
+      applyHint(target);
+    });
   }
 }
 
@@ -260,15 +277,8 @@ function simulateAd(callback) {
 
   setTimeout(() => {
     overlay.classList.remove("show");
-    callback();
+    if (callback) callback();
   }, 2000);
-}
-
-/* ================= WIN ================= */
-
-function showWin() {
-  const overlay = document.getElementById("win-overlay");
-  overlay.classList.add("show");
 }
 
 /* ================= UTIL ================= */
@@ -320,7 +330,7 @@ function newGame(level = "medium") {
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("hint-btn").onclick = handleHintRequest;
   document.getElementById("new-game-btn").onclick = () => newGame();
-  document.getElementById("difficulty").onchange = () => newGame();
+  document.getElementById("difficulty").onchange = (e) => newGame(e.target.value);
 
   newGame();
 });
