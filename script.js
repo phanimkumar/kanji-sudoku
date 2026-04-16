@@ -249,11 +249,6 @@ function createNumpad() {
     alert("Game Over");
   }
 }
-        if (lives <= 0) {
-          gameOver = true;
-          stopTimer();
-          alert("Game Over");
-        }
       } else {
         if (isBoardComplete()) {
           gameOver = true;
