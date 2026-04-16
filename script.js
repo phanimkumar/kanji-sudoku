@@ -26,9 +26,6 @@ const MAX_LIVES = 3;
 const FREE_HINTS = 2;
 let hintsUsed = 0;
 
-// 🔴 CRITICAL FLAG
-let isUserClick = false;
-
 /* ================= HELPERS ================= */
 
 function deepCopyBoard(b) {
@@ -48,6 +45,14 @@ function updateTimerDisplay() {
   const m = String(Math.floor(total / 60)).padStart(2, "0");
   const s = String(total % 60).padStart(2, "0");
   document.getElementById("timer").textContent = `${m}:${s}`;
+}
+
+function updateHintsDisplay() {
+  const el = document.getElementById("hints");
+  if (!el) return;
+
+  const remaining = Math.max(0, FREE_HINTS - hintsUsed);
+  el.textContent = `Hints: ${remaining}`;
 }
 
 function startTimer() {
@@ -194,6 +199,12 @@ function createNumpad() {
           stopTimer();
           alert("Game Over");
         }
+      } else {
+        if (isBoardComplete()) {
+          gameOver = true;
+          stopTimer();
+          showWin();
+        }
       }
 
       renderBoard();
@@ -227,9 +238,6 @@ function applyHint(target) {
 }
 
 function handleHintRequest() {
-  // 🔴 HARD BLOCK
-  if (!isUserClick) return;
-
   if (gameOver) return;
 
   const target = findHintTarget();
@@ -238,14 +246,11 @@ function handleHintRequest() {
   if (hintsUsed < FREE_HINTS) {
     hintsUsed++;
     applyHint(target);
+    updateHintsDisplay();
     return;
   }
 
-  const watch = confirm("No free hints.\nWatch Ad?");
-  if (!watch) return;
-
   simulateAd(() => {
-    hintsUsed++;
     applyHint(target);
   });
 }
@@ -266,6 +271,31 @@ function simulateAd(callback) {
   }, 2000);
 }
 
+/* ================= WIN ================= */
+
+function showWin() {
+  const overlay = document.getElementById("win-overlay");
+  const timeEl = document.getElementById("final-time");
+
+  if (!overlay || !timeEl) return;
+
+  const total = Math.floor(elapsedTime / 1000);
+  const m = String(Math.floor(total / 60)).padStart(2, "0");
+  const s = String(total % 60).padStart(2, "0");
+
+  timeEl.textContent = `Time: ${m}:${s}`;
+  overlay.classList.add("show");
+}
+
+function isBoardComplete() {
+  for (let r = 0; r < 9; r++) {
+    for (let c = 0; c < 9; c++) {
+      if (board[r][c] !== solution[r][c]) return false;
+    }
+  }
+  return true;
+}
+
 /* ================= GAME ================= */
 
 function newGame(level = "medium") {
@@ -280,7 +310,10 @@ function newGame(level = "medium") {
   elapsedTime = 0;
 
   startTimer();
+  updateTimerDisplay();
   updateLivesDisplay();
+  updateHintsDisplay();
+
   renderBoard();
   createNumpad();
 }
@@ -292,11 +325,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const newBtn = document.getElementById("new-game-btn");
   const difficulty = document.getElementById("difficulty");
 
-  hintBtn.onclick = () => {
-    isUserClick = true;
-    handleHintRequest();
-    isUserClick = false;
-  };
+  hintBtn.onclick = handleHintRequest;
 
   newBtn.onclick = () => newGame(difficulty.value);
 
