@@ -29,6 +29,9 @@ let hintsUsed = 0;
 let notesMode = false;
 let notes = createEmptyNotes();
 
+// 🔥 CRITICAL FIX
+let isUserClick = false;
+
 /* ================= HELPERS ================= */
 
 function createEmptyNotes() {
@@ -153,8 +156,6 @@ function renderBoard() {
 
       if (val !== 0) {
         cell.textContent = SYMBOLS[val];
-      } else if (notes[r][c].size > 0) {
-        cell.innerHTML = `<div class="notes">${[...notes[r][c]].map(n=>SYMBOLS[n]).join("")}</div>`;
       }
 
       cell.onclick = () => {
@@ -209,26 +210,13 @@ function createNumpad() {
 
     numpad.appendChild(btn);
   }
-
-  const clear = document.createElement("button");
-  clear.textContent = "X";
-  clear.className = "num-btn";
-
-  clear.onclick = () => {
-    if (!selectedCell) return;
-    board[selectedCell.row][selectedCell.col] = 0;
-    renderBoard();
-  };
-
-  numpad.appendChild(clear);
 }
 
 /* ================= HINT ================= */
 
 function findHintTarget() {
-  if (selectedCell) {
-    const { row, col } = selectedCell;
-    if (!fixedCells[row][col]) return { row, col };
+  if (selectedCell && !fixedCells[selectedCell.row][selectedCell.col]) {
+    return selectedCell;
   }
 
   for (let r = 0; r < 9; r++) {
@@ -271,9 +259,13 @@ function handleHintRequest() {
 /* ================= AD ================= */
 
 function simulateAd(callback) {
+  if (!isUserClick) return; // 🔥 BLOCK AUTO
+
   if (typeof callback !== "function") return;
 
   const overlay = document.getElementById("ad-overlay");
+  if (!overlay) return;
+
   overlay.classList.remove("hidden");
 
   setTimeout(() => {
@@ -306,17 +298,15 @@ function newGame(level = "medium") {
 document.addEventListener("DOMContentLoaded", () => {
   const hintBtn = document.getElementById("hint-btn");
   const newBtn = document.getElementById("new-game-btn");
-  const notesBtn = document.getElementById("notes-btn");
   const difficulty = document.getElementById("difficulty");
 
-  hintBtn.onclick = handleHintRequest;
+  hintBtn.onclick = () => {
+    isUserClick = true;
+    handleHintRequest();
+    isUserClick = false;
+  };
 
   newBtn.onclick = () => newGame(difficulty.value);
-
-  notesBtn.onclick = () => {
-    notesMode = !notesMode;
-    notesBtn.textContent = notesMode ? "Notes ON" : "Notes OFF";
-  };
 
   difficulty.onchange = () => {
     if (confirm("Start new game?")) {
