@@ -164,6 +164,12 @@ function renderBoard() {
 
       if (val !== 0) {
         cell.textContent = SYMBOLS[val];
+
+        if (selectedCell) {
+  if (r === selectedCell.row || c === selectedCell.col) {
+    cell.classList.add("same-value");
+  }
+}
       }
 
       cell.onclick = () => {
