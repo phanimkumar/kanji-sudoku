@@ -167,10 +167,14 @@ function renderBoard() {
       }
 
       cell.onclick = () => {
-        if (gameOver) return;
-        selectedCell = { row: r, col: c };
-        renderBoard();
-      };
+  if (gameOver) return;
+
+  selectedCell = { row: r, col: c };
+
+  showSymbolMeaning(board[r][c]);
+
+  renderBoard();
+};
 
       if (fixedCells[r][c]) cell.classList.add("fixed");
 
