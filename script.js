@@ -286,11 +286,13 @@ function showSymbolMeaning(value) {
   const el = document.getElementById("symbol-meaning");
   if (!el) return;
 
-  el.textContent = value
-    ? `${SYMBOLS[value]} = ${SYMBOL_MEANINGS[value]}`
-    : "Select a symbol";
-}
+  if (!value || !SYMBOLS[value]) {
+    el.textContent = "Select a symbol";
+    return;
+  }
 
+  el.textContent = `${SYMBOLS[value]} = ${SYMBOL_MEANINGS[value]}`;
+}
 function highlightError(row, col) {
   const index = row * 9 + col;
   const cell = boardElement.children[index];
