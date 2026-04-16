@@ -167,16 +167,15 @@ function renderBoard() {
       if (fixedCells[r][c]) cell.classList.add("fixed");
 
       cell.onclick = () => {
-        if (gameOver) return;
+  if (gameOver) return;
 
-        selectedCell = { row: r, col: c };
+  selectedCell = { row: r, col: c };
 
-        if (board[r][c] !== 0) {
-          showSymbolMeaning(board[r][c]); // 🔥 FIX
-        }
+  // 🔥 ALWAYS update meaning
+  showSymbolMeaning(board[r][c]);
 
-        renderBoard();
-      };
+  renderBoard();
+};
 
       boardElement.appendChild(cell);
     }
@@ -325,6 +324,7 @@ function newGame(level = "medium") {
 
   renderBoard();
   createNumpad();
+  showSymbolMeaning(0);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
