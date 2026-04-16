@@ -105,12 +105,12 @@ html, body {
 
 /* SYMBOL MEANING */
 #symbol-meaning {
-  font-size: 13px;
+  font-size: 14px;
   color: #444;
-  margin-top: 3px;
-  min-height: 18px;
+  margin-top: 6px;
+  height: 20px;
+  font-weight: 500;
 }
-
 /* KEYPAD */
 #numpad {
   display: flex;
