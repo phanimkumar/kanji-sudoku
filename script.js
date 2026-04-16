@@ -353,3 +353,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   newGame();
 });
+
+function showSymbolMeaning(value) {
+  const el = document.getElementById("symbol-meaning");
+  if (!el) return;
+
+  if (!value) {
+    el.textContent = "Select a symbol";
+    return;
+  }
+
+  el.textContent = `${SYMBOLS[value]} = ${SYMBOL_MEANINGS[value]}`;
+}
+
+
