@@ -162,16 +162,40 @@ function renderBoard() {
 
       const val = board[r][c];
 
+      // ✅ Show symbol if exists
       if (val !== 0) {
         cell.textContent = SYMBOLS[val];
-
-        if (selectedCell) {
-  if (r === selectedCell.row || c === selectedCell.col) {
-    cell.classList.add("same-value");
-  }
-}
       }
 
+      // ✅ Selection highlight (OUTSIDE val check)
+      if (selectedCell) {
+        if (r === selectedCell.row && c === selectedCell.col) {
+          cell.classList.add("selected");
+        } else if (r === selectedCell.row || c === selectedCell.col) {
+          cell.classList.add("same-value");
+        }
+      }
+
+      // ✅ Fixed cells
+      if (fixedCells[r][c]) {
+        cell.classList.add("fixed");
+      }
+
+      // ✅ Click handler
+      cell.onclick = () => {
+        if (gameOver) return;
+
+        selectedCell = { row: r, col: c };
+
+        showSymbolMeaning(board[r][c]);
+
+        renderBoard();
+      };
+
+      boardElement.appendChild(cell);
+    }
+  }
+}
       cell.onclick = () => {
   if (gameOver) return;
 
