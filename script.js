@@ -38,35 +38,49 @@ const MAX_LIVES = 3;
 const FREE_HINTS = 2;
 let hintsUsed = 0;
 
+let notesMode = false;
+
 /* ================= HELPERS ================= */
 
 function deepCopyBoard(b) {
   return b.map(r => [...r]);
 }
 
+function shuffle(arr) {
+  const copy = [...arr];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
 function updateLivesDisplay() {
-  document.getElementById("lives").textContent = "❤️".repeat(lives);
+  const el = document.getElementById("lives");
+  if (el) el.textContent = "❤️".repeat(lives);
 }
 
 function updateTimerDisplay() {
   const total = Math.floor(elapsedTime / 1000);
   const m = String(Math.floor(total / 60)).padStart(2, "0");
   const s = String(total % 60).padStart(2, "0");
-  document.getElementById("timer").textContent = `${m}:${s}`;
+  const el = document.getElementById("timer");
+  if (el) el.textContent = `${m}:${s}`;
 }
 
 function updateHintsDisplay() {
+  const el = document.getElementById("hints");
+  if (!el) return;
   const remaining = Math.max(0, FREE_HINTS - hintsUsed);
-  document.getElementById("hints").textContent = `Hints: ${remaining}`;
+  el.textContent = `Hints: ${remaining}`;
 }
 
-/* 🔥 FIX: NO ANSWER LEAK */
 function showSymbolMeaning(value) {
   const el = document.getElementById("symbol-meaning");
   if (!el) return;
 
   if (!value || !SYMBOLS[value]) {
-    el.textContent = "Select a symbol";
+    el.innerHTML = "Select a symbol";
     return;
   }
 
@@ -94,7 +108,8 @@ function stopTimer() {
 
 function isValid(b, row, col, num) {
   for (let i = 0; i < 9; i++) {
-    if (b[row][i] === num || b[i][col] === num) return false;
+    if (i !== col && b[row][i] === num) return false;
+    if (i !== row && b[i][col] === num) return false;
   }
 
   const sr = Math.floor(row / 3) * 3;
@@ -102,7 +117,7 @@ function isValid(b, row, col, num) {
 
   for (let r = sr; r < sr + 3; r++) {
     for (let c = sc; c < sc + 3; c++) {
-      if (b[r][c] === num) return false;
+      if ((r !== row || c !== col) && b[r][c] === num) return false;
     }
   }
 
@@ -113,7 +128,8 @@ function solve(b) {
   for (let r = 0; r < 9; r++) {
     for (let c = 0; c < 9; c++) {
       if (b[r][c] === 0) {
-        for (let n = 1; n <= 9; n++) {
+        const nums = shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+        for (const n of nums) {
           if (isValid(b, r, c, n)) {
             b[r][c] = n;
             if (solve(b)) return true;
@@ -154,10 +170,32 @@ function getClues(level) {
   return level === "easy" ? 40 : level === "hard" ? 26 : 32;
 }
 
+/* ================= UTIL ================= */
+
+function markWrongCell(row, col) {
+  const index = row * 9 + col;
+  const cell = boardElement.children[index];
+  if (!cell) return;
+
+  cell.classList.add("conflict");
+  setTimeout(() => {
+    cell.classList.remove("conflict");
+  }, 600);
+}
+
+function isBoardComplete() {
+  return board.every((row, r) =>
+    row.every((val, c) => val === solution[r][c])
+  );
+}
+
 /* ================= RENDER ================= */
 
 function renderBoard() {
   boardElement.innerHTML = "";
+
+  const selectedValue =
+    selectedCell ? board[selectedCell.row][selectedCell.col] : 0;
 
   for (let r = 0; r < 9; r++) {
     for (let c = 0; c < 9; c++) {
@@ -167,7 +205,9 @@ function renderBoard() {
       cell.dataset.col = c;
 
       const val = board[r][c];
-      if (val !== 0) cell.textContent = SYMBOLS[val];
+      if (val !== 0) {
+        cell.textContent = SYMBOLS[val];
+      }
 
       if (selectedCell) {
         if (r === selectedCell.row && c === selectedCell.col) {
@@ -175,18 +215,22 @@ function renderBoard() {
         } else if (r === selectedCell.row || c === selectedCell.col) {
           cell.classList.add("same-value");
         }
+
+        if (selectedValue !== 0 && val === selectedValue) {
+          cell.classList.add("symbol-match");
+        }
       }
 
-      if (fixedCells[r][c]) cell.classList.add("fixed");
+      if (fixedCells[r][c]) {
+        cell.classList.add("fixed");
+      }
 
       boardElement.appendChild(cell);
     }
   }
 
-  /* 🔥 FIX: only show meaning if user filled value */
   if (selectedCell) {
     const value = board[selectedCell.row][selectedCell.col];
-
     if (value !== 0) {
       showSymbolMeaning(value);
     } else {
@@ -197,7 +241,7 @@ function renderBoard() {
   }
 }
 
-/* ================= CLICK ================= */
+/* ================= BOARD CLICK ================= */
 
 boardElement.addEventListener("click", (e) => {
   const cell = e.target.closest(".cell");
@@ -215,6 +259,8 @@ boardElement.addEventListener("click", (e) => {
 
 function createNumpad() {
   const numpad = document.getElementById("numpad");
+  if (!numpad) return;
+
   numpad.innerHTML = "";
 
   for (let i = 1; i <= 9; i++) {
@@ -228,11 +274,17 @@ function createNumpad() {
       const { row, col } = selectedCell;
       if (fixedCells[row][col]) return;
 
+      if (notesMode) return;
+
       board[row][col] = i;
-      renderBoard();
 
       if (solution[row][col] !== i) {
+        updateLivesDisplay();
+        renderBoard();
+        markWrongCell(row, col);
+
         lives--;
+
         updateLivesDisplay();
 
         if (lives <= 0) {
@@ -240,7 +292,12 @@ function createNumpad() {
           stopTimer();
           alert("Game Over");
         }
-      } else if (isBoardComplete()) {
+        return;
+      }
+
+      renderBoard();
+
+      if (isBoardComplete()) {
         gameOver = true;
         stopTimer();
         alert("You Win!");
@@ -252,7 +309,7 @@ function createNumpad() {
 
   const clearBtn = document.createElement("button");
   clearBtn.className = "num-btn";
-  clearBtn.textContent = "X";
+  clearBtn.textContent = "⌫";
 
   clearBtn.onclick = () => {
     if (!selectedCell || gameOver) return;
@@ -270,17 +327,22 @@ function createNumpad() {
 /* ================= HINT ================= */
 
 function findHintTarget() {
+  if (selectedCell && board[selectedCell.row][selectedCell.col] === 0) {
+    return selectedCell;
+  }
+
   for (let r = 0; r < 9; r++) {
     for (let c = 0; c < 9; c++) {
       if (board[r][c] === 0) return { row: r, col: c };
     }
   }
+
   return null;
 }
 
 function applyHint(target) {
   board[target.row][target.col] = solution[target.row][target.col];
-  selectedCell = target;
+  selectedCell = { row: target.row, col: target.col };
   renderBoard();
 }
 
@@ -309,11 +371,16 @@ function handleHintRequest() {
 
 function simulateAd(callback) {
   const overlay = document.getElementById("ad-overlay");
+  if (!overlay) {
+    if (callback) callback();
+    return;
+  }
+
   overlay.classList.add("show");
 
   setTimeout(() => {
     overlay.classList.remove("show");
-    callback && callback();
+    if (callback) callback();
   }, 2000);
 }
 
@@ -329,30 +396,42 @@ function newGame(level = "medium") {
   selectedCell = null;
   gameOver = false;
   elapsedTime = 0;
+  notesMode = false;
+
+  const notesBtn = document.getElementById("notes-btn");
+  if (notesBtn) notesBtn.textContent = "Notes OFF";
 
   startTimer();
   updateTimerDisplay();
   updateLivesDisplay();
   updateHintsDisplay();
-
   renderBoard();
   createNumpad();
 }
 
-function isBoardComplete() {
-  return board.every((row, r) =>
-    row.every((val, c) => val === solution[r][c])
-  );
-}
-
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("hint-btn").onclick = handleHintRequest;
+  const hintBtn = document.getElementById("hint-btn");
+  const newBtn = document.getElementById("new-game-btn");
+  const difficulty = document.getElementById("difficulty");
+  const notesBtn = document.getElementById("notes-btn");
 
-  document.getElementById("new-game-btn").onclick = () =>
-    newGame(document.getElementById("difficulty").value);
+  if (hintBtn) hintBtn.onclick = handleHintRequest;
 
-  document.getElementById("difficulty").onchange = (e) =>
-    newGame(e.target.value);
+  if (newBtn) {
+    newBtn.onclick = () =>
+      newGame(difficulty ? difficulty.value : "medium");
+  }
+
+  if (difficulty) {
+    difficulty.onchange = (e) => newGame(e.target.value);
+  }
+
+  if (notesBtn) {
+    notesBtn.onclick = () => {
+      notesMode = !notesMode;
+      notesBtn.textContent = notesMode ? "Notes ON" : "Notes OFF";
+    };
+  }
 
   newGame();
 });
