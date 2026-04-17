@@ -6,14 +6,10 @@
   <title>Kanji Sudoku</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
-
   <div class="container">
-
-    <!-- LOGO + TITLE -->
     <div class="title-container">
-      <img src="logo.png" class="app-logo" />
+      <img src="logo.png" class="app-logo" alt="Kanji Sudoku logo" />
 
       <h1 class="game-title">
         <span class="kanji">数独</span>
@@ -22,17 +18,14 @@
       </h1>
     </div>
 
-    <!-- TOP BAR -->
-<div class="top-bar">
-  <div id="lives">❤️❤️❤️</div>
-  <div id="timer">00:00</div>
-  <div id="hints">Hints: 2</div>
-</div>
+    <div class="top-bar">
+      <div id="lives">❤️❤️❤️</div>
+      <div id="timer">00:00</div>
+      <div id="hints">Hints: 2</div>
+    </div>
 
-    <!-- BOARD -->
     <div id="board"></div>
 
-    <!-- CONTROLS -->
     <div class="controls">
       <button id="new-game-btn">New Game</button>
       <button id="hint-btn">Hint</button>
@@ -45,20 +38,27 @@
       </select>
     </div>
 
-<div id="symbol-meaning">Select a symbol</div>
-    
-    <!-- NUMPAD -->
-    <div id="numpad"></div>
+    <div id="symbol-meaning">Select a symbol</div>
 
+    <div class="store-link-wrap">
+      <a
+        class="store-link"
+        href="https://play.google.com/store/apps/details?id=com.swayamkrushi.kanjisudoku"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Get the Android app on Google Play
+      </a>
+    </div>
+
+    <div id="numpad"></div>
   </div>
 
-  <!-- AD OVERLAY -->
-  <div id="ad-overlay" class="hidden">
+  <div id="ad-overlay">
     <div class="spinner"></div>
     <p>Loading Ad...</p>
   </div>
 
   <script src="script.js" defer></script>
-
 </body>
 </html>
