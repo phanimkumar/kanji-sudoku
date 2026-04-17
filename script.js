@@ -56,10 +56,24 @@ function updateTimerDisplay() {
 }
 
 function updateHintsDisplay() {
-  const el = document.getElementById("hints");
-  if (!el) return;
   const remaining = Math.max(0, FREE_HINTS - hintsUsed);
-  el.textContent = `Hints: ${remaining}`;
+  document.getElementById("hints").textContent = `Hints: ${remaining}`;
+}
+
+/* 🔥 FIX: NO ANSWER LEAK */
+function showSymbolMeaning(value) {
+  const el = document.getElementById("symbol-meaning");
+  if (!el) return;
+
+  if (!value || !SYMBOLS[value]) {
+    el.textContent = "Select a symbol";
+    return;
+  }
+
+  el.innerHTML = `
+    <span style="font-size:18px;margin-right:6px;">${SYMBOLS[value]}</span>
+    <span>${SYMBOL_MEANINGS[value]}</span>
+  `;
 }
 
 function startTimer() {
@@ -86,9 +100,9 @@ function isValid(b, row, col, num) {
   const sr = Math.floor(row / 3) * 3;
   const sc = Math.floor(col / 3) * 3;
 
-  for (let r = 0; r < 3; r++) {
-    for (let c = 0; c < 3; c++) {
-      if (b[sr + r][sc + c] === num) return false;
+  for (let r = sr; r < sr + 3; r++) {
+    for (let c = sc; c < sc + 3; c++) {
+      if (b[r][c] === num) return false;
     }
   }
 
@@ -153,10 +167,7 @@ function renderBoard() {
       cell.dataset.col = c;
 
       const val = board[r][c];
-
-      if (val !== 0) {
-        cell.textContent = SYMBOLS[val];
-      }
+      if (val !== 0) cell.textContent = SYMBOLS[val];
 
       if (selectedCell) {
         if (r === selectedCell.row && c === selectedCell.col) {
@@ -166,27 +177,27 @@ function renderBoard() {
         }
       }
 
-      if (fixedCells[r][c]) {
-        cell.classList.add("fixed");
-      }
+      if (fixedCells[r][c]) cell.classList.add("fixed");
 
       boardElement.appendChild(cell);
     }
   }
 
-  // 🔥 Meaning always synced from state
+  /* 🔥 FIX: only show meaning if user filled value */
   if (selectedCell) {
-    const value =
-      board[selectedCell.row][selectedCell.col] ||
-      solution[selectedCell.row][selectedCell.col];
+    const value = board[selectedCell.row][selectedCell.col];
 
-    showSymbolMeaning(value);
+    if (value !== 0) {
+      showSymbolMeaning(value);
+    } else {
+      showSymbolMeaning(0);
+    }
   } else {
     showSymbolMeaning(0);
   }
 }
 
-/* ================= BOARD CLICK ================= */
+/* ================= CLICK ================= */
 
 boardElement.addEventListener("click", (e) => {
   const cell = e.target.closest(".cell");
@@ -218,11 +229,11 @@ function createNumpad() {
       if (fixedCells[row][col]) return;
 
       board[row][col] = i;
+      renderBoard();
 
       if (solution[row][col] !== i) {
         lives--;
         updateLivesDisplay();
-        highlightError(row, col);
 
         if (lives <= 0) {
           gameOver = true;
@@ -234,8 +245,6 @@ function createNumpad() {
         stopTimer();
         alert("You Win!");
       }
-
-      renderBoard();
     };
 
     numpad.appendChild(btn);
@@ -258,33 +267,54 @@ function createNumpad() {
   numpad.appendChild(clearBtn);
 }
 
-/* ================= UTIL ================= */
+/* ================= HINT ================= */
 
-function showSymbolMeaning(value) {
-  const el = document.getElementById("symbol-meaning");
-  if (!el) return;
-
-  if (!value || !SYMBOLS[value]) {
-    el.textContent = "Select a symbol";
-    return;
+function findHintTarget() {
+  for (let r = 0; r < 9; r++) {
+    for (let c = 0; c < 9; c++) {
+      if (board[r][c] === 0) return { row: r, col: c };
+    }
   }
-
-  el.textContent = `${SYMBOLS[value]} = ${SYMBOL_MEANINGS[value]}`;
+  return null;
 }
 
-function highlightError(row, col) {
-  const index = row * 9 + col;
-  const cell = boardElement.children[index];
-  if (!cell) return;
-
-  cell.classList.add("conflict");
-  setTimeout(() => cell.classList.remove("conflict"), 400);
+function applyHint(target) {
+  board[target.row][target.col] = solution[target.row][target.col];
+  selectedCell = target;
+  renderBoard();
 }
 
-function isBoardComplete() {
-  return board.every((r, i) =>
-    r.every((c, j) => c === solution[i][j])
-  );
+function handleHintRequest() {
+  if (gameOver) return;
+
+  const target = findHintTarget();
+  if (!target) return;
+
+  if (hintsUsed < FREE_HINTS) {
+    hintsUsed++;
+    updateHintsDisplay();
+    applyHint(target);
+  } else {
+    const watchAd = confirm("Watch ad for extra hint?");
+    if (!watchAd) return;
+
+    simulateAd(() => {
+      hintsUsed++;
+      applyHint(target);
+    });
+  }
+}
+
+/* ================= AD ================= */
+
+function simulateAd(callback) {
+  const overlay = document.getElementById("ad-overlay");
+  overlay.classList.add("show");
+
+  setTimeout(() => {
+    overlay.classList.remove("show");
+    callback && callback();
+  }, 2000);
 }
 
 /* ================= INIT ================= */
@@ -292,7 +322,6 @@ function isBoardComplete() {
 function newGame(level = "medium") {
   solution = generateSolvedBoard();
   board = createPuzzle(solution, getClues(level));
-
   fixedCells = board.map(r => r.map(v => v !== 0));
 
   lives = MAX_LIVES;
@@ -305,18 +334,25 @@ function newGame(level = "medium") {
   updateTimerDisplay();
   updateLivesDisplay();
   updateHintsDisplay();
-  showSymbolMeaning(0);
 
   renderBoard();
   createNumpad();
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const newBtn = document.getElementById("new-game-btn");
-  const difficulty = document.getElementById("difficulty");
+function isBoardComplete() {
+  return board.every((row, r) =>
+    row.every((val, c) => val === solution[r][c])
+  );
+}
 
-  if (newBtn) newBtn.onclick = () => newGame(difficulty.value);
-  if (difficulty) difficulty.onchange = (e) => newGame(e.target.value);
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("hint-btn").onclick = handleHintRequest;
+
+  document.getElementById("new-game-btn").onclick = () =>
+    newGame(document.getElementById("difficulty").value);
+
+  document.getElementById("difficulty").onchange = (e) =>
+    newGame(e.target.value);
 
   newGame();
 });
