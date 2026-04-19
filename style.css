@@ -1,8 +1,8 @@
-/* ===== SCREEN CONTROL (NO SCROLL) ===== */
+/* ===== SCREEN CONTROL ===== */
 html, body {
   height: auto;
-  overflow: hidden;
-   overflow-y: auto; 
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 /* ===== BASE ===== */
@@ -20,23 +20,25 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  gap: 5px;
+  gap: 6px;
   max-width: 100%;
 }
 
-/* ===== TITLE ===== */
+/* ===== TITLE (UPDATED - HORIZONTAL) ===== */
 .title-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;              /* 🔥 changed */
   align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
 .app-logo {
-  width: 60px;
-  height: 60px;
-  border-radius: 14px;
-  margin-bottom: 4px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  width: 50px;                     /* 🔥 reduced */
+  height: 50px;
+  border-radius: 12px;
+  margin-bottom: 0;                /* 🔥 removed vertical spacing */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
 }
 
 .game-title {
@@ -59,30 +61,30 @@ body {
 .top-bar {
   display: flex;
   justify-content: space-between;
-  width: 300px;
-  margin: 2px 0;
+  width: 320px;
+  margin: 3px 0;
   font-weight: bold;
   font-size: 14px;
 }
 
-/* ===== BOARD ===== */
+/* ===== BOARD (UPDATED SIZE) ===== */
 #board {
   display: grid;
-  grid-template-columns: repeat(9, 34px);
-  grid-template-rows: repeat(9, 34px);
+  grid-template-columns: repeat(9, 38px);   /* 🔥 increased */
+  grid-template-rows: repeat(9, 38px);
   padding: 6px;
-  border-radius: 10px;
+  border-radius: 12px;
   background: #dcdcdc;
   border: 3px solid #000;
-  transform: scale(0.95);
+  /* 🔥 removed transform scale */
 }
 
 /* ===== CELLS ===== */
 .cell {
-  width: 34px;
-  height: 34px;
-  line-height: 34px;
-  font-size: 16px;
+  width: 38px;                     /* 🔥 increased */
+  height: 38px;
+  line-height: 38px;
+  font-size: 17px;                 /* 🔥 slightly bigger */
   border: 1px solid #888;
   background: #fff;
   color: #000;
@@ -138,9 +140,9 @@ body {
 
 /* ===== CONTROLS ===== */
 .controls {
-  margin: 2px 0;
+  margin: 3px 0;
   display: flex;
-  gap: 5px;
+  gap: 6px;
   flex-wrap: wrap;
   justify-content: center;
 }
@@ -149,14 +151,14 @@ body {
 #symbol-meaning {
   font-size: 13px;
   color: #444;
-  margin-top: 2px;
+  margin-top: 3px;
   min-height: 18px;
   font-weight: 500;
 }
 
 /* ===== PLAY STORE LINK ===== */
 .store-link-wrap {
-  margin-top: 2px;
+  margin-top: 3px;
 }
 
 .store-link {
@@ -175,12 +177,12 @@ body {
 }
 
 .num-btn {
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   border-radius: 6px;
   color: white;
   border: none;
-  font-size: 13px;
+  font-size: 14px;
   cursor: pointer;
 }
 
@@ -203,8 +205,8 @@ body {
 /* ===== FOOTER ===== */
 .footer-links {
   font-size: 11px;
-  margin-top: 4px;
-  margin-bottom: 4px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   color: #555;
 }
 
@@ -212,6 +214,16 @@ body {
   color: #0b57d0;
   text-decoration: underline;
   margin: 0 3px;
+}
+
+/* ===== ABOUT SECTION ===== */
+.about-section {
+  max-width: 320px;
+  font-size: 13px;
+  color: #333;
+  margin-top: 10px;
+  text-align: left;
+  line-height: 1.4;
 }
 
 /* ===== AD OVERLAY ===== */
@@ -243,16 +255,6 @@ body {
   animation: spin 0.8s linear infinite;
   margin-bottom: 8px;
 }
-
-.about-section {
-  max-width: 320px;
-  font-size: 13px;
-  color: #333;
-  margin-top: 10px;
-  text-align: left;
-  line-height: 1.4;
-}
-
 
 @keyframes spin {
   to { transform: rotate(360deg); }
