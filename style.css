@@ -231,3 +231,15 @@ body {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
+.footer-links {
+  font-size: 12px;
+  margin-top: 10px;
+  color: #555;
+}
+
+.footer-links a {
+  color: #0b57d0;
+  text-decoration: underline;
+  margin: 0 4px;
+}
