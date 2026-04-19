@@ -74,6 +74,7 @@ body {
   border-radius: 10px;
   background: #dcdcdc;
   border: 3px solid #000;
+  transform: scale(0.95);
 }
 
 /* ===== CELLS ===== */
