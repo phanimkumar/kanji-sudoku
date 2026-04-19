@@ -1,25 +1,29 @@
+/* ===== SCREEN CONTROL (NO SCROLL) ===== */
 html, body {
-  height: auto;
-  overflow-x: hidden;   /* allow vertical scroll */
+  height: 100%;
+  overflow: hidden;
 }
 
+/* ===== BASE ===== */
 body {
   font-family: Arial, "Noto Sans JP", sans-serif;
   margin: 0;
-  padding: 8px;
+  padding: 6px;
   text-align: center;
   background: linear-gradient(to bottom, #f5f7fa, #e4e8ee);
 }
 
+/* ===== MAIN CONTAINER ===== */
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  gap: 8px;
+  height: 100vh;
+  gap: 5px;
 }
 
-/* TITLE */
+/* ===== TITLE ===== */
 .title-container {
   display: flex;
   flex-direction: column;
@@ -27,56 +31,56 @@ body {
 }
 
 .app-logo {
-  width: 70px;
-  height: 70px;
-  border-radius: 16px;
-  margin-bottom: 5px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+  width: 60px;
+  height: 60px;
+  border-radius: 14px;
+  margin-bottom: 4px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
 }
 
 .game-title {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: bold;
   background: linear-gradient(45deg, #ff7a18, #ffb347, #6dd5fa);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: flex;
-  gap: 6px;
+  gap: 4px;
 }
 
 .game-title .kanji {
-  font-size: 18px;
+  font-size: 16px;
   color: #444;
   -webkit-text-fill-color: #444;
 }
 
-/* TOP */
+/* ===== TOP BAR ===== */
 .top-bar {
   display: flex;
   justify-content: space-between;
-  width: 320px;
-  margin: 5px 0;
+  width: 300px;
+  margin: 2px 0;
   font-weight: bold;
+  font-size: 14px;
 }
 
-/* BOARD */
+/* ===== BOARD ===== */
 #board {
   display: grid;
-  grid-template-columns: repeat(9, 38px);
-  grid-template-rows: repeat(9, 38px);
-  gap: 0;
-  padding: 8px;
-  border-radius: 12px;
+  grid-template-columns: repeat(9, 34px);
+  grid-template-rows: repeat(9, 34px);
+  padding: 6px;
+  border-radius: 10px;
   background: #dcdcdc;
   border: 3px solid #000;
 }
 
-/* CELLS */
+/* ===== CELLS ===== */
 .cell {
-  width: 38px;
-  height: 38px;
-  line-height: 38px;
-  font-size: 18px;
+  width: 34px;
+  height: 34px;
+  line-height: 34px;
+  font-size: 16px;
   border: 1px solid #888;
   background: #fff;
   color: #000;
@@ -112,7 +116,7 @@ body {
   color: #fff !important;
 }
 
-/* 3x3 separation */
+/* ===== 3x3 GRID LINES ===== */
 .cell:nth-child(3n) {
   border-right: 2px solid #444;
 }
@@ -130,24 +134,25 @@ body {
   border-bottom: 3px solid #000;
 }
 
-/* CONTROLS */
+/* ===== CONTROLS ===== */
 .controls {
-  margin: 5px 0;
+  margin: 2px 0;
   display: flex;
-  gap: 6px;
+  gap: 5px;
   flex-wrap: wrap;
   justify-content: center;
 }
 
-/* SYMBOL MEANING */
+/* ===== SYMBOL MEANING ===== */
 #symbol-meaning {
-  font-size: 14px;
+  font-size: 13px;
   color: #444;
-  margin-top: 6px;
-  min-height: 22px;
+  margin-top: 2px;
+  min-height: 18px;
   font-weight: 500;
 }
 
+/* ===== PLAY STORE LINK ===== */
 .store-link-wrap {
   margin-top: 2px;
 }
@@ -155,30 +160,25 @@ body {
 .store-link {
   font-size: 13px;
   color: #0b57d0;
-  text-decoration: none;
   font-weight: 600;
-}
-
-.store-link:hover {
   text-decoration: underline;
 }
 
-/* KEYPAD */
+/* ===== KEYPAD ===== */
 #numpad {
   display: flex;
   gap: 4px;
-  flex-wrap: nowrap;
   justify-content: center;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .num-btn {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border-radius: 6px;
   color: white;
   border: none;
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
 }
 
@@ -186,7 +186,7 @@ body {
   transform: scale(0.9);
 }
 
-/* COLORS */
+/* ===== COLORS ===== */
 .num-btn:nth-child(1){background:#4facfe;}
 .num-btn:nth-child(2){background:#43e97b;}
 .num-btn:nth-child(3){background:#fa709a;}
@@ -198,7 +198,21 @@ body {
 .num-btn:nth-child(9){background:#f5576c;}
 .num-btn:last-child{background:#333;}
 
-/* AD */
+/* ===== FOOTER ===== */
+.footer-links {
+  font-size: 11px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  color: #555;
+}
+
+.footer-links a {
+  color: #0b57d0;
+  text-decoration: underline;
+  margin: 0 3px;
+}
+
+/* ===== AD OVERLAY ===== */
 #ad-overlay {
   position: fixed;
   top: 0;
@@ -219,27 +233,15 @@ body {
 }
 
 .spinner {
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   border: 4px solid rgba(255,255,255,0.4);
   border-top: 4px solid #fff;
   border-radius: 50%;
-  animation: spin 0.9s linear infinite;
-  margin-bottom: 10px;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 8px;
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
-}
-
-.footer-links {
-  font-size: 12px;
-  margin-top: 10px;
-  color: #555;
-}
-
-.footer-links a {
-  color: #0b57d0;
-  text-decoration: underline;
-  margin: 0 4px;
 }
