@@ -1,6 +1,6 @@
 /* ===== SCREEN CONTROL (NO SCROLL) ===== */
 html, body {
-  height: 100%;
+  height: auto;
   overflow: hidden;
    overflow-y: auto; 
 }
@@ -20,9 +20,8 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  height: 100vh;
-  overflow: hidden;
   gap: 5px;
+  max-width: 100%;
 }
 
 /* ===== TITLE ===== */
