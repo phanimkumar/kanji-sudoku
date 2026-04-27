@@ -21,7 +21,8 @@ body {
   align-items: center;
   justify-content: flex-start;
   gap: 6px;
-  max-width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 /* ===== TITLE (HORIZONTAL PREMIUM) ===== */
