@@ -272,6 +272,78 @@ body {
   margin-bottom: 8px;
 }
 
+/* ===== HOMEPAGE ===== */
+
+.home-intro {
+  max-width: 400px;
+  text-align: center;
+  margin: 10px auto;
+}
+
+.home-intro h2 {
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.home-intro p {
+  font-size: 14px;
+  color: #444;
+  line-height: 1.4;
+}
+
+/* GAME LIST */
+.game-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 400px;
+}
+
+/* CARD */
+.game-card {
+  background: white;
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: left;
+}
+
+.game-card h3 {
+  margin: 0 0 5px 0;
+  font-size: 16px;
+}
+
+.game-card p {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+/* BUTTONS */
+.play-btn {
+  display: inline-block;
+  padding: 6px 12px;
+  background: #0b57d0;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.play-btn:hover {
+  background: #0842a0;
+}
+
+.coming-btn {
+  padding: 6px 12px;
+  background: #ccc;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: not-allowed;
+}
+
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
