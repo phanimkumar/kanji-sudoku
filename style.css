@@ -135,7 +135,7 @@ body {
 
 /* ===== HOMEPAGE TEXT ===== */
 .home-intro {
-  max-width: 500px;
+  max-width: 550px;   /* slightly increased for balance */
   margin: 10px auto;
 }
 
@@ -163,25 +163,25 @@ body {
   box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
 
-/* ===== GAME GRID (IMPORTANT FIX) ===== */
+/* ===== GAME GRID (FIXED CLEANLY) ===== */
 .game-list {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 260px); /* FIXED WIDTH CARDS */
+  justify-content: center;                 /* CENTER ALIGN */
   gap: 18px;
-  max-width: 1000px;
   margin: 30px auto;
 }
 
 /* RESPONSIVE */
 @media (max-width: 900px) {
   .game-list {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 260px);
   }
 }
 
 @media (max-width: 600px) {
   .game-list {
-    grid-template-columns: 1fr;
+    grid-template-columns: 260px;
   }
 }
 
