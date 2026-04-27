@@ -58,6 +58,17 @@ body {
   -webkit-text-fill-color: #444;
 }
 
+.nav-links {
+  margin-top: 5px;
+}
+
+.nav-links a {
+  margin: 0 8px;
+  font-size: 13px;
+  text-decoration: none;
+  color: #0b57d0;
+}
+
 /* ===== TOP BAR ===== */
 .top-bar {
   display: flex;
