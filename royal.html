@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Royal Sudoku</title>
+
+  <link rel="stylesheet" href="style.css" />
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4704776080952179"
+     crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="title-container">
+    <img src="logo.png" class="app-logo" />
+    <h1 class="game-title">♔ Royal Sudoku</h1>
+  </div>
+
+  <!-- NAV -->
+  <div class="nav-links">
+    <a href="/index.html">🏠 Home</a>
+    <a href="/kanji.html">🎮 Kanji</a>
+    <a href="/royal.html">♔ Royal</a>
+  </div>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div id="lives">❤️❤️❤️</div>
+    <div id="timer">00:00</div>
+    <div id="hints">Hints: 2</div>
+  </div>
+
+  <!-- BOARD -->
+  <div id="board"></div>
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <button id="new-game-btn">New Game</button>
+    <button id="hint-btn">Hint</button>
+    <button id="notes-btn">Notes OFF</button>
+
+    <select id="difficulty">
+      <option value="easy">Easy</option>
+      <option value="medium" selected>Medium</option>
+      <option value="hard">Hard</option>
+    </select>
+  </div>
+
+  <!-- SYMBOL TEXT -->
+  <div id="symbol-meaning">Select a symbol</div>
+
+  <!-- NUMPAD -->
+  <div id="numpad"></div>
+
+  <!-- ABOUT -->
+  <div class="about-section">
+    <h2>About Royal Sudoku</h2>
+
+    <p>
+      Royal Sudoku is a chess-inspired variation of Sudoku where traditional numbers are replaced with symbolic chess pieces.
+    </p>
+
+    <p>
+      Instead of relying on numbers, players solve puzzles using visual recognition and strategic pattern analysis.
+    </p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-links">
+    <a href="/privacy.html">Privacy Policy</a> |
+    <a href="/about.html">About</a> |
+    <a href="/contact.html">Contact</a>
+  </div>
+
+</div>
+
+<script>
+const SYMBOLS = ["♔","♕","♖","♗","♘","♙","♚","♛","♜"];
+</script>
+
+<script src="script.js"></script>
+
+</body>
+</html>
