@@ -1,0 +1,241 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at top, #1b2638, #05070b 65%);
+}
+
+.app {
+  width: 100%;
+  max-width: 520px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 6px;
+  gap: 4px;
+}
+
+h1 {
+  margin: 4px 0;
+  font-size: 24px;
+  letter-spacing: 2px;
+  color: #f0c475;
+  text-align: center;
+}
+
+.top-bar {
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  align-items: center;
+  gap: 6px;
+}
+
+#timer {
+  font-size: 14px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(240,196,117,0.6);
+  color: #f0c475;
+  background: rgba(240,196,117,0.08);
+}
+
+.status {
+  font-size: 12px;
+  color: #f0c475;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.difficulty {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.difficulty button {
+  padding: 6px 8px;
+  font-size: 12px;
+}
+
+.difficulty button.active {
+  background: #d6a857;
+  color: #000;
+}
+
+.board {
+  flex: 1;
+  width: 100%;
+  max-width: 520px;
+  height: min(62vh, 500px);
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  border: 3px solid #d6a857;
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 6px auto;
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0b111a;
+  border: 1px solid rgba(214,168,87,0.25);
+  position: relative;
+}
+
+.cell:nth-child(3n) {
+  border-right: 2px solid #d6a857;
+}
+
+.cell:nth-child(9n) {
+  border-right: none;
+}
+
+.cell:nth-child(n+19):nth-child(-n+27),
+.cell:nth-child(n+46):nth-child(-n+54) {
+  border-bottom: 2px solid #d6a857;
+}
+
+.cell.fixed {
+  background: #1a1207;
+}
+
+.cell.selected {
+  background: rgba(240,196,117,0.25);
+}
+
+.cell.related {
+  background: rgba(240,196,117,0.08);
+}
+
+.cell.same-piece {
+  background: rgba(214,168,87,0.22);
+}
+
+.cell.error {
+  background: rgba(180,35,35,0.65);
+}
+
+.cell svg {
+  width: 85%;
+  height: 85%;
+}
+
+.notes-grid {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  padding: 2px;
+}
+
+.note-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.note-mark svg {
+  width: 75%;
+  height: 75%;
+}
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 5px;
+  padding: 4px 0;
+}
+
+.key {
+  aspect-ratio: 1;
+  border-radius: 10px;
+  border: 1px solid rgba(240,196,117,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.key svg {
+  width: 80%;
+  height: 80%;
+}
+
+.key.active {
+  background: rgba(240,196,117,0.25);
+  box-shadow: 0 0 8px rgba(240,196,117,0.45);
+}
+
+.count {
+  position: absolute;
+  bottom: 2px;
+  right: 4px;
+  font-size: 10px;
+  color: #f0c475;
+  opacity: 0.8;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+button {
+  border: 1px solid rgba(240,196,117,0.5);
+  background: transparent;
+  color: #f0c475;
+  padding: 6px 8px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+button:active {
+  transform: scale(0.96);
+}
+
+#message {
+  text-align: center;
+  font-size: 14px;
+  min-height: 18px;
+  color: #f0c475;
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 22px;
+  }
+
+  .top-bar {
+    gap: 4px;
+  }
+
+  .difficulty button {
+    padding: 5px 6px;
+    font-size: 11px;
+  }
+
+  .board {
+    max-height: 340px;
+  }
+
+  .keypad {
+    gap: 4px;
+  }
+
+  button {
+    font-size: 12px;
+    padding: 6px 6px;
+  }
+}
