@@ -25,6 +25,15 @@ const MAX_LIVES = 3;
 const FREE_HINTS = 2;
 let hintsUsed = 0;
 
+let notesMode = false;
+let notes = Array.from(
+  { length: 9 },
+  () => Array.from(
+    { length: 9 },
+    () => []
+  )
+);
+
 /* ================= HELPERS ================= */
 
 function deepCopyBoard(b) {
@@ -211,7 +220,12 @@ function renderBoard() {
     for (let c = 0; c < 9; c++) {
 
       const cell = document.createElement("div");
+const boxRow = Math.floor(r / 3);
+const boxCol = Math.floor(c / 3);
 
+if ((boxRow + boxCol) % 2 === 0) {
+  cell.classList.add("dark-box");
+}
       cell.className = "cell";
 
       cell.dataset.row = r;
@@ -220,8 +234,29 @@ function renderBoard() {
       const val = board[r][c];
 
       if (val !== 0) {
-        cell.textContent = symbols[val - 1];
-      }
+
+  cell.textContent = symbols[val - 1];
+
+  if (
+  !fixedCells[r][c] &&
+  val !== 0 &&
+  solution[r][c] !== val
+) {
+  cell.classList.add("conflict");
+}
+
+} else if (
+  notes[r][c].length > 0
+) {
+
+  cell.innerHTML = `
+    <div class="notes">
+      ${notes[r][c]
+        .map(n => symbols[n - 1])
+        .join(" ")}
+    </div>
+  `;
+}
 
       if (
         selectedCell &&
@@ -275,7 +310,21 @@ function createNumpad() {
 
       if (fixedCells[row][col]) return;
 
-      board[row][col] = i;
+     if (notesMode) {
+
+  if (!notes[row][col].includes(i)) {
+    notes[row][col].push(i);
+  } else {
+    notes[row][col] =
+      notes[row][col].filter(n => n !== i);
+  }
+
+  renderBoard();
+
+  return;
+}
+
+board[row][col] = i;
 
       if (solution[row][col] !== i) {
 
@@ -371,6 +420,13 @@ function newGame(level = "medium") {
   lives = MAX_LIVES;
 
   hintsUsed = 0;
+notes = Array.from(
+  { length: 9 },
+  () => Array.from(
+    { length: 9 },
+    () => []
+  )
+);
 
   elapsedTime = 0;
 
@@ -417,5 +473,58 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
+const notesBtn =
+  document.getElementById("notes-btn");
+
+if (notesBtn) {
+
+  notesBtn.onclick = () => {
+
+    notesMode = !notesMode;
+
+    notesBtn.textContent =
+      notesMode
+        ? "Notes ON"
+        : "Notes OFF";
+  };
+}
+
+const hintBtn =
+  document.getElementById("hint-btn");
+
+if (hintBtn) {
+
+  hintBtn.onclick = () => {
+
+    if (!selectedCell) return;
+
+    if (hintsUsed >= FREE_HINTS) {
+      alert("No hints left");
+      return;
+    }
+
+    const { row, col } = selectedCell;
+
+    if (fixedCells[row][col]) return;
+
+    board[row][col] =
+      solution[row][col];
+
+    hintsUsed++;
+
+    updateHintsDisplay();
+
+    renderBoard();
+
+    if (isBoardComplete()) {
+
+      gameOver = true;
+
+      stopTimer();
+
+      alert("You Win!");
+    }
+  };
+}
   newGame();
 });
