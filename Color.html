@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Color Sudoku</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="Color.css">
+</head>
+
+<body>
+
+<div class="app">
+
+  <h1 class="title">
+    <span class="accent">Color</span> Sudoku
+  </h1>
+
+  <div class="top-bar">
+    <div id="timer">00:00</div>
+
+    <div class="difficulty-row">
+      <button class="diff" data-level="easy">Easy</button>
+      <button class="diff active" data-level="medium">Medium</button>
+      <button class="diff" data-level="hard">Hard</button>
+    </div>
+
+    <div id="mistakes">0/3</div>
+  </div>
+
+  <div id="board" class="board"></div>
+
+  <div class="bottom-panel">
+
+    <div id="colorPad" class="color-pad"></div>
+
+    <div class="controls">
+      <button id="newGameBtn">New</button>
+      <button id="undoBtn">Undo</button>
+      <button id="noteBtn">Notes</button>
+      <button id="eraseBtn">Erase</button>
+    </div>
+
+  </div>
+
+  <div id="overlay" class="overlay hidden">
+    <div class="overlay-box">
+      <h2 id="overlayText"></h2>
+      <button id="restartBtn">Play Again</button>
+    </div>
+  </div>
+
+</div>
+
+<script defer src="Color.js"></script>
+</body>
+</html>
