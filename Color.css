@@ -341,3 +341,17 @@ body {
     width: 55px;
   }
 }
+
+/* ===== MOBILE FIX ===== */
+
+@media (max-width: 768px){
+
+  .nav-links{
+    display:none;
+  }
+
+  .footer-links{
+    display:none;
+  }
+
+}
