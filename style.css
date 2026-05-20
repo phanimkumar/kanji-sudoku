@@ -490,3 +490,46 @@ body{
   }
 
 }
+/* ===== MOBILE BOARD OPTIMIZATION ===== */
+
+@media (max-width:768px){
+
+  #board{
+    grid-template-columns:repeat(9,36px);
+    grid-template-rows:repeat(9,36px);
+  }
+
+  .cell{
+    width:36px;
+    height:36px;
+
+    font-size:17px;
+  }
+
+  .num-btn{
+    width:40px;
+    height:40px;
+
+    font-size:22px;
+  }
+
+  .top-bar{
+    width:100%;
+    max-width:360px;
+
+    font-size:16px;
+  }
+
+  .controls{
+    gap:8px;
+  }
+
+  .controls button,
+  .controls select{
+
+    padding:10px 14px;
+
+    font-size:14px;
+  }
+
+}
