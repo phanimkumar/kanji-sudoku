@@ -476,3 +476,17 @@ body{
 .footer-links a{
   color:#7cb7ff;
 }
+
+/* ===== MOBILE FIX ===== */
+
+@media (max-width: 768px){
+
+  .nav-links{
+    display:none;
+  }
+
+  .footer-links{
+    display:none;
+  }
+
+}
