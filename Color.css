@@ -344,14 +344,25 @@ body {
 
 /* ===== MOBILE FIX ===== */
 
-@media (max-width: 768px){
+.nav-links{
+  text-align:center;
+  margin:10px 0 14px;
+}
 
-  .nav-links{
-    display:none;
-  }
+.nav-links a{
+  color:#6fb1ff;
+  text-decoration:none;
+  margin:0 10px;
+  font-size:15px;
+  font-weight:500;
+}
 
-  .footer-links{
-    display:none;
-  }
+.footer-links{
+  text-align:center;
+  margin-top:18px;
+}
 
+.footer-links a{
+  color:#6fb1ff;
+  text-decoration:none;
 }
