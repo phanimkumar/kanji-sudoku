@@ -3,47 +3,56 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
   <title>Kanji Sudoku</title>
+
+  <meta name="description"
+  content="Play Kanji Sudoku online. A unique Sudoku game using Japanese symbols instead of numbers.">
+
+  <meta name="google-adsense-account"
+  content="ca-pub-4704776080952179">
+
+  <link rel="icon" href="/logo.png">
+
   <link rel="stylesheet" href="style.css" />
-<meta name="description"
-content="Play Kanji Sudoku online. A unique Sudoku game using Japanese symbols instead of numbers.">
-  <!-- AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4704776080952179"
-     crossorigin="anonymous"></script>
+
+  <script async
+  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4704776080952179"
+  crossorigin="anonymous"></script>
+
 </head>
 
 <body>
-  <div class="container">
 
-    <!-- HEADER -->
-    <div class="title-container">
-      <img src="logo.png" class="app-logo" alt="Kanji Sudoku logo" />
+<div class="container">
 
-      <h1 class="game-title">
-        <span class="kanji">数独</span>
-        Kanji Sudoku
-      </h1>
-    </div>
+  <div class="title-container">
+    <img src="logo.png" class="app-logo" alt="Kanji Sudoku logo" />
 
-    <!-- NAV -->
-    <div class="nav-links">
-      <a href="/index.html">🏠 Home</a>
-      <a href="/kanji.html">🎮 Play</a>
-      <a href="/how-to-play.html">📘 How to Play</a>
-    </div>
+    <h1 class="game-title">
+      <span class="kanji">数独</span>
+      Kanji Sudoku
+    </h1>
+  </div>
 
-    <!-- TOP BAR -->
-    <div class="game-wrapper">
+  <div class="nav-links">
+    <a href="/index.html">🏠 Home</a>
+    <a href="/kanji.html">🎮 Kanji</a>
+    <a href="/Royal.html">♔ Royal</a>
+    <a href="/Color.html">🎨 Color</a>
+    <a href="/how-to-play.html">📘 How to Play</a>
+  </div>
+
+  <div class="game-wrapper">
+
     <div class="top-bar">
       <div id="lives">❤️❤️❤️</div>
       <div id="timer">00:00</div>
       <div id="hints">Hints: 2</div>
     </div>
 
-    <!-- BOARD -->
     <div id="board"></div>
 
-    <!-- CONTROLS -->
     <div class="controls">
       <button id="new-game-btn">New Game</button>
       <button id="hint-btn">Hint</button>
@@ -56,10 +65,8 @@ content="Play Kanji Sudoku online. A unique Sudoku game using Japanese symbols i
       </select>
     </div>
 
-    <!-- SYMBOL MEANING -->
     <div id="symbol-meaning">Select a symbol</div>
 
-    <!-- PLAY STORE LINK -->
     <div class="store-link-wrap">
       <a
         class="store-link"
@@ -71,39 +78,36 @@ content="Play Kanji Sudoku online. A unique Sudoku game using Japanese symbols i
       </a>
     </div>
 
-    <!-- NUMPAD -->
     <div id="numpad"></div>
+
+  </div>
+
+  <div class="about-section">
+    <h2>About Kanji Sudoku</h2>
+
+    <p>
+      Kanji Sudoku is a unique variation of the classic Sudoku puzzle where numbers are replaced with Japanese symbols.
+    </p>
+
+    <p>
+      This version enhances pattern recognition and provides a fresh gameplay experience compared to traditional Sudoku.
+    </p>
+  </div>
+
+  <div class="footer-links">
+    <a href="/privacy.html">Privacy Policy</a> |
+    <a href="/about.html">About</a> |
+    <a href="/contact.html">Contact</a>
+  </div>
+
 </div>
-    <!-- ABOUT -->
-    <div class="about-section">
-      <h2>About Kanji Sudoku</h2>
-      <p>
-        Kanji Sudoku is a unique variation of the classic Sudoku puzzle where numbers are replaced with Japanese symbols.
-        Each symbol represents a number, and the objective is to complete the grid following standard Sudoku rules.
-      </p>
 
-      <p>
-        This version enhances pattern recognition and provides a fresh gameplay experience compared to traditional Sudoku.
-      </p>
-    </div>
+<div id="ad-overlay">
+  <div class="spinner"></div>
+  <p>Loading Ad...</p>
+</div>
 
-    <!-- FOOTER -->
-    <div class="footer-links">
-      <a href="/privacy.html">Privacy Policy</a> |
-      <a href="/about.html">About</a> |
-      <a href="/contact.html">Contact</a>
-    </div>
-
-  </div>
-
-  <!-- AD OVERLAY -->
-  <div id="ad-overlay">
-    <div class="spinner"></div>
-    <p>Loading Ad...</p>
-  </div>
-
-  <!-- SCRIPT -->
-  <script src="script.js" defer></script>
+<script src="script.js" defer></script>
 
 </body>
 </html>
