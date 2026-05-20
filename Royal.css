@@ -239,3 +239,17 @@ button:active {
     padding: 6px 6px;
   }
 }
+
+/* ===== MOBILE FIX ===== */
+
+@media (max-width: 768px){
+
+  .nav-links{
+    display:none;
+  }
+
+  .footer-links{
+    display:none;
+  }
+
+}
