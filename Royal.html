@@ -3,55 +3,71 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Royal Sudoku</title>
-  <link rel="stylesheet" href="Royal.css" />
-<meta name="description"
-content="Play Royal Sudoku online using symbolic chess pieces instead of numbers.">
-  <!-- Google AdSense -->
-<meta name="google-adsense-account"
-content="ca-pub-4704776080952179">
 
-<script async
-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4704776080952179"
-crossorigin="anonymous"></script>
-  
+  <title>Royal Sudoku</title>
+
+  <meta name="description"
+  content="Play Royal Sudoku online using symbolic chess pieces instead of numbers.">
+
+  <meta name="google-adsense-account"
+  content="ca-pub-4704776080952179">
+
+  <link rel="icon" href="/logo.png">
+
+  <link rel="stylesheet" href="Royal.css" />
+
+  <script async
+  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4704776080952179"
+  crossorigin="anonymous"></script>
+
 </head>
+
 <body>
 
-  <div class="app">
-    <h1>Royal Sudoku</h1>
+<div class="nav-links">
+  <a href="/index.html">🏠 Home</a>
+  <a href="/kanji.html">🎮 Kanji</a>
+  <a href="/Royal.html">♔ Royal</a>
+  <a href="/Color.html">🎨 Color</a>
+  <a href="/how-to-play.html">📘 How to Play</a>
+</div>
 
-    <div class="top-bar">
-      <div id="timer">00:00</div>
+<div class="app">
 
-      <div class="status">
-        <div id="lives">❤️❤️❤️</div>
-        <div id="hints">Hints: 3</div>
-      </div>
+  <h1>Royal Sudoku</h1>
 
-      <div class="difficulty">
-        <button onclick="setDifficulty('easy')">Easy</button>
-        <button onclick="setDifficulty('medium')">Medium</button>
-        <button onclick="setDifficulty('hard')">Hard</button>
-      </div>
+  <div class="top-bar">
 
-      <button id="newGameBtn">New Game</button>
+    <div id="timer">00:00</div>
+
+    <div class="status">
+      <div id="lives">❤️❤️❤️</div>
+      <div id="hints">Hints: 3</div>
     </div>
 
-    <div id="board" class="board"></div>
-
-    <div id="keypad" class="keypad"></div>
-
-    <div class="actions">
-      <button id="eraseBtn">Erase</button>
-      <button id="hintBtn">Hint</button>
-      <button id="notesBtn">Notes OFF</button>
+    <div class="difficulty">
+      <button onclick="setDifficulty('easy')">Easy</button>
+      <button onclick="setDifficulty('medium')">Medium</button>
+      <button onclick="setDifficulty('hard')">Hard</button>
     </div>
 
-    <div id="message"></div>
+    <button id="newGameBtn">New Game</button>
+
   </div>
 
-  <script src="Royal.js"></script>
+  <div id="board" class="board"></div>
+
+  <div id="keypad" class="keypad"></div>
+
+  <div class="actions">
+    <button id="eraseBtn">Erase</button>
+    <button id="hintBtn">Hint</button>
+    <button id="notesBtn">Notes OFF</button>
+  </div>
+
+  <div id="message"></div>
+
+</div>
 
 <div class="footer-links">
 
@@ -61,12 +77,8 @@ crossorigin="anonymous"></script>
   <a href="/contact.html">Contact</a>
 
 </div>
-  <div class="nav-links">
-  <a href="/index.html">🏠 Home</a>
-  <a href="/kanji.html">🎮 Kanji</a>
-  <a href="/Royal.html">♔ Royal</a>
-  <a href="/Color.html">🎨 Color</a>
-  <a href="/how-to-play.html">📘 How to Play</a>
-</div>
+
+<script src="Royal.js"></script>
+
 </body>
 </html>
