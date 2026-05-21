@@ -1,133 +1,544 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+/* ===== SCREEN CONTROL ===== */
+html, body {
+  height: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
 
-  <title>Sudoku Multiverse</title>
+/* ===== BASE ===== */
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  margin: 0;
+  padding: 6px;
+  text-align: center;
+  background: linear-gradient(to bottom, #f5f7fa, #e4e8ee);
+}
 
-  <meta name="description"
-  content="Sudoku Multiverse offers Kanji Sudoku, Royal Sudoku, and Color Sudoku online puzzle games. Play Sudoku online in unique variations that challenge your logic and creativity.">
+/* ===== MAIN CONTAINER ===== */
+/* ===== MAIN CONTAINER ===== */
 
-  <meta name="google-adsense-account"
-  content="ca-pub-4704776080952179">
+.container{
 
-  <link rel="icon" href="/logo.png">
+  width:100%;
 
-  <link rel="stylesheet" href="style.css" />
+  max-width:1200px;
 
-  <script async
-    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4704776080952179"
-    crossorigin="anonymous">
-  </script>
-</head>
+  margin:0 auto;
 
-<body>
+  padding:0 16px;
 
-<div class="container">
+  box-sizing:border-box;
+}
+/* ===== TITLE ===== */
+.title-container{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+}
 
-  <div class="title-container">
-    <img src="logo.png" class="app-logo" alt="Sudoku Multiverse logo" />
+.app-logo{
+  width:58px;
+  height:58px;
+  object-fit:cover;
 
-    <h1 class="game-title">
-      Sudoku Multiverse
-    </h1>
-  </div>
+  border-radius:14px;
 
-  <div class="nav-links">
-    <a href="/index.html">🏠 Home</a>
-    <a href="/kanji.html">🎮 Kanji</a>
-    <a href="/Royal.html">♔ Royal</a>
-    <a href="/Color.html">🎨 Color</a>
-    <a href="/how-to-play.html">📘 How to Play</a>
-  </div>
+  box-shadow:
+    0 4px 14px rgba(0,0,0,0.35);
 
-  <div class="home-intro">
-    <h2>Discover the Multiverse of Sudoku</h2>
-    <p>
-      Sudoku has fascinated puzzle lovers for decades, challenging logic and patience with its elegant simplicity. 
-      At <strong>Sudoku Multiverse</strong>, we’ve taken this timeless puzzle and expanded it into new dimensions. 
-      Whether you’re a beginner or a seasoned solver, our unique variations will spark curiosity and sharpen your mind.
-    </p>
-    <p>
-      Explore puzzles that go beyond numbers — immerse yourself in Kanji symbols, chess pieces, and vibrant colors. 
-      Each version offers a fresh way to think, making Sudoku not just a game, but a journey into creativity and logic.
-    </p>
-    <p style="font-size:13px; color:#9db5df;">
-      Designed for puzzle enthusiasts seeking new ways to challenge logical thinking and enjoy Sudoku in innovative formats.
-    </p>
-  </div>
+  flex-shrink:0;
+}
 
-  <div class="game-list">
+.game-title {
+  font-size: 22px;
+  font-weight: bold;
+  background: linear-gradient(45deg, #ff7a18, #ffb347, #6dd5fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-    <div class="game-card">
-      <h3>🀄 Kanji Sudoku</h3>
-      <p>
-        Experience Sudoku with a cultural twist. Instead of numbers, Kanji Sudoku uses traditional Japanese characters. 
-        It’s more than a puzzle — it’s a chance to engage with symbols that carry meaning and history. 
-        Perfect for learners who want to combine brain training with cultural exploration.
-      </p>
-      <p>
-        Kanji Sudoku strengthens pattern recognition and memory while offering a unique visual challenge. 
-        Each puzzle is a blend of logic and language, making it both educational and entertaining.
-      </p>
-      <a href="/kanji.html" class="play-btn">Play Kanji Sudoku</a>
-    </div>
+/* ===== NAV ===== */
+.nav-links {
+  margin-top: 5px;
+}
 
-    <div class="game-card">
-      <h3>♔ Royal Sudoku</h3>
-      <p>
-        Royal Sudoku replaces digits with chess pieces, blending two worlds of strategy. 
-        Each move feels like a battle of logic, where knights, bishops, and queens take the place of numbers. 
-        Ideal for chess lovers who want to test their tactical thinking in a new format.
-      </p>
-      <p>
-        This variation encourages strategic visualization and adds a regal flair to classic Sudoku. 
-        It’s a perfect way to enjoy both the elegance of chess and the logical depth of Sudoku.
-      </p>
-      <a href="/Royal.html" class="play-btn">Play Royal Sudoku</a>
-    </div>
+.nav-links a {
+  margin: 0 8px;
+  font-size: 13px;
+  text-decoration: none;
+  color: #0b57d0;
+}
 
-    <div class="game-card">
-      <h3>🎨 Color Sudoku</h3>
-      <p>
-        Add a splash of creativity to your puzzle routine. Color Sudoku challenges you to recognize patterns 
-        through vibrant hues and symbols. It’s a visually stimulating way to train focus, memory, and logical reasoning.
-      </p>
-      <p>
-        By replacing numbers with colors, this variation engages your visual senses and enhances concentration. 
-        It’s fun, refreshing, and perfect for anyone who enjoys puzzles with a modern twist.
-      </p>
-      <a href="/Color.html" class="play-btn">Play Color Sudoku</a>
-    </div>
+.game-card h3{
+  color:#111111;
 
-  </div>
+  font-size:30px;
+  font-weight:700;
 
-  <div class="home-intro">
-    <h2>Why Sudoku Multiverse?</h2>
-    <p style="max-width:600px; margin:0 auto; font-size:14px; color:#d8e3ff;">
-      Sudoku Multiverse is designed to bring multiple puzzle variations into one platform. 
-      Instead of repeating the same number-based gameplay, each version introduces a new way 
-      of thinking through symbols, colors, and visual logic. Our mission is to make Sudoku more engaging, 
-      educational, and enjoyable for players worldwide.
-    </p>
-    <p style="max-width:600px; margin:0 auto; font-size:14px; color:#d8e3ff;">
-      Whether you want to sharpen your mind, relax after a busy day, or explore creative twists on a classic puzzle, 
-      Sudoku Multiverse is your destination. Join our growing community of puzzle lovers and discover your favorite variation today.
-    </p>
-  </div>
+  margin-bottom:18px;
+}
 
-</div>
+/* ===== TOP BAR ===== */
 
-<div class="footer-links">
-  <p style="margin-bottom:6px;">
-    © 2026 Sudoku Multiverse
-  </p>
-  <a href="/privacy.html">Privacy Policy</a> |
-  <a href="/about.html">About</a> |
-  <a href="/contact.html">Contact</a> |
-  <a href="/how-to-play.html">How to Play</a>
-</div>
+.top-bar{
+  display:flex;
+  justify-content:space-between;
 
-</body>
-</html>
+  width:390px;
+
+  margin:6px 0 10px;
+
+  color:#ffffff;
+
+  font-size:18px;
+  font-weight:700;
+}
+
+/* ===== DARK THEME ===== */
+
+body{
+  background:
+    radial-gradient(circle at top left,#16325f 0%,#07111f 45%,#020814 100%);
+
+  color:#ffffff;
+}
+
+/* ===== BOARD ===== */
+
+#board{
+
+  display:grid;
+
+  grid-template-columns:repeat(9,42px);
+  grid-template-rows:repeat(9,42px);
+
+  background:#122544;
+
+  border:2px solid #4f8cff;
+  border-radius:18px;
+
+  padding:4px;
+
+  box-shadow:
+    0 0 25px rgba(79,140,255,0.20),
+    inset 0 0 20px rgba(255,255,255,0.03);
+}
+/* ===== GAME AREA ===== */
+
+.game-wrapper{
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+
+  width:100%;
+}
+
+/* ===== CELLS ===== */
+
+.cell{
+
+  width:42px;
+  height:42px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:#14233d;
+
+  color:#f7e7c6;
+
+  font-size:19px;
+  font-weight:600;
+
+  font-family:
+    "Noto Serif JP",
+    serif;
+
+  border-right:1px solid rgba(255,255,255,0.08);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+
+  box-sizing:border-box;
+
+  transition:0.15s ease;
+
+  text-shadow:
+    0 0 5px rgba(255,220,170,0.20);
+}
+
+/* alternating boxes */
+
+.cell.dark-box{
+  background:#1a2d4d;
+}
+
+/* ===== 3x3 GRID LINES ===== */
+
+.cell:nth-child(3n){
+  border-right:2px solid rgba(120,170,255,0.50);
+}
+
+.cell:nth-child(9n){
+  border-right:3px solid rgba(160,200,255,0.70);
+}
+
+.cell:nth-child(n+19):nth-child(-n+27),
+.cell:nth-child(n+46):nth-child(-n+54),
+.cell:nth-child(n+73):nth-child(-n+81){
+  border-bottom:2px solid rgba(120,170,255,0.50);
+}
+
+/* ===== STATES ===== */
+
+.fixed{
+  background:#23365d;
+}
+
+.selected{
+  background:#4167b2 !important;
+}
+
+.same-value{
+  background:#294879 !important;
+}
+
+.conflict{
+  background:#ff4d5e !important;
+  color:#ffffff !important;
+}
+
+/* ===== NOTES ===== */
+
+.notes{
+
+  font-size:10px;
+  line-height:11px;
+
+  color:#8eb8ff;
+
+  text-align:left;
+
+  padding:2px;
+
+  width:100%;
+  height:100%;
+}
+
+/* ===== CONTROLS ===== */
+
+.controls{
+
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-top:14px;
+}
+
+.controls button,
+.controls select{
+
+  background:#122544;
+  color:#ffffff;
+
+  border:1px solid #2f5da8;
+
+  border-radius:14px;
+
+  padding:12px 18px;
+
+  font-size:15px;
+  font-weight:600;
+
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.25);
+
+  transition:0.2s ease;
+
+  cursor:pointer;
+}
+
+.controls button:hover,
+.controls select:hover{
+  background:#1d3a66;
+}
+
+/* ===== SYMBOL LABEL ===== */
+
+#symbol-meaning{
+  margin-top:12px;
+  font-size:16px;
+  color:#ffffff;
+}
+
+/* ===== NUMPAD ===== */
+
+#numpad{
+
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+
+  gap:8px;
+
+  margin-top:16px;
+}
+
+/* keypad buttons */
+
+.num-btn{
+
+  width:48px;
+  height:48px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:14px;
+
+  border:1px solid #3d6ec7;
+
+  background:#122544;
+
+  color:#f7e7c6;
+
+  font-size:24px;
+  font-weight:700;
+
+  font-family:
+    "Noto Serif JP",
+    serif;
+
+  cursor:pointer;
+
+  transition:0.15s ease;
+
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.25);
+}
+
+.num-btn:hover{
+  transform:translateY(-2px);
+  background:#20447a;
+}
+
+.num-btn:active{
+  transform:scale(0.96);
+}
+
+/* ===== STORE LINK ===== */
+
+.store-link{
+  color:#7cb7ff;
+}
+
+/* ===== NAV ===== */
+
+.nav-links a{
+  color:#6fb1ff;
+}
+/* ===== HOMEPAGE ===== */
+
+.home-intro{
+  max-width:700px;
+  margin:20px auto;
+}
+
+.home-intro h2{
+  font-size:28px;
+  margin-bottom:12px;
+}
+
+.home-intro p{
+  font-size:15px;
+  line-height:1.7;
+  color:#d8e3ff;
+}
+
+/* ===== FEATURES ===== */
+
+.feature-list{
+  max-width:800px;
+  margin:24px auto;
+}
+
+.feature-item{
+
+  background:rgba(255,255,255,0.06);
+
+  padding:18px;
+
+  margin-bottom:14px;
+
+  border-radius:16px;
+
+  border:1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:blur(6px);
+}
+
+/* ===== GAME GRID ===== */
+
+.game-list{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(auto-fit,minmax(280px,1fr));
+
+  gap:24px;
+
+  width:100%;
+
+  margin:40px auto;
+}
+
+/* ===== GAME CARDS ===== */
+
+.game-card{
+
+  background:#f4f4f4;
+
+  padding:24px;
+
+  border-radius:22px;
+
+  box-shadow:
+    0 10px 24px rgba(0,0,0,0.18);
+
+  text-align:left;
+
+  transition:0.25s ease;
+}
+
+.game-card:hover{
+  transform:translateY(-5px);
+}
+
+.game-card h3{
+
+  color:#111111;
+
+  font-size:30px;
+  font-weight:700;
+
+  margin-bottom:18px;
+}
+
+.game-card p{
+
+  color:#4b4b4b;
+
+  font-size:15px;
+
+  line-height:1.6;
+}
+
+/* ===== PLAY BUTTON ===== */
+
+.play-btn{
+
+  display:inline-block;
+
+  margin-top:12px;
+
+  padding:10px 18px;
+
+  background:#1f5fe0;
+
+  color:#ffffff;
+
+  border-radius:12px;
+
+  text-decoration:none;
+
+  font-weight:700;
+
+  transition:0.2s ease;
+}
+
+.play-btn:hover{
+  background:#3472ee;
+}
+
+/* ===== FOOTER ===== */
+
+.footer-links{
+  margin:30px 0 16px;
+  font-size:13px;
+}
+
+.footer-links a{
+  color:#7cb7ff;
+}
+
+.nav-links{
+  text-align:center;
+  margin:10px 0 14px;
+}
+
+.nav-links a{
+  color:#6fb1ff;
+  text-decoration:none;
+  margin:0 10px;
+  font-size:15px;
+  font-weight:500;
+}
+
+.footer-links{
+  text-align:center;
+  margin-top:18px;
+}
+
+.footer-links a{
+  color:#6fb1ff;
+  text-decoration:none;
+}
+/* ===== MOBILE BOARD OPTIMIZATION ===== */
+
+@media (max-width:768px){
+
+  #board{
+    grid-template-columns:repeat(9,36px);
+    grid-template-rows:repeat(9,36px);
+  }
+
+  .cell{
+    width:36px;
+    height:36px;
+
+    font-size:17px;
+  }
+
+  .num-btn{
+    width:40px;
+    height:40px;
+
+    font-size:22px;
+  }
+
+  .top-bar{
+    width:100%;
+    max-width:360px;
+
+    font-size:16px;
+  }
+
+  .controls{
+    gap:8px;
+  }
+
+  .controls button,
+  .controls select{
+
+    padding:10px 14px;
+
+    font-size:14px;
+  }
+
+}
