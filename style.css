@@ -538,5 +538,9 @@ body{
 
     font-size:14px;
   }
-
+#adsterra-ad,
+[id^="container-"]{
+    text-align:center;
+    margin:20px auto;
+}
 }
