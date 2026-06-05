@@ -266,3 +266,8 @@ button:active {
   color:#6fb1ff;
   text-decoration:none;
 }
+#adsterra-ad,
+[id^="container-"]{
+    text-align:center;
+    margin:20px auto;
+}
