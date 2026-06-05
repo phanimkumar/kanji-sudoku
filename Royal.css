@@ -3,19 +3,19 @@
 }
 
 body {
-   margin: 0;
+  margin: 0;
   min-height: 100vh;
   overflow-x: hidden;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   background: radial-gradient(circle at top, #1b2638, #05070b 65%);
 }
 
 .app {
   width: 100%;
   max-width: 520px;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   padding: 6px;
@@ -72,20 +72,16 @@ h1 {
 .board {
   width: min(92vw, 520px);
   aspect-ratio: 1 / 1;
-
   display: grid;
   grid-template-columns: repeat(9, 1fr);
-
   border: 3px solid #d6a857;
   border-radius: 12px;
-
   overflow: hidden;
-
   margin: 6px auto;
-
   flex: unset;
   height: auto;
 }
+
 .cell {
   display: flex;
   align-items: center;
@@ -216,6 +212,36 @@ button:active {
   color: #f0c475;
 }
 
+.nav-links {
+  text-align: center;
+  margin: 10px 0 14px;
+}
+
+.nav-links a {
+  color: #6fb1ff;
+  text-decoration: none;
+  margin: 0 10px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.footer-links {
+  text-align: center;
+  margin-top: 18px;
+}
+
+.footer-links a {
+  color: #6fb1ff;
+  text-decoration: none;
+  margin: 0 6px;
+}
+
+#adsterra-ad,
+[id^="container-"] {
+  text-align: center;
+  margin: 20px auto;
+}
+
 @media (max-width: 480px) {
   h1 {
     font-size: 22px;
@@ -231,7 +257,7 @@ button:active {
   }
 
   .board {
-    max-height: 340px;
+    width: min(94vw, 340px);
   }
 
   .keypad {
@@ -242,33 +268,9 @@ button:active {
     font-size: 12px;
     padding: 6px 6px;
   }
-}
 
-.nav-links{
-  text-align:center;
-  margin:10px 0 14px;
+  .nav-links a {
+    margin: 0 5px;
+    font-size: 13px;
+  }
 }
-
-.nav-links a{
-  color:#6fb1ff;
-  text-decoration:none;
-  margin:0 10px;
-  font-size:15px;
-  font-weight:500;
-}
-
-.footer-links{
-  text-align:center;
-  margin-top:18px;
-}
-
-.footer-links a{
-  color:#6fb1ff;
-  text-decoration:none;
-}
-
-}
-#adsterra-ad,
-[id^="container-"]{
-    text-align:center;
-    margin:20px auto;
