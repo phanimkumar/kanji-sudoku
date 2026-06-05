@@ -72,16 +72,21 @@ h1 {
 .board {
   width: min(92vw, 520px);
   aspect-ratio: 1 / 1;
+
   display: grid;
   grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+
   border: 3px solid #d6a857;
   border-radius: 12px;
+
   overflow: hidden;
+
   margin: 6px auto;
+
   flex: unset;
   height: auto;
 }
-
 .cell {
   display: flex;
   align-items: center;
