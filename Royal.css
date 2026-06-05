@@ -71,6 +71,7 @@ h1 {
 
 .board {
   width: min(92vw, 520px);
+  height: min(92vw, 520px);
   aspect-ratio: 1 / 1;
 
   display: grid;
@@ -84,8 +85,7 @@ h1 {
 
   margin: 6px auto;
 
-  flex: unset;
-  height: auto;
+  flex: none;
 }
 .cell {
   display: flex;
