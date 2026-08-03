@@ -1,10 +1,22 @@
+```javascript
 const boardEl = document.getElementById("board");
 const padEl = document.getElementById("colorPad");
 
-let solved, puzzle, current, notes;
+const mistakesEl = document.getElementById("mistakes");
+const hintsEl = document.getElementById("hints");
+const timerEl = document.getElementById("timer");
+
+let solved;
+let puzzle;
+let current;
+let notes;
+
 let selected = null;
 let selectedColor = null;
+
 let mistakes = 0;
+let hintsRemaining = 3;
+
 let undoStack = [];
 let difficulty = "medium";
 let noteMode = false;
@@ -13,8 +25,10 @@ let seconds = 0;
 let timerInterval = null;
 
 /* ===== TIMER ===== */
+
 function startTimer() {
   clearInterval(timerInterval);
+
   timerInterval = setInterval(() => {
     seconds++;
     updateTimer();
@@ -26,127 +40,197 @@ function stopTimer() {
 }
 
 function updateTimer() {
-  let m = String(Math.floor(seconds / 60)).padStart(2, "0");
-  let s = String(seconds % 60).padStart(2, "0");
-  document.getElementById("timer").innerText = `${m}:${s}`;
+  const minutes = String(Math.floor(seconds / 60)).padStart(2, "0");
+  const remainingSeconds = String(seconds % 60).padStart(2, "0");
+
+  timerEl.innerText = `${minutes}:${remainingSeconds}`;
 }
 
-/* ===== UTIL ===== */
-function shuffle(a) {
-  return a.sort(() => Math.random() - 0.5);
+/* ===== STATUS ===== */
+
+function updateStatus() {
+  mistakesEl.innerText = `${mistakes}/3`;
+  hintsEl.innerText = `Hints: ${hintsRemaining}`;
+}
+
+/* ===== UTILITIES ===== */
+
+function shuffle(array) {
+  const copy = [...array];
+
+  for (let i = copy.length - 1; i > 0; i--) {
+    const randomIndex = Math.floor(Math.random() * (i + 1));
+
+    [copy[i], copy[randomIndex]] = [
+      copy[randomIndex],
+      copy[i]
+    ];
+  }
+
+  return copy;
 }
 
 function emptyNotes() {
-  return Array.from({ length: 9 }, () =>
-    Array.from({ length: 9 }, () => new Set())
+  return Array.from(
+    { length: 9 },
+    () => Array.from(
+      { length: 9 },
+      () => new Set()
+    )
   );
-}
-
-function cloneNotes(source) {
-  return source.map(row => row.map(cell => new Set([...cell])));
 }
 
 function snapshot() {
   undoStack.push({
-    current: current.map(r => [...r]),
-    notes: notes.map(row => row.map(cell => [...cell])),
-    mistakes
+    current: current.map(row => [...row]),
+    notes: notes.map(row =>
+      row.map(cell => [...cell])
+    ),
+    mistakes,
+    hintsRemaining,
+    selected: selected ? { ...selected } : null,
+    selectedColor
   });
 }
 
-function restore(snapshot) {
-  current = snapshot.current.map(r => [...r]);
-  notes = snapshot.notes.map(row => row.map(cell => new Set(cell)));
-  mistakes = snapshot.mistakes;
-  document.getElementById("mistakes").innerText = `${mistakes}/3`;
+function restore(savedState) {
+  current = savedState.current.map(row => [...row]);
+
+  notes = savedState.notes.map(row =>
+    row.map(cell => new Set(cell))
+  );
+
+  mistakes = savedState.mistakes;
+  hintsRemaining = savedState.hintsRemaining;
+  selected = savedState.selected
+    ? { ...savedState.selected }
+    : null;
+  selectedColor = savedState.selectedColor;
+
+  updateStatus();
 }
 
-/* ===== SUDOKU ===== */
-function isValid(b, r, c, n) {
+/* ===== SUDOKU GENERATION ===== */
+
+function isValid(board, row, col, number) {
   for (let i = 0; i < 9; i++) {
-    if (b[r][i] === n || b[i][c] === n) return false;
-  }
-
-  let br = Math.floor(r / 3) * 3;
-  let bc = Math.floor(c / 3) * 3;
-
-  for (let i = 0; i < 3; i++) {
-    for (let j = 0; j < 3; j++) {
-      if (b[br + i][bc + j] === n) return false;
+    if (
+      board[row][i] === number ||
+      board[i][col] === number
+    ) {
+      return false;
     }
   }
 
-  return true;
-}
+  const boxStartRow = Math.floor(row / 3) * 3;
+  const boxStartCol = Math.floor(col / 3) * 3;
 
-function solve(b) {
-  for (let r = 0; r < 9; r++) {
-    for (let c = 0; c < 9; c++) {
-      if (b[r][c] === 0) {
-        for (let n of shuffle([1,2,3,4,5,6,7,8,9])) {
-          if (isValid(b, r, c, n)) {
-            b[r][c] = n;
-            if (solve(b)) return true;
-            b[r][c] = 0;
-          }
-        }
+  for (let boxRow = 0; boxRow < 3; boxRow++) {
+    for (let boxCol = 0; boxCol < 3; boxCol++) {
+      if (
+        board[boxStartRow + boxRow][boxStartCol + boxCol] === number
+      ) {
         return false;
       }
     }
   }
+
   return true;
 }
 
-function generate() {
-  let b = Array.from({ length: 9 }, () => Array(9).fill(0));
-  solve(b);
-  return b;
+function solve(board) {
+  for (let row = 0; row < 9; row++) {
+    for (let col = 0; col < 9; col++) {
+      if (board[row][col] !== 0) {
+        continue;
+      }
+
+      const numbers = shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+
+      for (const number of numbers) {
+        if (!isValid(board, row, col, number)) {
+          continue;
+        }
+
+        board[row][col] = number;
+
+        if (solve(board)) {
+          return true;
+        }
+
+        board[row][col] = 0;
+      }
+
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function generateSolvedBoard() {
+  const board = Array.from(
+    { length: 9 },
+    () => Array(9).fill(0)
+  );
+
+  solve(board);
+
+  return board;
 }
 
 function createPuzzle() {
-  solved = generate();
-  puzzle = solved.map(r => [...r]);
+  solved = generateSolvedBoard();
+  puzzle = solved.map(row => [...row]);
 
-  let map = {
+  const removalCount = {
     easy: 30,
     medium: 45,
     hard: 50
   };
 
-  let remove = map[difficulty];
+  let cellsToRemove = removalCount[difficulty];
 
-  while (remove > 0) {
-    let r = Math.floor(Math.random() * 9);
-    let c = Math.floor(Math.random() * 9);
+  while (cellsToRemove > 0) {
+    const row = Math.floor(Math.random() * 9);
+    const col = Math.floor(Math.random() * 9);
 
-    if (puzzle[r][c] !== 0) {
-      puzzle[r][c] = 0;
-      remove--;
+    if (puzzle[row][col] !== 0) {
+      puzzle[row][col] = 0;
+      cellsToRemove--;
     }
   }
 
-  current = puzzle.map(r => [...r]);
+  current = puzzle.map(row => [...row]);
   notes = emptyNotes();
 }
 
-/* ===== GAME ===== */
-function clickCell(r, c) {
-  selected = { r, c };
+/* ===== GAME ACTIONS ===== */
 
-  if (current[r][c] !== 0) {
-    selectedColor = current[r][c];
+function clickCell(row, col) {
+  selected = { r: row, c: col };
+
+  if (current[row][col] !== 0) {
+    selectedColor = current[row][col];
   }
 
   render();
 }
 
 function place() {
-  if (!selected || !selectedColor) return;
+  if (!selected || !selectedColor) {
+    return;
+  }
 
-  let { r, c } = selected;
+  const { r, c } = selected;
 
-  if (puzzle[r][c] !== 0) return;
-  if (current[r][c] !== 0) return;
+  if (puzzle[r][c] !== 0) {
+    return;
+  }
+
+  if (current[r][c] !== 0) {
+    return;
+  }
 
   if (noteMode) {
     toggleNote(r, c, selectedColor);
@@ -158,38 +242,44 @@ function place() {
   if (solved[r][c] === selectedColor) {
     current[r][c] = selectedColor;
     notes[r][c].clear();
-    removeRelatedNotes(r, c, selectedColor);
 
-    if (current.flat().every(v => v !== 0)) {
-      render();
-      showCompleted();
-      return;
-    }
+    removeRelatedNotes(r, c, selectedColor);
 
     render();
 
-  } else {
-    mistakes++;
-    document.getElementById("mistakes").innerText = `${mistakes}/3`;
-
-    let idx = r * 9 + c;
-    boardEl.children[idx].classList.add("flash");
-
-    if (mistakes >= 3) {
-      showGameOver();
+    if (isBoardComplete()) {
+      showCompleted();
     }
+
+    return;
+  }
+
+  mistakes++;
+  updateStatus();
+
+  const cellIndex = r * 9 + c;
+  const selectedCell = boardEl.children[cellIndex];
+
+  if (selectedCell) {
+    selectedCell.classList.add("flash");
+  }
+
+  if (mistakes >= 3) {
+    showGameOver();
   }
 }
 
-function toggleNote(r, c, color) {
-  if (current[r][c] !== 0) return;
+function toggleNote(row, col, color) {
+  if (current[row][col] !== 0) {
+    return;
+  }
 
   snapshot();
 
-  if (notes[r][c].has(color)) {
-    notes[r][c].delete(color);
+  if (notes[row][col].has(color)) {
+    notes[row][col].delete(color);
   } else {
-    notes[r][c].add(color);
+    notes[row][col].add(color);
   }
 
   render();
@@ -201,29 +291,126 @@ function removeRelatedNotes(row, col, color) {
     notes[i][col].delete(color);
   }
 
-  let br = Math.floor(row / 3) * 3;
-  let bc = Math.floor(col / 3) * 3;
+  const boxStartRow = Math.floor(row / 3) * 3;
+  const boxStartCol = Math.floor(col / 3) * 3;
 
-  for (let r = br; r < br + 3; r++) {
-    for (let c = bc; c < bc + 3; c++) {
-      notes[r][c].delete(color);
+  for (
+    let currentRow = boxStartRow;
+    currentRow < boxStartRow + 3;
+    currentRow++
+  ) {
+    for (
+      let currentCol = boxStartCol;
+      currentCol < boxStartCol + 3;
+      currentCol++
+    ) {
+      notes[currentRow][currentCol].delete(color);
     }
   }
 }
 
-function undo() {
-  if (!undoStack.length) return;
+function useHint() {
+  if (hintsRemaining <= 0) {
+    return;
+  }
 
-  restore(undoStack.pop());
+  let hintCell = null;
+
+  /*
+   Use the selected cell when it is an editable,
+   currently empty cell.
+  */
+  if (
+    selected &&
+    puzzle[selected.r][selected.c] === 0 &&
+    current[selected.r][selected.c] === 0
+  ) {
+    hintCell = {
+      r: selected.r,
+      c: selected.c
+    };
+  }
+
+  /*
+   Otherwise choose a random empty editable cell.
+  */
+  if (!hintCell) {
+    const emptyCells = [];
+
+    for (let row = 0; row < 9; row++) {
+      for (let col = 0; col < 9; col++) {
+        if (
+          puzzle[row][col] === 0 &&
+          current[row][col] === 0
+        ) {
+          emptyCells.push({
+            r: row,
+            c: col
+          });
+        }
+      }
+    }
+
+    if (emptyCells.length === 0) {
+      return;
+    }
+
+    hintCell =
+      emptyCells[
+        Math.floor(Math.random() * emptyCells.length)
+      ];
+  }
+
+  snapshot();
+
+  const { r, c } = hintCell;
+  const correctColor = solved[r][c];
+
+  current[r][c] = correctColor;
+  notes[r][c].clear();
+
+  removeRelatedNotes(r, c, correctColor);
+
+  selected = { r, c };
+  selectedColor = correctColor;
+
+  hintsRemaining--;
+  updateStatus();
+  render();
+
+  if (isBoardComplete()) {
+    showCompleted();
+  }
+}
+
+function undo() {
+  if (undoStack.length === 0) {
+    return;
+  }
+
+  const savedState = undoStack.pop();
+
+  restore(savedState);
   render();
 }
 
 function erase() {
-  if (!selected) return;
+  if (!selected) {
+    return;
+  }
 
-  let { r, c } = selected;
+  const { r, c } = selected;
 
-  if (puzzle[r][c] !== 0) return;
+  if (puzzle[r][c] !== 0) {
+    return;
+  }
+
+  if (
+    current[r][c] === 0 &&
+    notes[r][c].size === 0
+  ) {
+    return;
+  }
 
   snapshot();
 
@@ -233,78 +420,125 @@ function erase() {
   render();
 }
 
+function isBoardComplete() {
+  return current.every((row, rowIndex) =>
+    row.every(
+      (value, colIndex) =>
+        value === solved[rowIndex][colIndex]
+    )
+  );
+}
+
+/* ===== GAME RESULT ===== */
+
 function showCompleted() {
   stopTimer();
 
-  document.getElementById("overlay").classList.remove("hidden");
-  document.getElementById("overlayText").innerText =
-    `Completed 🎉\nTime: ${document.getElementById("timer").innerText}\nMistakes: ${mistakes}/3`;
+  const overlay = document.getElementById("overlay");
+  const overlayText = document.getElementById("overlayText");
+
+  overlay.classList.remove("hidden");
+
+  overlayText.innerText =
+    `Completed 🎉\n` +
+    `Time: ${timerEl.innerText}\n` +
+    `Mistakes: ${mistakes}/3`;
 }
 
 function showGameOver() {
   stopTimer();
 
-  document.getElementById("overlay").classList.remove("hidden");
-  document.getElementById("overlayText").innerText = "Game Over";
+  document
+    .getElementById("overlay")
+    .classList.remove("hidden");
+
+  document.getElementById("overlayText").innerText =
+    "Game Over";
 }
 
-/* ===== RENDER ===== */
+/* ===== RENDER BOARD ===== */
+
 function render() {
   boardEl.innerHTML = "";
 
-  for (let r = 0; r < 9; r++) {
-    for (let c = 0; c < 9; c++) {
-      let cell = document.createElement("div");
+  for (let row = 0; row < 9; row++) {
+    for (let col = 0; col < 9; col++) {
+      const cell = document.createElement("div");
+
       cell.className = "cell";
 
       if (selected) {
-        if (selected.r === r || selected.c === c) {
+        if (
+          selected.r === row ||
+          selected.c === col
+        ) {
           cell.classList.add("highlight");
         }
 
-        let br = Math.floor(selected.r / 3) * 3;
-        let bc = Math.floor(selected.c / 3) * 3;
+        const selectedBoxRow =
+          Math.floor(selected.r / 3) * 3;
 
-        if (r >= br && r < br + 3 && c >= bc && c < bc + 3) {
+        const selectedBoxCol =
+          Math.floor(selected.c / 3) * 3;
+
+        if (
+          row >= selectedBoxRow &&
+          row < selectedBoxRow + 3 &&
+          col >= selectedBoxCol &&
+          col < selectedBoxCol + 3
+        ) {
           cell.classList.add("highlight");
         }
 
-        if (selected.r === r && selected.c === c) {
+        if (
+          selected.r === row &&
+          selected.c === col
+        ) {
           cell.classList.add("selected");
         }
       }
 
-      let v = current[r][c];
+      const value = current[row][col];
 
-      if (selectedColor && v === selectedColor) {
+      if (
+        selectedColor &&
+        value === selectedColor
+      ) {
         cell.classList.add("same");
       }
 
-      if (v) {
-        let d = document.createElement("div");
-        d.className = "color-dot c" + v;
-        cell.appendChild(d);
-      } else if (notes[r][c].size > 0) {
-        let noteBox = document.createElement("div");
+      if (value !== 0) {
+        const colorDot = document.createElement("div");
+
+        colorDot.className = `color-dot c${value}`;
+
+        cell.appendChild(colorDot);
+      } else if (notes[row][col].size > 0) {
+        const noteBox = document.createElement("div");
+
         noteBox.className = "note-grid";
 
-        for (let i = 1; i <= 9; i++) {
-          let slot = document.createElement("div");
-          slot.className = "note-slot";
+        for (let number = 1; number <= 9; number++) {
+          const noteSlot = document.createElement("div");
 
-          if (notes[r][c].has(i)) {
-            let mini = document.createElement("div");
-            mini.className = "note-dot c" + i;
-            slot.appendChild(mini);
+          noteSlot.className = "note-slot";
+
+          if (notes[row][col].has(number)) {
+            const noteDot = document.createElement("div");
+
+            noteDot.className = `note-dot c${number}`;
+
+            noteSlot.appendChild(noteDot);
           }
 
-          noteBox.appendChild(slot);
+          noteBox.appendChild(noteSlot);
         }
 
         cell.appendChild(noteBox);
       }
 
-      cell.onclick = () => clickCell(r, c);
+      cell.onclick = () => clickCell(row, col);
+
       boardEl.appendChild(cell);
     }
   }
@@ -312,84 +546,125 @@ function render() {
   updatePad();
 }
 
-/* ===== PAD ===== */
+/* ===== COLOR PAD ===== */
+
 function updatePad() {
   padEl.innerHTML = "";
 
-  let count = Array(10).fill(0);
-  current.flat().forEach(v => {
-    if (v) count[v]++;
+  const count = Array(10).fill(0);
+
+  current.flat().forEach(value => {
+    if (value !== 0) {
+      count[value]++;
+    }
   });
 
-  for (let i = 1; i <= 9; i++) {
-    let btn = document.createElement("div");
-    btn.className = "color-btn c" + i;
+  for (let color = 1; color <= 9; color++) {
+    const button = document.createElement("div");
 
-    if (selectedColor === i) {
-      btn.classList.add("selected-color");
+    button.className = `color-btn c${color}`;
+
+    if (selectedColor === color) {
+      button.classList.add("selected-color");
     }
 
-    let left = 9 - count[i];
+    const remaining = 9 - count[color];
 
-    let badge = document.createElement("div");
+    const badge = document.createElement("div");
+
     badge.className = "count";
-    badge.innerText = left;
-    btn.appendChild(badge);
+    badge.innerText = remaining;
 
-    if (left === 0) btn.classList.add("disabled");
+    button.appendChild(badge);
 
-    btn.onclick = () => {
-      selectedColor = i;
+    if (remaining === 0) {
+      button.classList.add("disabled");
+    }
+
+    button.onclick = () => {
+      selectedColor = color;
       place();
       render();
     };
 
-    padEl.appendChild(btn);
+    padEl.appendChild(button);
   }
 }
 
-/* ===== CONTROLS ===== */
-document.getElementById("newGameBtn").onclick = () => {
+/* ===== NEW GAME ===== */
+
+function startNewGame() {
   mistakes = 0;
+  hintsRemaining = 3;
+
   selected = null;
   selectedColor = null;
+
   undoStack = [];
+  noteMode = false;
+
   seconds = 0;
 
-  updateTimer();
-  startTimer();
+  document
+    .getElementById("overlay")
+    .classList.add("hidden");
 
-  document.getElementById("overlay").classList.add("hidden");
-  document.getElementById("mistakes").innerText = "0/3";
+  document
+    .getElementById("noteBtn")
+    .classList.remove("active");
+
+  updateTimer();
+  updateStatus();
 
   createPuzzle();
   render();
-};
+  startTimer();
+}
 
-document.getElementById("undoBtn").onclick = undo;
-document.getElementById("eraseBtn").onclick = erase;
+/* ===== CONTROLS ===== */
+
+document.getElementById("newGameBtn").onclick =
+  startNewGame;
+
+document.getElementById("undoBtn").onclick =
+  undo;
+
+document.getElementById("hintBtn").onclick =
+  useHint;
+
+document.getElementById("eraseBtn").onclick =
+  erase;
 
 document.getElementById("noteBtn").onclick = () => {
   noteMode = !noteMode;
-  document.getElementById("noteBtn").classList.toggle("active", noteMode);
+
+  document
+    .getElementById("noteBtn")
+    .classList.toggle("active", noteMode);
 };
 
-document.getElementById("restartBtn").onclick = () => {
-  document.getElementById("newGameBtn").click();
-};
+document.getElementById("restartBtn").onclick =
+  startNewGame;
 
 /* ===== DIFFICULTY ===== */
-document.querySelectorAll(".diff").forEach(btn => {
-  btn.onclick = () => {
-    document.querySelectorAll(".diff").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
 
-    difficulty = btn.dataset.level;
-    document.getElementById("newGameBtn").click();
+document.querySelectorAll(".diff").forEach(button => {
+  button.onclick = () => {
+    document
+      .querySelectorAll(".diff")
+      .forEach(item =>
+        item.classList.remove("active")
+      );
+
+    button.classList.add("active");
+
+    difficulty = button.dataset.level;
+
+    startNewGame();
   };
 });
 
 /* ===== START ===== */
-createPuzzle();
-startTimer();
-render();
+
+startNewGame();
+```
