@@ -1,638 +1,499 @@
-const boardEl = document.getElementById("board");
-const padEl = document.getElementById("colorPad");
-
-let solved, puzzle, current, notes;
-let selected = null;
-let selectedColor = null;
-let mistakes = 0;
-let hintsRemaining = 3;
-let undoStack = [];
-let difficulty = "medium";
-let noteMode = false;
-
-let seconds = 0;
-let timerInterval = null;
-
-/* ===== TIMER ===== */
-
-function startTimer() {
-  clearInterval(timerInterval);
-
-  timerInterval = setInterval(() => {
-    seconds++;
-    updateTimer();
-  }, 1000);
+```css
+* {
+  box-sizing: border-box;
 }
 
-function stopTimer() {
-  clearInterval(timerInterval);
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+  background: radial-gradient(circle at top, #1b2638, #05070b 70%);
+  font-family: Arial, sans-serif;
+  color: white;
 }
 
-function updateTimer() {
-  const m = String(Math.floor(seconds / 60)).padStart(2, "0");
-  const s = String(seconds % 60).padStart(2, "0");
-
-  document.getElementById("timer").innerText = `${m}:${s}`;
+.app {
+  width: 100%;
+  max-width: 520px;
+  padding: 10px;
+  margin: 0 auto;
 }
 
-/* ===== STATUS ===== */
+/* ===== TITLE ===== */
 
-function updateStatus() {
-  document.getElementById("mistakes").innerText = `${mistakes}/3`;
-  document.getElementById("hints").innerText = `Hints: ${hintsRemaining}`;
+.title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 4px 0 6px;
+  letter-spacing: 1px;
+  font-family: "Poppins", sans-serif;
+  color: #eaeef5;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
 }
 
-/* ===== UTIL ===== */
-
-function shuffle(array) {
-  const copy = [...array];
-
-  for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-
-    [copy[i], copy[j]] = [copy[j], copy[i]];
-  }
-
-  return copy;
-}
-
-function emptyNotes() {
-  return Array.from({ length: 9 }, () =>
-    Array.from({ length: 9 }, () => new Set())
-  );
-}
-
-/*
-  Hint count is intentionally NOT stored here.
-  Undo may remove a hinted color, but it must not refund the hint.
-*/
-function snapshot() {
-  undoStack.push({
-    current: current.map(row => [...row]),
-    notes: notes.map(row => row.map(cell => [...cell])),
-    mistakes,
-    selected: selected ? { ...selected } : null,
-    selectedColor
-  });
-}
-
-function restore(savedState) {
-  current = savedState.current.map(row => [...row]);
-
-  notes = savedState.notes.map(row =>
-    row.map(cell => new Set(cell))
+.title .accent {
+  background: linear-gradient(
+    90deg,
+    #ff3b3b,
+    #ffd21a,
+    #06a83f,
+    #075be8,
+    #ff8500,
+    #f7358c,
+    #a8f000
   );
 
-  mistakes = savedState.mistakes;
-
-  selected = savedState.selected
-    ? { ...savedState.selected }
-    : null;
-
-  selectedColor = savedState.selectedColor;
-
-  updateStatus();
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-/* ===== SUDOKU ===== */
+/* ===== TOP BAR ===== */
 
-function isValid(board, row, col, number) {
-  for (let i = 0; i < 9; i++) {
-    if (
-      board[row][i] === number ||
-      board[i][col] === number
-    ) {
-      return false;
-    }
-  }
-
-  const boxRow = Math.floor(row / 3) * 3;
-  const boxCol = Math.floor(col / 3) * 3;
-
-  for (let r = 0; r < 3; r++) {
-    for (let c = 0; c < 3; c++) {
-      if (board[boxRow + r][boxCol + c] === number) {
-        return false;
-      }
-    }
-  }
-
-  return true;
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  gap: 5px;
 }
 
-function solve(board) {
-  for (let row = 0; row < 9; row++) {
-    for (let col = 0; col < 9; col++) {
-      if (board[row][col] !== 0) {
-        continue;
-      }
-
-      const numbers = shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9]);
-
-      for (const number of numbers) {
-        if (isValid(board, row, col, number)) {
-          board[row][col] = number;
-
-          if (solve(board)) {
-            return true;
-          }
-
-          board[row][col] = 0;
-        }
-      }
-
-      return false;
-    }
-  }
-
-  return true;
+#timer,
+#mistakes,
+#hints {
+  flex-shrink: 0;
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
 }
 
-function generate() {
-  const board = Array.from(
-    { length: 9 },
-    () => Array(9).fill(0)
-  );
-
-  solve(board);
-
-  return board;
+#timer,
+#mistakes {
+  width: 54px;
 }
 
-function createPuzzle() {
-  solved = generate();
-  puzzle = solved.map(row => [...row]);
-
-  const removalMap = {
-    easy: 30,
-    medium: 45,
-    hard: 50
-  };
-
-  let remove = removalMap[difficulty];
-
-  while (remove > 0) {
-    const row = Math.floor(Math.random() * 9);
-    const col = Math.floor(Math.random() * 9);
-
-    if (puzzle[row][col] !== 0) {
-      puzzle[row][col] = 0;
-      remove--;
-    }
-  }
-
-  current = puzzle.map(row => [...row]);
-  notes = emptyNotes();
+#hints {
+  min-width: 62px;
 }
 
-/* ===== GAME ===== */
+/* ===== DIFFICULTY ===== */
 
-function clickCell(row, col) {
-  selected = { r: row, c: col };
-
-  if (current[row][col] !== 0) {
-    selectedColor = current[row][col];
-  }
-
-  render();
+.difficulty-row {
+  display: flex;
+  gap: 5px;
+  flex: 1;
+  margin: 0 4px;
 }
 
-function place() {
-  if (!selected || !selectedColor) {
-    return;
+.diff {
+  flex: 1;
+  padding: 6px;
+  border-radius: 8px;
+  border: none;
+  background: #1d2633;
+  color: white;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.diff:active {
+  transform: scale(0.96);
+}
+
+.diff.active {
+  background: white;
+  color: black;
+  font-weight: bold;
+}
+
+/* ===== BOARD ===== */
+
+.board {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+  aspect-ratio: 1 / 1;
+  border: 3px solid white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cell {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-right: 1px solid rgba(255, 255, 255, 0.18);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  transition: background 0.12s;
+}
+
+.cell:nth-child(9n) {
+  border-right: none;
+}
+
+.cell:nth-child(n + 73) {
+  border-bottom: none;
+}
+
+/* ===== 3x3 GRID ===== */
+
+.cell:nth-child(3n) {
+  border-right: 3px solid white;
+}
+
+.cell:nth-child(9n) {
+  border-right: none;
+}
+
+.cell:nth-child(n + 19):nth-child(-n + 27),
+.cell:nth-child(n + 46):nth-child(-n + 54) {
+  border-bottom: 3px solid white;
+}
+
+/* ===== STATES ===== */
+
+.cell.selected {
+  outline: 3px solid white;
+  outline-offset: -3px;
+  z-index: 2;
+}
+
+.highlight {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.same {
+  box-shadow: inset 0 0 0 2px white;
+}
+
+.cell.flash {
+  animation: flash 0.3s;
+}
+
+@keyframes flash {
+  0% {
+    background: rgba(255, 255, 255, 0.85);
   }
 
-  const { r, c } = selected;
-
-  if (puzzle[r][c] !== 0) {
-    return;
-  }
-
-  if (current[r][c] !== 0) {
-    return;
-  }
-
-  if (noteMode) {
-    toggleNote(r, c, selectedColor);
-    return;
-  }
-
-  snapshot();
-
-  if (solved[r][c] === selectedColor) {
-    current[r][c] = selectedColor;
-    notes[r][c].clear();
-
-    removeRelatedNotes(r, c, selectedColor);
-
-    render();
-
-    if (isBoardComplete()) {
-      showCompleted();
-    }
-
-    return;
-  }
-
-  mistakes++;
-  updateStatus();
-
-  const index = r * 9 + c;
-  const cell = boardEl.children[index];
-
-  if (cell) {
-    cell.classList.add("flash");
-  }
-
-  if (mistakes >= 3) {
-    showGameOver();
+  100% {
+    background: transparent;
   }
 }
 
-function toggleNote(row, col, color) {
-  if (current[row][col] !== 0) {
-    return;
-  }
+/* ===== MAIN COLOR DOT ===== */
 
-  snapshot();
-
-  if (notes[row][col].has(color)) {
-    notes[row][col].delete(color);
-  } else {
-    notes[row][col].add(color);
-  }
-
-  render();
+.color-dot {
+  width: 70%;
+  height: 70%;
+  border-radius: 50%;
+  box-shadow:
+    inset 0 2px 5px rgba(255, 255, 255, 0.15),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.35);
 }
 
-function removeRelatedNotes(row, col, color) {
-  for (let i = 0; i < 9; i++) {
-    notes[row][i].delete(color);
-    notes[i][col].delete(color);
-  }
+/* ===== NOTES ===== */
 
-  const boxRow = Math.floor(row / 3) * 3;
-  const boxCol = Math.floor(col / 3) * 3;
-
-  for (let r = boxRow; r < boxRow + 3; r++) {
-    for (let c = boxCol; c < boxCol + 3; c++) {
-      notes[r][c].delete(color);
-    }
-  }
+.note-grid {
+  width: 82%;
+  height: 82%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 2px;
 }
 
-/* ===== HINT ===== */
-
-function useHint() {
-  if (hintsRemaining <= 0) {
-    return;
-  }
-
-  let target = null;
-
-  // Use the selected cell when it is editable and empty.
-  if (
-    selected &&
-    puzzle[selected.r][selected.c] === 0 &&
-    current[selected.r][selected.c] === 0
-  ) {
-    target = {
-      r: selected.r,
-      c: selected.c
-    };
-  }
-
-  // Otherwise choose a random empty editable cell.
-  if (!target) {
-    const emptyCells = [];
-
-    for (let row = 0; row < 9; row++) {
-      for (let col = 0; col < 9; col++) {
-        if (
-          puzzle[row][col] === 0 &&
-          current[row][col] === 0
-        ) {
-          emptyCells.push({
-            r: row,
-            c: col
-          });
-        }
-      }
-    }
-
-    if (emptyCells.length === 0) {
-      return;
-    }
-
-    target =
-      emptyCells[
-        Math.floor(Math.random() * emptyCells.length)
-      ];
-  }
-
-  /*
-    Save the board state before filling the hint.
-    The snapshot does not save hintsRemaining.
-  */
-  snapshot();
-
-  const { r, c } = target;
-  const correctColor = solved[r][c];
-
-  current[r][c] = correctColor;
-  notes[r][c].clear();
-
-  removeRelatedNotes(r, c, correctColor);
-
-  selected = { r, c };
-  selectedColor = correctColor;
-
-  hintsRemaining--;
-
-  updateStatus();
-  render();
-
-  if (isBoardComplete()) {
-    showCompleted();
-  }
+.note-slot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-function undo() {
-  if (!undoStack.length) {
-    return;
-  }
-
-  restore(undoStack.pop());
-  render();
+.note-dot {
+  width: 68%;
+  height: 68%;
+  border-radius: 50%;
+  opacity: 0.9;
 }
 
-function erase() {
-  if (!selected) {
-    return;
-  }
+/* ===== BOTTOM ===== */
 
-  const { r, c } = selected;
-
-  if (puzzle[r][c] !== 0) {
-    return;
-  }
-
-  if (
-    current[r][c] === 0 &&
-    notes[r][c].size === 0
-  ) {
-    return;
-  }
-
-  snapshot();
-
-  current[r][c] = 0;
-  notes[r][c].clear();
-
-  render();
+.bottom-panel {
+  margin-top: 8px;
 }
 
-function isBoardComplete() {
-  return current.every((row, rowIndex) =>
-    row.every(
-      (value, colIndex) =>
-        value === solved[rowIndex][colIndex]
-    )
-  );
+/* ===== COLOR PAD ===== */
+
+.color-pad {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 5px;
 }
 
-function showCompleted() {
-  stopTimer();
-
-  document
-    .getElementById("overlay")
-    .classList.remove("hidden");
-
-  document.getElementById("overlayText").innerText =
-    `Completed 🎉\n` +
-    `Time: ${document.getElementById("timer").innerText}\n` +
-    `Mistakes: ${mistakes}/3`;
+.color-btn {
+  position: relative;
+  border-radius: 50%;
+  aspect-ratio: 1;
+  border: 2px solid white;
+  cursor: pointer;
+  transition: 0.12s;
 }
 
-function showGameOver() {
-  stopTimer();
-
-  document
-    .getElementById("overlay")
-    .classList.remove("hidden");
-
-  document.getElementById("overlayText").innerText =
-    "Game Over";
+.color-btn:active {
+  transform: scale(0.92);
 }
 
-/* ===== RENDER ===== */
-
-function render() {
-  boardEl.innerHTML = "";
-
-  for (let row = 0; row < 9; row++) {
-    for (let col = 0; col < 9; col++) {
-      const cell = document.createElement("div");
-
-      cell.className = "cell";
-
-      if (selected) {
-        if (
-          selected.r === row ||
-          selected.c === col
-        ) {
-          cell.classList.add("highlight");
-        }
-
-        const selectedBoxRow =
-          Math.floor(selected.r / 3) * 3;
-
-        const selectedBoxCol =
-          Math.floor(selected.c / 3) * 3;
-
-        if (
-          row >= selectedBoxRow &&
-          row < selectedBoxRow + 3 &&
-          col >= selectedBoxCol &&
-          col < selectedBoxCol + 3
-        ) {
-          cell.classList.add("highlight");
-        }
-
-        if (
-          selected.r === row &&
-          selected.c === col
-        ) {
-          cell.classList.add("selected");
-        }
-      }
-
-      const value = current[row][col];
-
-      if (
-        selectedColor &&
-        value === selectedColor
-      ) {
-        cell.classList.add("same");
-      }
-
-      if (value !== 0) {
-        const dot = document.createElement("div");
-
-        dot.className = `color-dot c${value}`;
-
-        cell.appendChild(dot);
-      } else if (notes[row][col].size > 0) {
-        const noteBox = document.createElement("div");
-
-        noteBox.className = "note-grid";
-
-        for (let number = 1; number <= 9; number++) {
-          const slot = document.createElement("div");
-
-          slot.className = "note-slot";
-
-          if (notes[row][col].has(number)) {
-            const mini = document.createElement("div");
-
-            mini.className = `note-dot c${number}`;
-
-            slot.appendChild(mini);
-          }
-
-          noteBox.appendChild(slot);
-        }
-
-        cell.appendChild(noteBox);
-      }
-
-      cell.onclick = () => clickCell(row, col);
-
-      boardEl.appendChild(cell);
-    }
-  }
-
-  updatePad();
+.color-btn.selected-color {
+  outline: 3px solid white;
+  outline-offset: 2px;
 }
 
-/* ===== PAD ===== */
-
-function updatePad() {
-  padEl.innerHTML = "";
-
-  const count = Array(10).fill(0);
-
-  current.flat().forEach(value => {
-    if (value !== 0) {
-      count[value]++;
-    }
-  });
-
-  for (let color = 1; color <= 9; color++) {
-    const button = document.createElement("div");
-
-    button.className = `color-btn c${color}`;
-
-    if (selectedColor === color) {
-      button.classList.add("selected-color");
-    }
-
-    const remaining = 9 - count[color];
-
-    const badge = document.createElement("div");
-
-    badge.className = "count";
-    badge.innerText = remaining;
-
-    button.appendChild(badge);
-
-    if (remaining === 0) {
-      button.classList.add("disabled");
-    }
-
-    button.onclick = () => {
-      selectedColor = color;
-      place();
-      render();
-    };
-
-    padEl.appendChild(button);
-  }
+.color-btn.disabled {
+  opacity: 0.28;
+  pointer-events: none;
 }
 
-/* ===== NEW GAME ===== */
+/* Count badge */
 
-function startNewGame() {
-  mistakes = 0;
-  hintsRemaining = 3;
-
-  selected = null;
-  selectedColor = null;
-
-  undoStack = [];
-  noteMode = false;
-
-  seconds = 0;
-
-  document
-    .getElementById("overlay")
-    .classList.add("hidden");
-
-  document
-    .getElementById("noteBtn")
-    .classList.remove("active");
-
-  updateTimer();
-  updateStatus();
-
-  createPuzzle();
-  render();
-  startTimer();
+.count {
+  position: absolute;
+  bottom: -5px;
+  right: -3px;
+  font-size: 10px;
+  background: black;
+  padding: 2px 4px;
+  border-radius: 4px;
+  line-height: 1;
 }
 
 /* ===== CONTROLS ===== */
 
-document.getElementById("newGameBtn").onclick =
-  startNewGame;
+.controls {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
 
-document.getElementById("undoBtn").onclick =
-  undo;
+.controls button {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 4px;
+  border-radius: 10px;
+  border: none;
+  background: #1d2633;
+  color: white;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.15s;
+}
 
-document.getElementById("hintBtn").onclick =
-  useHint;
+.controls button:active {
+  transform: scale(0.96);
+}
 
-document.getElementById("eraseBtn").onclick =
-  erase;
+#noteBtn.active {
+  background: white;
+  color: black;
+  font-weight: bold;
+}
 
-document.getElementById("noteBtn").onclick = () => {
-  noteMode = !noteMode;
+/* ===== OVERLAY ===== */
 
-  document
-    .getElementById("noteBtn")
-    .classList.toggle("active", noteMode);
-};
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
 
-document.getElementById("restartBtn").onclick =
-  startNewGame;
+.overlay.hidden {
+  display: none;
+}
 
-/* ===== DIFFICULTY ===== */
+.overlay-box {
+  background: #111827;
+  padding: 24px;
+  border-radius: 14px;
+  text-align: center;
+  min-width: 260px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
 
-document.querySelectorAll(".diff").forEach(button => {
-  button.onclick = () => {
-    document
-      .querySelectorAll(".diff")
-      .forEach(item =>
-        item.classList.remove("active")
-      );
+.overlay-box h2 {
+  margin-top: 0;
+  white-space: pre-line;
+}
 
-    button.classList.add("active");
+.overlay-box button {
+  margin-top: 12px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 10px;
+  background: white;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-    difficulty = button.dataset.level;
+/* ===== COLORS ===== */
 
-    startNewGame();
-  };
-});
+.c1 {
+  background: #ff1616;
+}
 
-/* ===== START ===== */
+.c2 {
+  background: #ffd21a;
+}
 
-startNewGame();
+.c3 {
+  background: #06a83f;
+}
+
+.c4 {
+  background: #075be8;
+}
+
+.c5 {
+  background: #ff8500;
+}
+
+.c6 {
+  background: #f5f5f5;
+}
+
+.c7 {
+  background: #9b9b9b;
+}
+
+.c8 {
+  background: #f7358c;
+}
+
+.c9 {
+  background: #a8f000;
+}
+
+/* ===== NAVIGATION ===== */
+
+.nav-links {
+  text-align: center;
+  margin: 10px 0 14px;
+  line-height: 1.7;
+}
+
+.nav-links a {
+  color: #6fb1ff;
+  text-decoration: none;
+  margin: 0 10px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.nav-links a:hover {
+  color: white;
+}
+
+/* ===== ADSTERRA ===== */
+
+#adsterra-ad,
+[id^="container-"] {
+  width: 100%;
+  max-width: 900px;
+  text-align: center;
+  margin: 20px auto;
+}
+
+/* ===== FOOTER ===== */
+
+.footer-links {
+  width: 100%;
+  text-align: center;
+  margin: 18px auto 12px;
+  padding: 0 10px;
+  line-height: 1.7;
+}
+
+.footer-links a {
+  color: #6fb1ff;
+  text-decoration: none;
+}
+
+/* ===== MOBILE ===== */
+
+@media (max-width: 480px) {
+  .app {
+    padding: 6px;
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .top-bar {
+    gap: 3px;
+  }
+
+  #timer,
+  #mistakes,
+  #hints {
+    font-size: 11px;
+  }
+
+  #timer,
+  #mistakes {
+    width: 38px;
+  }
+
+  #hints {
+    min-width: 50px;
+  }
+
+  .difficulty-row {
+    gap: 3px;
+    margin: 0 2px;
+  }
+
+  .diff {
+    font-size: 11px;
+    padding: 5px 2px;
+  }
+
+  .color-pad {
+    gap: 4px;
+  }
+
+  .controls {
+    gap: 5px;
+  }
+
+  .controls button {
+    font-size: 11px;
+    padding: 9px 2px;
+  }
+
+  .nav-links {
+    padding: 0 4px;
+  }
+
+  .nav-links a {
+    margin: 0 5px;
+    font-size: 13px;
+  }
+
+  .footer-links {
+    font-size: 12px;
+  }
+}
+```
