@@ -1,22 +1,11 @@
-```javascript
 const boardEl = document.getElementById("board");
 const padEl = document.getElementById("colorPad");
 
-const mistakesEl = document.getElementById("mistakes");
-const hintsEl = document.getElementById("hints");
-const timerEl = document.getElementById("timer");
-
-let solved;
-let puzzle;
-let current;
-let notes;
-
+let solved, puzzle, current, notes;
 let selected = null;
 let selectedColor = null;
-
 let mistakes = 0;
 let hintsRemaining = 3;
-
 let undoStack = [];
 let difficulty = "medium";
 let noteMode = false;
@@ -40,52 +29,42 @@ function stopTimer() {
 }
 
 function updateTimer() {
-  const minutes = String(Math.floor(seconds / 60)).padStart(2, "0");
-  const remainingSeconds = String(seconds % 60).padStart(2, "0");
+  const m = String(Math.floor(seconds / 60)).padStart(2, "0");
+  const s = String(seconds % 60).padStart(2, "0");
 
-  timerEl.innerText = `${minutes}:${remainingSeconds}`;
+  document.getElementById("timer").innerText = `${m}:${s}`;
 }
 
 /* ===== STATUS ===== */
 
 function updateStatus() {
-  mistakesEl.innerText = `${mistakes}/3`;
-  hintsEl.innerText = `Hints: ${hintsRemaining}`;
+  document.getElementById("mistakes").innerText = `${mistakes}/3`;
+  document.getElementById("hints").innerText = `Hints: ${hintsRemaining}`;
 }
 
-/* ===== UTILITIES ===== */
+/* ===== UTIL ===== */
 
 function shuffle(array) {
   const copy = [...array];
 
   for (let i = copy.length - 1; i > 0; i--) {
-    const randomIndex = Math.floor(Math.random() * (i + 1));
-
-    [copy[i], copy[randomIndex]] = [
-      copy[randomIndex],
-      copy[i]
-    ];
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
   }
 
   return copy;
 }
 
 function emptyNotes() {
-  return Array.from(
-    { length: 9 },
-    () => Array.from(
-      { length: 9 },
-      () => new Set()
-    )
+  return Array.from({ length: 9 }, () =>
+    Array.from({ length: 9 }, () => new Set())
   );
 }
 
 function snapshot() {
   undoStack.push({
     current: current.map(row => [...row]),
-    notes: notes.map(row =>
-      row.map(cell => [...cell])
-    ),
+    notes: notes.map(row => row.map(cell => [...cell])),
     mistakes,
     hintsRemaining,
     selected: selected ? { ...selected } : null,
@@ -110,7 +89,7 @@ function restore(savedState) {
   updateStatus();
 }
 
-/* ===== SUDOKU GENERATION ===== */
+/* ===== SUDOKU ===== */
 
 function isValid(board, row, col, number) {
   for (let i = 0; i < 9; i++) {
@@ -122,14 +101,12 @@ function isValid(board, row, col, number) {
     }
   }
 
-  const boxStartRow = Math.floor(row / 3) * 3;
-  const boxStartCol = Math.floor(col / 3) * 3;
+  const boxRow = Math.floor(row / 3) * 3;
+  const boxCol = Math.floor(col / 3) * 3;
 
-  for (let boxRow = 0; boxRow < 3; boxRow++) {
-    for (let boxCol = 0; boxCol < 3; boxCol++) {
-      if (
-        board[boxStartRow + boxRow][boxStartCol + boxCol] === number
-      ) {
+  for (let r = 0; r < 3; r++) {
+    for (let c = 0; c < 3; c++) {
+      if (board[boxRow + r][boxCol + c] === number) {
         return false;
       }
     }
@@ -148,17 +125,15 @@ function solve(board) {
       const numbers = shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
       for (const number of numbers) {
-        if (!isValid(board, row, col, number)) {
-          continue;
+        if (isValid(board, row, col, number)) {
+          board[row][col] = number;
+
+          if (solve(board)) {
+            return true;
+          }
+
+          board[row][col] = 0;
         }
-
-        board[row][col] = number;
-
-        if (solve(board)) {
-          return true;
-        }
-
-        board[row][col] = 0;
       }
 
       return false;
@@ -168,7 +143,7 @@ function solve(board) {
   return true;
 }
 
-function generateSolvedBoard() {
+function generate() {
   const board = Array.from(
     { length: 9 },
     () => Array(9).fill(0)
@@ -180,24 +155,24 @@ function generateSolvedBoard() {
 }
 
 function createPuzzle() {
-  solved = generateSolvedBoard();
+  solved = generate();
   puzzle = solved.map(row => [...row]);
 
-  const removalCount = {
+  const removalMap = {
     easy: 30,
     medium: 45,
     hard: 50
   };
 
-  let cellsToRemove = removalCount[difficulty];
+  let remove = removalMap[difficulty];
 
-  while (cellsToRemove > 0) {
+  while (remove > 0) {
     const row = Math.floor(Math.random() * 9);
     const col = Math.floor(Math.random() * 9);
 
     if (puzzle[row][col] !== 0) {
       puzzle[row][col] = 0;
-      cellsToRemove--;
+      remove--;
     }
   }
 
@@ -205,7 +180,7 @@ function createPuzzle() {
   notes = emptyNotes();
 }
 
-/* ===== GAME ACTIONS ===== */
+/* ===== GAME ===== */
 
 function clickCell(row, col) {
   selected = { r: row, c: col };
@@ -257,11 +232,11 @@ function place() {
   mistakes++;
   updateStatus();
 
-  const cellIndex = r * 9 + c;
-  const selectedCell = boardEl.children[cellIndex];
+  const index = r * 9 + c;
+  const cell = boardEl.children[index];
 
-  if (selectedCell) {
-    selectedCell.classList.add("flash");
+  if (cell) {
+    cell.classList.add("flash");
   }
 
   if (mistakes >= 3) {
@@ -291,50 +266,39 @@ function removeRelatedNotes(row, col, color) {
     notes[i][col].delete(color);
   }
 
-  const boxStartRow = Math.floor(row / 3) * 3;
-  const boxStartCol = Math.floor(col / 3) * 3;
+  const boxRow = Math.floor(row / 3) * 3;
+  const boxCol = Math.floor(col / 3) * 3;
 
-  for (
-    let currentRow = boxStartRow;
-    currentRow < boxStartRow + 3;
-    currentRow++
-  ) {
-    for (
-      let currentCol = boxStartCol;
-      currentCol < boxStartCol + 3;
-      currentCol++
-    ) {
-      notes[currentRow][currentCol].delete(color);
+  for (let r = boxRow; r < boxRow + 3; r++) {
+    for (let c = boxCol; c < boxCol + 3; c++) {
+      notes[r][c].delete(color);
     }
   }
 }
+
+/* ===== HINT ===== */
 
 function useHint() {
   if (hintsRemaining <= 0) {
     return;
   }
 
-  let hintCell = null;
+  let target = null;
 
-  /*
-   Use the selected cell when it is an editable,
-   currently empty cell.
-  */
+  // Use selected cell when it is editable and empty.
   if (
     selected &&
     puzzle[selected.r][selected.c] === 0 &&
     current[selected.r][selected.c] === 0
   ) {
-    hintCell = {
+    target = {
       r: selected.r,
       c: selected.c
     };
   }
 
-  /*
-   Otherwise choose a random empty editable cell.
-  */
-  if (!hintCell) {
+  // Otherwise choose a random empty editable cell.
+  if (!target) {
     const emptyCells = [];
 
     for (let row = 0; row < 9; row++) {
@@ -355,7 +319,7 @@ function useHint() {
       return;
     }
 
-    hintCell =
+    target =
       emptyCells[
         Math.floor(Math.random() * emptyCells.length)
       ];
@@ -363,7 +327,7 @@ function useHint() {
 
   snapshot();
 
-  const { r, c } = hintCell;
+  const { r, c } = target;
   const correctColor = solved[r][c];
 
   current[r][c] = correctColor;
@@ -375,6 +339,7 @@ function useHint() {
   selectedColor = correctColor;
 
   hintsRemaining--;
+
   updateStatus();
   render();
 
@@ -384,13 +349,11 @@ function useHint() {
 }
 
 function undo() {
-  if (undoStack.length === 0) {
+  if (!undoStack.length) {
     return;
   }
 
-  const savedState = undoStack.pop();
-
-  restore(savedState);
+  restore(undoStack.pop());
   render();
 }
 
@@ -429,19 +392,16 @@ function isBoardComplete() {
   );
 }
 
-/* ===== GAME RESULT ===== */
-
 function showCompleted() {
   stopTimer();
 
-  const overlay = document.getElementById("overlay");
-  const overlayText = document.getElementById("overlayText");
+  document
+    .getElementById("overlay")
+    .classList.remove("hidden");
 
-  overlay.classList.remove("hidden");
-
-  overlayText.innerText =
+  document.getElementById("overlayText").innerText =
     `Completed 🎉\n` +
-    `Time: ${timerEl.innerText}\n` +
+    `Time: ${document.getElementById("timer").innerText}\n` +
     `Mistakes: ${mistakes}/3`;
 }
 
@@ -456,7 +416,7 @@ function showGameOver() {
     "Game Over";
 }
 
-/* ===== RENDER BOARD ===== */
+/* ===== RENDER ===== */
 
 function render() {
   boardEl.innerHTML = "";
@@ -508,30 +468,30 @@ function render() {
       }
 
       if (value !== 0) {
-        const colorDot = document.createElement("div");
+        const dot = document.createElement("div");
 
-        colorDot.className = `color-dot c${value}`;
+        dot.className = `color-dot c${value}`;
 
-        cell.appendChild(colorDot);
+        cell.appendChild(dot);
       } else if (notes[row][col].size > 0) {
         const noteBox = document.createElement("div");
 
         noteBox.className = "note-grid";
 
         for (let number = 1; number <= 9; number++) {
-          const noteSlot = document.createElement("div");
+          const slot = document.createElement("div");
 
-          noteSlot.className = "note-slot";
+          slot.className = "note-slot";
 
           if (notes[row][col].has(number)) {
-            const noteDot = document.createElement("div");
+            const mini = document.createElement("div");
 
-            noteDot.className = `note-dot c${number}`;
+            mini.className = `note-dot c${number}`;
 
-            noteSlot.appendChild(noteDot);
+            slot.appendChild(mini);
           }
 
-          noteBox.appendChild(noteSlot);
+          noteBox.appendChild(slot);
         }
 
         cell.appendChild(noteBox);
@@ -546,7 +506,7 @@ function render() {
   updatePad();
 }
 
-/* ===== COLOR PAD ===== */
+/* ===== PAD ===== */
 
 function updatePad() {
   padEl.innerHTML = "";
@@ -667,4 +627,3 @@ document.querySelectorAll(".diff").forEach(button => {
 /* ===== START ===== */
 
 startNewGame();
-```
