@@ -777,7 +777,14 @@ function startNewGame() {
     }
 
   }
+/* ===== DAILY CHALLENGE BUTTON ===== */
 
+dailyBtn.addEventListener("click", function (event) {
+  event.preventDefault();
+
+  isDailyChallenge = true;
+  startNewGame();
+});
   updateTimer();
   updateStatus();
 
