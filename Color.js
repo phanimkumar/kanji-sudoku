@@ -788,7 +788,9 @@ document.getElementById("undoBtn").onclick =
 
 document.getElementById("hintBtn").onclick =
   useHint;
-
+if (shareBtn) {
+  shareBtn.onclick = shareDailyResult;
+}
 document.getElementById("eraseBtn").onclick =
   erase;
 
