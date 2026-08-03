@@ -6,6 +6,7 @@ let selected = null;
 let selectedColor = null;
 let mistakes = 0;
 let hintsRemaining = 3;
+let hintsUsed = 0;
 let undoStack = [];
 let difficulty = "medium";
 let noteMode = false;
