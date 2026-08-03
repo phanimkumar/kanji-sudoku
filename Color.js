@@ -1,6 +1,6 @@
 const boardEl = document.getElementById("board");
 const padEl = document.getElementById("colorPad");
-
+const shareBtn = document.getElementById("shareBtn");
 let solved, puzzle, current, notes;
 let selected = null;
 let selectedColor = null;
