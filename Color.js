@@ -44,17 +44,78 @@ function updateStatus() {
 
 /* ===== UTIL ===== */
 
+function getUtcDateData() {
+
+  const now = new Date();
+
+  dailyDateKey =
+    now.getUTCFullYear() + "-" +
+    String(now.getUTCMonth() + 1).padStart(2, "0") + "-" +
+    String(now.getUTCDate()).padStart(2, "0");
+
+  dailyDisplayDate = now.toLocaleDateString(
+    "en-GB",
+    {
+      timeZone: "UTC",
+      day: "2-digit",
+      month: "long",
+      year: "numeric"
+    }
+  );
+
+}
+
+function hashString(str) {
+
+  let hash = 2166136261;
+
+  for (let i = 0; i < str.length; i++) {
+
+    hash ^= str.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+
+  }
+
+  return hash >>> 0;
+
+}
+
+function seededRandom(seed) {
+
+  let value = seed >>> 0;
+
+  return function () {
+
+    value += 0x6D2B79F5;
+
+    let t = value;
+
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+
+  };
+
+}
+
 function shuffle(array) {
+
   const copy = [...array];
 
   for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
+
+    const j = Math.floor(randomSource() * (i + 1));
+
+    [copy[i], copy[j]] =
+      [copy[j], copy[i]];
+
   }
 
   return copy;
-}
 
+}
 function emptyNotes() {
   return Array.from({ length: 9 }, () =>
     Array.from({ length: 9 }, () => new Set())
