@@ -213,6 +213,21 @@ function generate() {
 }
 
 function createPuzzle() {
+
+  if (isDailyChallenge) {
+
+    getUtcDateData();
+
+    randomSource = seededRandom(
+      hashString("color-" + dailyDateKey)
+    );
+
+  } else {
+
+    randomSource = Math.random;
+
+  }
+
   solved = generate();
   puzzle = solved.map(row => [...row]);
 
@@ -222,20 +237,32 @@ function createPuzzle() {
     hard: 50
   };
 
-  let remove = removalMap[difficulty];
+  let remove = isDailyChallenge
+    ? 45
+    : removalMap[difficulty];
 
   while (remove > 0) {
-    const row = Math.floor(Math.random() * 9);
-    const col = Math.floor(Math.random() * 9);
+
+    const row =
+      Math.floor(randomSource() * 9);
+
+    const col =
+      Math.floor(randomSource() * 9);
 
     if (puzzle[row][col] !== 0) {
+
       puzzle[row][col] = 0;
       remove--;
+
     }
+
   }
 
   current = puzzle.map(row => [...row]);
   notes = emptyNotes();
+
+  randomSource = Math.random;
+
 }
 
 /* ===== GAME ===== */
