@@ -10,6 +10,10 @@ let hintsUsed = 0;
 let undoStack = [];
 let difficulty = "medium";
 let noteMode = false;
+let isDailyChallenge = false;
+let dailyDateKey = "";
+let dailyDisplayDate = "";
+let randomSource = Math.random;
 
 let seconds = 0;
 let timerInterval = null;
