@@ -478,19 +478,47 @@ function isBoardComplete() {
 }
 
 function showCompleted() {
+
   stopTimer();
 
   document
     .getElementById("overlay")
     .classList.remove("hidden");
 
-  document.getElementById("overlayText").innerText =
-    `Completed 🎉\n` +
-    `Time: ${document.getElementById("timer").innerText}\n` +
-    `Mistakes: ${mistakes}/3`;
+  const time =
+    document.getElementById("timer").innerText;
+
+  if (isDailyChallenge) {
+
+    document.getElementById("overlayText").innerText =
+      "🏆 Daily Challenge Complete\n\n" +
+      dailyDisplayDate + "\n\n" +
+      "Time: " + time + "\n" +
+      "Mistakes: " + mistakes + "/3\n" +
+      "Hints Used: " + hintsUsed;
+
+    if (shareBtn) {
+      shareBtn.classList.remove("hidden");
+    }
+
+  } else {
+
+    document.getElementById("overlayText").innerText =
+      "Completed 🎉\n" +
+      "Time: " + time + "\n" +
+      "Mistakes: " + mistakes + "/3";
+
+    if (shareBtn) {
+      shareBtn.classList.add("hidden");
+    }
+
+  }
+
 }
+
 
 function showGameOver() {
+
   stopTimer();
 
   document
@@ -498,8 +526,58 @@ function showGameOver() {
     .classList.remove("hidden");
 
   document.getElementById("overlayText").innerText =
-    "Game Over";
+    isDailyChallenge
+      ? "Daily Challenge Over"
+      : "Game Over";
+
+  if (shareBtn) {
+    shareBtn.classList.add("hidden");
+  }
+
 }
+
+async function shareDailyResult() {
+
+  const result =
+`🎨 Sudoku Multiverse Daily Challenge
+
+📅 ${dailyDisplayDate}
+
+⏱ ${document.getElementById("timer").innerText}
+
+❌ Mistakes: ${mistakes}
+
+💡 Hints Used: ${hintsUsed}
+
+https://sudokumultiverse.com/Color.html`;
+
+  if (navigator.share) {
+
+    await navigator.share({
+      title: "Color Sudoku",
+      text: result
+    });
+
+    return;
+  }
+
+  await navigator.clipboard.writeText(result);
+
+  if (shareBtn) {
+
+    shareBtn.innerText = "Copied!";
+
+    setTimeout(() => {
+
+      shareBtn.innerText = "Share Result";
+
+    }, 1500);
+
+  }
+
+}
+
+
 
 /* ===== RENDER ===== */
 
