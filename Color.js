@@ -66,7 +66,6 @@ function snapshot() {
     current: current.map(row => [...row]),
     notes: notes.map(row => row.map(cell => [...cell])),
     mistakes,
-    hintsRemaining,
     selected: selected ? { ...selected } : null,
     selectedColor
   });
@@ -80,7 +79,6 @@ function restore(savedState) {
   );
 
   mistakes = savedState.mistakes;
-  hintsRemaining = savedState.hintsRemaining;
   selected = savedState.selected
     ? { ...savedState.selected }
     : null;
@@ -88,7 +86,6 @@ function restore(savedState) {
 
   updateStatus();
 }
-
 /* ===== SUDOKU ===== */
 
 function isValid(board, row, col, number) {
