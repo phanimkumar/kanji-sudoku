@@ -3,6 +3,7 @@ const padEl = document.getElementById("colorPad");
 const shareBtn = document.getElementById("shareBtn");
 const dailyBtn = document.getElementById("dailyBtn");
 const dailyInfo = document.getElementById("dailyInfo");
+
 let solved, puzzle, current, notes;
 let selected = null;
 let selectedColor = null;
