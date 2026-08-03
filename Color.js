@@ -831,8 +831,9 @@ document.querySelectorAll(".diff").forEach(button => {
     button.classList.add("active");
 
     difficulty = button.dataset.level;
+isDailyChallenge = false;
 
-    startNewGame();
+startNewGame();
   };
 });
 
