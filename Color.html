@@ -2,33 +2,40 @@
 <html lang="en">
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Color Sudoku</title>
+  <title>Color Sudoku</title>
 
-<meta name="description"
-content="Play Color Sudoku online using colors instead of numbers in a modern Sudoku experience.">
+  <meta name="description"
+  content="Play Color Sudoku online using colors instead of numbers in a modern Sudoku experience.">
 
+  <link rel="icon" href="/logo.png">
 
-<link rel="icon" href="/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap"
+    rel="stylesheet">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="Color.css">
 
-<link rel="stylesheet" href="Color.css">
+  <!-- Google Analytics -->
+  <script async
+    src="https://www.googletagmanager.com/gtag/js?id=G-TTLG5QWZY1">
+  </script>
 
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-TTLG5QWZY1"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
+  <script>
+    window.dataLayer = window.dataLayer || [];
 
-gtag('config', 'G-TTLG5QWZY1');
-</script>
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag("js", new Date());
+    gtag("config", "G-TTLG5QWZY1");
+  </script>
 
 </head>
 
@@ -36,6 +43,7 @@ gtag('config', 'G-TTLG5QWZY1');
 
 <div class="app">
 
+  <!-- Navigation -->
   <div class="nav-links">
     <a href="/index.html">🏠 Home</a>
     <a href="/kanji.html">🎮 Kanji</a>
@@ -47,10 +55,12 @@ gtag('config', 'G-TTLG5QWZY1');
     <a href="/history-of-sudoku.html">📜 History</a>
   </div>
 
+  <!-- Title -->
   <h1 class="title">
     <span class="accent">Color</span> Sudoku
   </h1>
 
+  <!-- Top Bar -->
   <div class="top-bar">
 
     <div id="timer">00:00</div>
@@ -63,10 +73,14 @@ gtag('config', 'G-TTLG5QWZY1');
 
     <div id="mistakes">0/3</div>
 
+    <div id="hints">Hints: 3</div>
+
   </div>
 
+  <!-- Board -->
   <div id="board" class="board"></div>
 
+  <!-- Bottom Panel -->
   <div class="bottom-panel">
 
     <div id="colorPad" class="color-pad"></div>
@@ -74,40 +88,39 @@ gtag('config', 'G-TTLG5QWZY1');
     <div class="controls">
       <button id="newGameBtn">New</button>
       <button id="undoBtn">Undo</button>
+      <button id="hintBtn">Hint</button>
       <button id="noteBtn">Notes</button>
       <button id="eraseBtn">Erase</button>
     </div>
 
   </div>
 
+  <!-- Game Over / Win Overlay -->
   <div id="overlay" class="overlay hidden">
     <div class="overlay-box">
       <h2 id="overlayText"></h2>
       <button id="restartBtn">Play Again</button>
     </div>
   </div>
+
+</div>
+
 <!-- Adsterra Native Banner -->
-<script async data-cfasync="false"
-src="https://pl29640384.effectivecpmnetwork.com/16ef3b8886c17de5f5870af71ad1f771/invoke.js"></script>
+<script
+  async
+  data-cfasync="false"
+  src="https://pl29640384.effectivecpmnetwork.com/16ef3b8886c17de5f5870af71ad1f771/invoke.js">
+</script>
 
 <div id="container-16ef3b8886c17de5f5870af71ad1f771"></div>
 
 <!-- Footer -->
 <div class="footer-links">
-
-<!-- FOOTER -->
-<div class="footer-links">
-  
-  <div class="footer-links">
-
-    <a href="/index.html">Home</a> |
-    <a href="/privacy.html">Privacy Policy</a> |
-    <a href="/about.html">About</a> |
-    <a href="/contact.html">Contact</a>
-    <a href="/sudoku-strategy-guide.html">🧠 Strategy Guide</a>
-
-  </div>
-
+  <a href="/index.html">Home</a> |
+  <a href="/privacy.html">Privacy Policy</a> |
+  <a href="/about.html">About</a> |
+  <a href="/contact.html">Contact</a> |
+  <a href="/sudoku-strategy-guide.html">Strategy Guide</a>
 </div>
 
 <script defer src="Color.js"></script>
