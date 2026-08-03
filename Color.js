@@ -812,7 +812,12 @@ document.getElementById("noteBtn").onclick = () => {
 
 document.getElementById("restartBtn").onclick =
   startNewGame;
-
+if (dailyBtn) {
+  dailyBtn.onclick = () => {
+    isDailyChallenge = true;
+    startNewGame();
+  };
+}
 /* ===== DIFFICULTY ===== */
 
 document.querySelectorAll(".diff").forEach(button => {
