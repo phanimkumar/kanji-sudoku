@@ -424,6 +424,7 @@ function useHint() {
   selectedColor = correctColor;
 
   hintsRemaining--;
+  hintsUsed++;
 
   updateStatus();
   render();
