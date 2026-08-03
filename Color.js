@@ -639,8 +639,10 @@ function updatePad() {
 /* ===== NEW GAME ===== */
 
 function startNewGame() {
+
   mistakes = 0;
   hintsRemaining = 3;
+  hintsUsed = 0;
 
   selected = null;
   selectedColor = null;
@@ -658,14 +660,46 @@ function startNewGame() {
     .getElementById("noteBtn")
     .classList.remove("active");
 
+  if (shareBtn) {
+    shareBtn.classList.add("hidden");
+    shareBtn.innerText = "Share Result";
+  }
+
+  createPuzzle();
+
+  if (dailyBtn && dailyInfo) {
+
+    if (isDailyChallenge) {
+
+      dailyBtn.classList.add("active");
+      dailyBtn.innerText = "⭐ Daily Challenge";
+
+      dailyInfo.innerText =
+        "Today's Challenge • " +
+        dailyDisplayDate;
+
+      dailyInfo.classList.remove("hidden");
+
+    } else {
+
+      dailyBtn.classList.remove("active");
+      dailyBtn.innerText =
+        "⭐ Play Daily Challenge";
+
+      dailyInfo.classList.add("hidden");
+
+    }
+
+  }
+
   updateTimer();
   updateStatus();
 
-  createPuzzle();
   render();
-  startTimer();
-}
 
+  startTimer();
+
+}
 /* ===== CONTROLS ===== */
 
 document.getElementById("newGameBtn").onclick =
