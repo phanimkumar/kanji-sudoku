@@ -22,7 +22,7 @@
     rel="stylesheet"
   >
 
-  <link rel="stylesheet" href="/Color.css?v=6">
+  <link rel="stylesheet" href="/Color.css?v=7">
 
   <!-- Google Analytics -->
   <script
@@ -64,6 +64,10 @@
     <span class="accent">Color</span> Sudoku
   </h1>
 
+  <!-- Daily Challenge -->
+  <button id="dailyBtn" class="daily-btn">⭐ Play Daily Challenge</button>
+  <div id="dailyInfo" class="daily-info hidden"></div>
+
   <!-- Top Bar -->
   <div class="top-bar">
 
@@ -102,6 +106,7 @@
   <div id="overlay" class="overlay hidden">
     <div class="overlay-box">
       <h2 id="overlayText"></h2>
+      <button id="shareBtn" class="hidden">Share Result</button>
       <button id="restartBtn">Play Again</button>
     </div>
   </div>
@@ -126,7 +131,7 @@
   <a href="/sudoku-strategy-guide.html">Strategy Guide</a>
 </div>
 
-<script defer src="/Color.js?v=5"></script>
+<script defer src="/Color.js?v=6"></script>
 
 </body>
 </html>
