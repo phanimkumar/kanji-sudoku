@@ -831,9 +831,6 @@ document.querySelectorAll(".diff").forEach(button => {
 startNewGame();
 
 
-/* ===== START ===== */
-
-startNewGame();
 document.querySelectorAll(".diff").forEach(button => {
   button.onclick = () => {
     document
