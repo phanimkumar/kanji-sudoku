@@ -523,15 +523,7 @@ function showCompleted() {
     shareBtn.classList.add("hidden");
   }
 }
-}
-if (typeof gtag === "function") {
-  gtag("event", "daily_challenge_complete", {
-    challenge_date: dailyDateKey,
-    time_seconds: seconds,
-    mistakes: mistakes,
-    hints_used: hintsUsed
-  });
-}
+
 
 function showGameOver() {
 
@@ -759,10 +751,8 @@ function startNewGame() {
     .getElementById("noteBtn")
     .classList.remove("active");
 
-  if (shareBtn) {
-    shareBtn.classList.add("hidden");
-    shareBtn.innerText = "Share Result";
-  }
+  shareBtn.classList.add("hidden");
+  shareBtn.innerText = "Share Result";
 
   createPuzzle();
 
@@ -786,28 +776,19 @@ function startNewGame() {
   startTimer();
 }
 
-/* ===== DAILY CHALLENGE BUTTON ===== */
-
-dailyBtn.addEventListener("click", function (event) {
-  event.preventDefault();
-
-  isDailyChallenge = true;
-  startNewGame();
-});
-  updateTimer();
-  updateStatus();
-
-  render();
-
-  startTimer();
-
-}
 /* ===== CONTROLS ===== */
 
-document.getElementById("newGameBtn").onclick = startNewGame;
-document.getElementById("undoBtn").onclick = undo;
-document.getElementById("hintBtn").onclick = useHint;
-document.getElementById("eraseBtn").onclick = erase;
+document.getElementById("newGameBtn").onclick =
+  startNewGame;
+
+document.getElementById("undoBtn").onclick =
+  undo;
+
+document.getElementById("hintBtn").onclick =
+  useHint;
+
+document.getElementById("eraseBtn").onclick =
+  erase;
 
 document.getElementById("noteBtn").onclick = () => {
   noteMode = !noteMode;
@@ -817,7 +798,8 @@ document.getElementById("noteBtn").onclick = () => {
     .classList.toggle("active", noteMode);
 };
 
-document.getElementById("restartBtn").onclick = startNewGame;
+document.getElementById("restartBtn").onclick =
+  startNewGame;
 
 dailyBtn.onclick = () => {
   isDailyChallenge = true;
@@ -843,6 +825,11 @@ document.querySelectorAll(".diff").forEach(button => {
     startNewGame();
   };
 });
+
+/* ===== START ===== */
+
+startNewGame();
+
 
 /* ===== START ===== */
 
