@@ -487,7 +487,6 @@ function isBoardComplete() {
 }
 
 function showCompleted() {
-
   stopTimer();
 
   document
@@ -498,6 +497,14 @@ function showCompleted() {
     document.getElementById("timer").innerText;
 
   if (isDailyChallenge) {
+    if (typeof gtag === "function") {
+      gtag("event", "daily_challenge_complete", {
+        challenge_date: dailyDateKey,
+        time_seconds: seconds,
+        mistakes: mistakes,
+        hints_used: hintsUsed
+      });
+    }
 
     document.getElementById("overlayText").innerText =
       "🏆 Daily Challenge Complete\n\n" +
@@ -506,23 +513,16 @@ function showCompleted() {
       "Mistakes: " + mistakes + "/3\n" +
       "Hints Used: " + hintsUsed;
 
-    if (shareBtn) {
-      shareBtn.classList.remove("hidden");
-    }
-
+    shareBtn.classList.remove("hidden");
   } else {
-
     document.getElementById("overlayText").innerText =
       "Completed 🎉\n" +
       "Time: " + time + "\n" +
       "Mistakes: " + mistakes + "/3";
 
-    if (shareBtn) {
-      shareBtn.classList.add("hidden");
-    }
-
+    shareBtn.classList.add("hidden");
   }
-
+}
 }
 if (typeof gtag === "function") {
   gtag("event", "daily_challenge_complete", {
