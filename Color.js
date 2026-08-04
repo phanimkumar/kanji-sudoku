@@ -524,7 +524,14 @@ function showCompleted() {
   }
 
 }
-
+if (typeof gtag === "function") {
+  gtag("event", "daily_challenge_complete", {
+    challenge_date: dailyDateKey,
+    time_seconds: seconds,
+    mistakes: mistakes,
+    hints_used: hintsUsed
+  });
+}
 
 function showGameOver() {
 
@@ -546,7 +553,14 @@ function showGameOver() {
 }
 
 async function shareDailyResult() {
-
+if (typeof gtag === "function") {
+  gtag("event", "daily_challenge_share", {
+    challenge_date: dailyDateKey,
+    time_seconds: seconds,
+    mistakes: mistakes,
+    hints_used: hintsUsed
+  });
+}
   const result =
 `🎨 Sudoku Multiverse Daily Challenge
 
