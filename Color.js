@@ -726,7 +726,6 @@ function updatePad() {
 /* ===== NEW GAME ===== */
 
 function startNewGame() {
-
   mistakes = 0;
   hintsRemaining = 3;
   hintsUsed = 0;
@@ -736,7 +735,6 @@ function startNewGame() {
 
   undoStack = [];
   noteMode = false;
-
   seconds = 0;
 
   document
@@ -754,30 +752,26 @@ function startNewGame() {
 
   createPuzzle();
 
-  if (dailyBtn && dailyInfo) {
+  if (isDailyChallenge) {
+    dailyBtn.classList.add("active");
+    dailyBtn.innerText = "⭐ Daily Challenge";
 
-    if (isDailyChallenge) {
+    dailyInfo.innerText =
+      "Today's Challenge • " + dailyDisplayDate;
 
-      dailyBtn.classList.add("active");
-      dailyBtn.innerText = "⭐ Daily Challenge";
-
-      dailyInfo.innerText =
-        "Today's Challenge • " +
-        dailyDisplayDate;
-
-      dailyInfo.classList.remove("hidden");
-
-    } else {
-
-      dailyBtn.classList.remove("active");
-      dailyBtn.innerText =
-        "⭐ Play Daily Challenge";
-
-      dailyInfo.classList.add("hidden");
-
-    }
-
+    dailyInfo.classList.remove("hidden");
+  } else {
+    dailyBtn.classList.remove("active");
+    dailyBtn.innerText = "⭐ Play Daily Challenge";
+    dailyInfo.classList.add("hidden");
   }
+
+  updateTimer();
+  updateStatus();
+  render();
+  startTimer();
+}
+
 /* ===== DAILY CHALLENGE BUTTON ===== */
 
 dailyBtn.addEventListener("click", function (event) {
@@ -796,19 +790,10 @@ dailyBtn.addEventListener("click", function (event) {
 }
 /* ===== CONTROLS ===== */
 
-document.getElementById("newGameBtn").onclick =
-  startNewGame;
-
-document.getElementById("undoBtn").onclick =
-  undo;
-
-document.getElementById("hintBtn").onclick =
-  useHint;
-if (shareBtn) {
-  shareBtn.onclick = shareDailyResult;
-}
-document.getElementById("eraseBtn").onclick =
-  erase;
+document.getElementById("newGameBtn").onclick = startNewGame;
+document.getElementById("undoBtn").onclick = undo;
+document.getElementById("hintBtn").onclick = useHint;
+document.getElementById("eraseBtn").onclick = erase;
 
 document.getElementById("noteBtn").onclick = () => {
   noteMode = !noteMode;
@@ -818,15 +803,36 @@ document.getElementById("noteBtn").onclick = () => {
     .classList.toggle("active", noteMode);
 };
 
-document.getElementById("restartBtn").onclick =
-  startNewGame;
-if (dailyBtn) {
-  dailyBtn.onclick = () => {
-    isDailyChallenge = true;
+document.getElementById("restartBtn").onclick = startNewGame;
+
+dailyBtn.onclick = () => {
+  isDailyChallenge = true;
+  startNewGame();
+
+  if (typeof gtag === "function") {
+    gtag("event", "daily_challenge_start", {
+      challenge_date: dailyDateKey,
+      difficulty: "medium"
+    });
+  }
+};
+
+shareBtn.onclick = shareDailyResult;
+
+/* ===== DIFFICULTY ===== */
+
+document.querySelectorAll(".diff").forEach(button => {
+  button.onclick = () => {
+    difficulty = button.dataset.level;
+    isDailyChallenge = false;
+
     startNewGame();
   };
-}
-/* ===== DIFFICULTY ===== */
+});
+
+/* ===== START ===== */
+
+startNewGame();/* ===== DIFFICULTY ===== */
 
 document.querySelectorAll(".diff").forEach(button => {
   button.onclick = () => {
