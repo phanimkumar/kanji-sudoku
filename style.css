@@ -544,3 +544,439 @@ body{
     margin:20px auto;
 }
 }
+
+/* =====================================================
+   SUDOKU MULTIVERSE - HOMEPAGE REDESIGN
+   ===================================================== */
+
+
+/* ---------- DAILY CHALLENGE ---------- */
+
+.daily-home {
+  max-width: 1050px;
+  margin: 30px auto 22px;
+  padding: 24px 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+
+  border: 1px solid #d5ad32;
+  border-radius: 18px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(213, 173, 50, 0.13),
+    rgba(255, 255, 255, 0.03)
+  );
+
+  box-sizing: border-box;
+}
+
+
+.daily-home-text {
+  text-align: left;
+}
+
+
+.daily-label {
+  display: block;
+
+  color: #ffd65a;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+
+  margin-bottom: 7px;
+}
+
+
+.daily-home h2 {
+  margin: 0 0 7px;
+
+  color: #ffffff;
+  font-size: 25px;
+}
+
+
+.daily-home p {
+  margin: 0;
+
+  color: #cbd8ef;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+
+.daily-play-btn {
+  flex-shrink: 0;
+
+  display: inline-block;
+
+  padding: 14px 25px;
+
+  border-radius: 10px;
+
+  background: #f2c94c;
+  color: #111827;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  text-decoration: none;
+
+  transition: transform 0.15s ease,
+              box-shadow 0.15s ease;
+}
+
+
+.daily-play-btn:hover {
+  transform: translateY(-2px);
+
+  box-shadow: 0 6px 18px
+    rgba(242, 201, 76, 0.25);
+}
+
+
+
+/* ---------- APP DOWNLOAD AREA ---------- */
+
+.app-download-section {
+  text-align: center;
+
+  margin: 20px auto 32px;
+}
+
+
+.download-heading {
+  color: #dce7ff;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  margin-bottom: 10px;
+}
+
+
+.store-buttons {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 12px;
+
+  flex-wrap: wrap;
+}
+
+
+.store-btn {
+  min-width: 150px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  padding: 8px 16px;
+
+  background: #05070b;
+
+  border: 1px solid #707987;
+  border-radius: 9px;
+
+  color: #ffffff;
+
+  text-decoration: none;
+
+  box-sizing: border-box;
+}
+
+
+.store-btn:hover {
+  border-color: #9ec5ff;
+
+  transform: translateY(-1px);
+}
+
+
+.store-btn span:last-child {
+  display: flex;
+  flex-direction: column;
+
+  text-align: left;
+}
+
+
+.store-btn small {
+  font-size: 9px;
+  line-height: 1.1;
+
+  color: #dddddd;
+}
+
+
+.store-btn strong {
+  font-size: 16px;
+  line-height: 1.2;
+
+  color: #ffffff;
+}
+
+
+.store-icon {
+  font-size: 21px;
+}
+
+
+
+/* ---------- GAME SECTION ---------- */
+
+.games-section {
+  max-width: 1150px;
+
+  margin: 15px auto 45px;
+}
+
+
+.section-title {
+  text-align: center;
+
+  color: #ffffff;
+
+  font-size: 27px;
+
+  margin: 0 0 7px;
+}
+
+
+.section-subtitle {
+  text-align: center;
+
+  color: #9db5df;
+
+  font-size: 14px;
+
+  margin: 0 0 23px;
+}
+
+
+.games-section .game-list {
+  margin-top: 0;
+}
+
+
+.home-game-card {
+  text-align: center;
+}
+
+
+.game-card-icon {
+  font-size: 34px;
+
+  margin-bottom: 5px;
+}
+
+
+.home-game-card h3 {
+  margin-top: 5px;
+  margin-bottom: 14px;
+}
+
+
+.home-game-card p {
+  min-height: 75px;
+}
+
+
+
+/* ---------- SHORT ABOUT SECTION ---------- */
+
+.home-about {
+  max-width: 760px;
+
+  margin: 35px auto 50px;
+
+  text-align: center;
+}
+
+
+.home-about h2 {
+  color: #ffffff;
+
+  font-size: 24px;
+
+  margin-bottom: 13px;
+}
+
+
+.home-about p {
+  color: #cbd8ef;
+
+  font-size: 15px;
+  line-height: 1.7;
+
+  margin: 0;
+}
+
+
+
+/* ---------- LEARNING SECTION ---------- */
+
+.learning-section {
+  max-width: 1050px;
+
+  margin: 35px auto 50px;
+}
+
+
+.learning-section .feature-list {
+  margin-top: 22px;
+}
+
+
+
+/* ---------- FOOTER ---------- */
+
+.footer-copyright {
+  margin-bottom: 6px;
+}
+
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 700px) {
+
+
+  /* tighter header */
+
+  .title-container {
+    margin-bottom: 12px;
+  }
+
+
+  .nav-links {
+    margin-bottom: 12px;
+  }
+
+
+  /* daily challenge */
+
+  .daily-home {
+    margin: 18px 10px 16px;
+
+    padding: 18px 16px;
+
+    display: block;
+
+    text-align: center;
+  }
+
+
+  .daily-home-text {
+    text-align: center;
+  }
+
+
+  .daily-label {
+    font-size: 13px;
+  }
+
+
+  .daily-home h2 {
+    font-size: 21px;
+  }
+
+
+  .daily-home p {
+    font-size: 13px;
+
+    margin-bottom: 15px;
+  }
+
+
+  .daily-play-btn {
+    display: block;
+
+    width: 100%;
+
+    padding: 13px 10px;
+
+    box-sizing: border-box;
+  }
+
+
+  /* downloads */
+
+  .app-download-section {
+    margin: 17px 10px 28px;
+  }
+
+
+  .store-buttons {
+    gap: 8px;
+  }
+
+
+  .store-btn {
+    min-width: 145px;
+
+    padding: 8px 12px;
+  }
+
+
+  /* games */
+
+  .games-section {
+    margin-top: 10px;
+  }
+
+
+  .section-title {
+    font-size: 23px;
+  }
+
+
+  .section-subtitle {
+    font-size: 13px;
+
+    padding: 0 15px;
+  }
+
+
+  .home-game-card p {
+    min-height: 0;
+  }
+
+
+  /* about */
+
+  .home-about {
+    margin: 30px 20px 40px;
+  }
+
+
+  .home-about h2 {
+    font-size: 21px;
+  }
+
+
+  .home-about p {
+    font-size: 14px;
+  }
+
+
+  /* learning */
+
+  .learning-section {
+    margin-top: 30px;
+  }
+
+}
+
+
