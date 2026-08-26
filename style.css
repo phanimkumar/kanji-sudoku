@@ -978,5 +978,113 @@ body{
   }
 
 }
+/* ===== HOMEPAGE VISUAL POLISH ===== */
 
+/* Navigation */
+.nav-links a {
+  color: #d6e4ff;
+  text-decoration: none;
+  margin: 0 12px;
+  font-weight: 600;
+  transition: 0.15s ease;
+}
+
+.nav-links a:hover {
+  color: #ffd65a;
+}
+
+/* Daily Challenge */
+.daily-home {
+  max-width: 980px;
+  margin: 26px auto 24px;
+  padding: 22px 28px;
+  border: 1px solid rgba(255, 214, 90, 0.55);
+  border-radius: 16px;
+  background: rgba(255, 214, 90, 0.07);
+}
+
+.daily-label {
+  color: #ffd65a;
+}
+
+.daily-play-btn {
+  background: #ffd65a;
+  color: #111827;
+  border: none;
+  border-radius: 10px;
+  padding: 13px 24px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.daily-play-btn:hover {
+  background: #ffe287;
+}
+
+/* Store buttons */
+.store-btn {
+  background: #111827;
+  color: #ffffff !important;
+  border: 1px solid #56647a;
+  text-decoration: none !important;
+  border-radius: 10px;
+}
+
+.store-btn:hover {
+  border-color: #ffd65a;
+}
+
+/* Main game cards */
+.home-game-card {
+  background: #f7f8fa;
+  border: 1px solid rgba(255,255,255,0.15);
+  text-align: left;
+}
+
+.home-game-card .play-btn {
+  background: #172b4d;
+  color: #ffffff;
+  border-radius: 9px;
+}
+
+.home-game-card .play-btn:hover {
+  background: #244475;
+}
+
+/* Section headings */
+.section-title {
+  color: #ffffff;
+}
+
+.section-subtitle {
+  color: #aebed8;
+}
+
+/* General links lower on page */
+.home-about a,
+.learning-section a {
+  text-decoration: none;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  .nav-links a {
+    margin: 0 6px;
+    line-height: 2;
+  }
+
+  .daily-home {
+    margin: 18px 4px;
+    padding: 18px 14px;
+  }
+
+  .store-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .store-btn {
+    min-width: 0;
+  }
+}
 
