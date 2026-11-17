@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Sudoku Puzzle Books | Kanji & Color Sudoku | Sudoku Multiverse</title>
+
+  <meta name="description"
+    content="Kanji Sudoku and Color Sudoku for Kids puzzle books by Sudoku Multiverse. Buy the paperback on Amazon or download the printable PDF on itch.io.">
+
+  <link rel="icon" href="/logo.png">
+  <link rel="stylesheet" href="/style.css?v=8" />
+
+  <style>
+    .book-buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+    .play-btn.pdf-btn { background: #fa5c5c; }
+    .play-btn.pdf-btn:hover { background: #ff7676; }
+    .book-tag { display: inline-block; font-size: 12px; font-weight: 700; color: #1f5fe0; margin-bottom: 6px; }
+  </style>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TTLG5QWZY1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-TTLG5QWZY1');
+  </script>
+</head>
+
+
+<body>
+
+  <div class="container">
+
+    <!-- HEADER -->
+    <div class="title-container">
+      <img src="logo.png" class="app-logo" alt="Sudoku Multiverse logo" />
+      <h1 class="game-title">Sudoku Multiverse</h1>
+    </div>
+
+
+    <!-- NAVIGATION -->
+    <div class="nav-links">
+      <a href="/index.html">🏠 Home</a>
+      <a href="/kanji.html">🎮 Kanji</a>
+      <a href="/Royal.html">♔ Royal</a>
+      <a href="/Color.html">🎨 Color</a>
+      <a href="/books.html">📚 Books</a>
+      <a href="/how-to-play.html">📘 How to Play</a>
+      <a href="/sudoku-strategy-guide.html">🧠 Strategy Guide</a>
+      <a href="/memory-and-concentration.html">🧠 Brain Benefits</a>
+      <a href="/history-of-sudoku.html">📜 History</a>
+    </div>
+
+
+    <!-- BOOKS -->
+    <section class="games-section">
+
+      <h2 class="section-title">Sudoku Multiverse Puzzle Books</h2>
+
+      <p class="section-subtitle">
+        Take the puzzles off the screen. Get a paperback, or download a printable PDF and print at home.
+      </p>
+
+
+      <div class="game-list">
+
+        <!-- KANJI MASTER -->
+        <div class="game-card home-game-card">
+          <div class="game-card-icon">🀄</div>
+          <span class="book-tag">FOR EXPERIENCED SOLVERS</span>
+          <h3>Kanji Sudoku: Master Edition</h3>
+          <p>
+            90 original puzzles that use nine Japanese Kanji instead of the numbers 1–9.
+            30 Easy, 30 Medium and 30 Hard, with full solutions.
+          </p>
+          <div class="book-buttons">
+            <a href="https://www.amazon.com/dp/B0HFG8KLT1" class="play-btn"
+               target="_blank" rel="noopener noreferrer"
+               onclick="trackBook('kanji_master','amazon')">Paperback on Amazon</a>
+            <a href="https://sudokumultiverse.itch.io/kanji-sudoku-master-edition" class="play-btn pdf-btn"
+               target="_blank" rel="noopener noreferrer"
+               onclick="trackBook('kanji_master','itch')">Printable PDF</a>
+          </div>
+        </div>
+
+
+        <!-- KANJI EASY -->
+        <div class="game-card home-game-card">
+          <div class="game-card-icon">🌱</div>
+          <span class="book-tag">FOR BEGINNERS</span>
+          <h3>Kanji Sudoku: Easy Edition</h3>
+          <p>
+            New to Kanji Sudoku? Start here. Gentle puzzles that help you learn the
+            nine Kanji symbols while you solve.
+          </p>
+          <div class="book-buttons">
+            <a href="https://www.amazon.com/dp/B0HPQLY6QF" class="play-btn"
+               target="_blank" rel="noopener noreferrer"
+               onclick="trackBook('kanji_easy','amazon')">Paperback on Amazon</a>
+            <a href="https://sudokumultiverse.itch.io/kanji-sudoku-easy-volume-1" class="play-btn pdf-btn"
+               target="_blank" rel="noopener noreferrer"
+               onclick="trackBook('kanji_easy','itch')">Printable PDF</a>
+          </div>
+        </div>
+
+
+        <!-- COLOR KIDS -->
+        <div class="game-card home-game-card">
+          <div class="game-card-icon">🎨</div>
+          <span class="book-tag">FOR KIDS</span>
+          <h3>Color Sudoku for Kids</h3>
+          <p>
+            Sudoku with colors instead of numbers. 40 colorful 6×6 puzzles across Easy,
+            Medium and Hard, plus two bonus 9×9 challenges. Large circles for coloring in.
+          </p>
+          <div class="book-buttons">
+            <a href="https://www.amazon.com/dp/B0HFG3HRWG" class="play-btn"
+               target="_blank" rel="noopener noreferrer"
+               onclick="trackBook('color_kids','amazon')">Paperback on Amazon</a>
+            <a href="https://sudokumultiverse.itch.io/color-sudoku-for-kids" class="play-btn pdf-btn"
+               target="_blank" rel="noopener noreferrer"
+               onclick="trackBook('color_kids','itch')">Printable PDF</a>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section class="home-about">
+      <h2>Paperback or PDF?</h2>
+      <p>
+        The paperback is printed and delivered by Amazon. The printable PDF downloads
+        instantly. You can print a puzzle as many times as you like, which is handy for
+        children who want to try again or for classroom use.
+      </p>
+    </section>
+
+  </div>
+
+
+  <!-- FOOTER -->
+  <div class="footer-links">
+    <p class="footer-copyright">© 2026 Sudoku Multiverse</p>
+    <a href="/privacy.html">Privacy Policy</a> |
+    <a href="/about.html">About</a> |
+    <a href="/contact.html">Contact</a> |
+    <a href="/books.html">Books</a> |
+    <a href="/how-to-play.html">How to Play</a> |
+    <a href="/sudoku-strategy-guide.html">Strategy Guide</a> |
+    <a href="/memory-and-concentration.html">Brain Benefits</a> |
+    <a href="/history-of-sudoku.html">History</a>
+  </div>
+
+
+  <!-- BOOK CLICK ANALYTICS -->
+  <script>
+    function trackBook(book, store) {
+      if (typeof gtag === 'function') {
+        gtag('event', 'book_click', { 'book': book, 'store': store });
+      }
+    }
+  </script>
+
+</body>
+</html>
