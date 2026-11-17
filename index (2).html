@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Sudoku Multiverse | Kanji, Royal & Color Sudoku</title>
+
+  <meta name="description"
+    content="Play unique Sudoku variations including Kanji Sudoku, Royal Sudoku and Color Sudoku. Take today's Daily Sudoku Challenge or download Kanji Sudoku for Android and iPhone.">
+
+  <link rel="icon" href="/logo.png">
+  <link rel="stylesheet" href="/style.css?v=8" />
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TTLG5QWZY1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'G-TTLG5QWZY1');
+  </script>
+</head>
+
+
+<body>
+
+  <div class="container">
+
+    <!-- HEADER -->
+    <div class="title-container">
+      <img src="logo.png"
+           class="app-logo"
+           alt="Sudoku Multiverse logo" />
+
+      <h1 class="game-title">
+        Sudoku Multiverse
+      </h1>
+    </div>
+
+
+    <!-- NAVIGATION -->
+    <div class="nav-links">
+      <a href="/index.html">🏠 Home</a>
+      <a href="/kanji.html">🎮 Kanji</a>
+      <a href="/Royal.html">♔ Royal</a>
+      <a href="/Color.html">🎨 Color</a>
+      <a href="/books.html">📚 Books</a>
+      <a href="/how-to-play.html">📘 How to Play</a>
+      <a href="/sudoku-strategy-guide.html">🧠 Strategy Guide</a>
+      <a href="/memory-and-concentration.html">🧠 Brain Benefits</a>
+      <a href="/history-of-sudoku.html">📜 History</a>
+    </div>
+
+
+    <!-- DAILY CHALLENGE -->
+    <section class="daily-home">
+
+      <div class="daily-home-text">
+        <span class="daily-label">⭐ TODAY'S DAILY CHALLENGE</span>
+
+        <h2>Color Sudoku • Medium</h2>
+
+        <p>
+          A fresh puzzle every day. Test your logic and see how quickly
+          you can solve today's challenge.
+        </p>
+      </div>
+
+      <a href="/Color.html?daily=1"
+         class="daily-play-btn"
+         onclick="trackDailyChallenge()">
+        Play Today's Challenge
+      </a>
+
+    </section>
+
+
+    <!-- APP DOWNLOADS -->
+    <section class="app-download-section">
+
+      <div class="download-heading">
+        Play Kanji Sudoku on Your Phone
+      </div>
+
+      <div class="store-buttons">
+
+        <a href="https://play.google.com/store/apps/details?id=com.swayamkrushi.kanjisudoku&pcampaignid=web_share"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="store-btn google-store">
+
+          <span class="store-icon">▶</span>
+
+          <span>
+            <small>GET IT ON</small>
+            <strong>Google Play</strong>
+          </span>
+
+        </a>
+
+
+        <a href="https://apps.apple.com/pl/app/kanji-sudoku/id6764883146"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="store-btn apple-store">
+
+          <span class="store-icon">●</span>
+
+          <span>
+            <small>Download on the</small>
+            <strong>App Store</strong>
+          </span>
+
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- GAME SELECTION -->
+    <section class="games-section">
+
+      <h2 class="section-title">Choose Your Challenge</h2>
+
+      <p class="section-subtitle">
+        Three ways to play Sudoku. Same logic. Different challenge.
+      </p>
+
+
+      <div class="game-list">
+
+        <!-- KANJI -->
+        <div class="game-card home-game-card">
+
+          <div class="game-card-icon">🀄</div>
+
+          <h3>Kanji Sudoku</h3>
+
+          <p>
+            Replace numbers with Japanese Kanji characters and challenge
+            your pattern recognition and memory.
+          </p>
+
+          <a href="/kanji.html" class="play-btn">
+            Play Kanji Sudoku
+          </a>
+
+        </div>
+
+
+        <!-- ROYAL -->
+        <div class="game-card home-game-card">
+
+          <div class="game-card-icon">♔</div>
+
+          <h3>Royal Sudoku</h3>
+
+          <p>
+            Sudoku meets chess. Solve the grid using chess pieces instead
+            of numbers for a different strategic challenge.
+          </p>
+
+          <a href="/Royal.html" class="play-btn">
+            Play Royal Sudoku
+          </a>
+
+        </div>
+
+
+        <!-- COLOR -->
+        <div class="game-card home-game-card">
+
+          <div class="game-card-icon">🎨</div>
+
+          <h3>Color Sudoku</h3>
+
+          <p>
+            Solve Sudoku through colors instead of numbers and put your
+            visual memory and logical reasoning to work.
+          </p>
+
+          <a href="/Color.html" class="play-btn">
+            Play Color Sudoku
+          </a>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- SHORT INTRODUCTION -->
+    <section class="home-about">
+
+      <h2>Discover the Multiverse of Sudoku</h2>
+
+      <p>
+        Sudoku Multiverse takes the familiar logic of Sudoku beyond numbers.
+        Solve puzzles using Japanese Kanji, chess pieces, or colors — each
+        variation gives your brain a different visual and logical challenge.
+      </p>
+
+    </section>
+
+
+    <!-- LEARNING ARTICLES -->
+    <section class="learning-section">
+
+      <h2 class="section-title">
+        Explore Sudoku
+      </h2>
+
+      <div class="feature-list">
+
+
+        <div class="feature-item">
+
+          <strong>
+            🧠 Memory & Concentration
+          </strong>
+
+          <p>
+            Explore how Sudoku exercises focus, working memory and logical
+            thinking.
+          </p>
+
+          <a href="/memory-and-concentration.html"
+             class="play-btn">
+            Read Article
+          </a>
+
+        </div>
+
+
+        <div class="feature-item">
+
+          <strong>
+            📜 History of Sudoku
+          </strong>
+
+          <p>
+            Discover how Sudoku evolved from mathematical logic into one of
+            the world's most popular puzzles.
+          </p>
+
+          <a href="/history-of-sudoku.html"
+             class="play-btn">
+            Read History
+          </a>
+
+        </div>
+
+
+        <div class="feature-item">
+
+          <strong>
+            🧩 Sudoku Strategy Guide
+          </strong>
+
+          <p>
+            Learn solving techniques from beginner fundamentals through
+            advanced Sudoku strategies.
+          </p>
+
+          <a href="/sudoku-strategy-guide.html"
+             class="play-btn">
+            Strategy Guide
+          </a>
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+  </div>
+
+
+  <!-- FOOTER -->
+  <div class="footer-links">
+
+    <p class="footer-copyright">
+      © 2026 Sudoku Multiverse
+    </p>
+
+    <a href="/privacy.html">Privacy Policy</a> |
+    <a href="/about.html">About</a> |
+    <a href="/contact.html">Contact</a> |
+    <a href="/how-to-play.html">How to Play</a> |
+    <a href="/sudoku-strategy-guide.html">Strategy Guide</a> |
+    <a href="/memory-and-concentration.html">Brain Benefits</a> |
+    <a href="/history-of-sudoku.html">History</a>
+
+  </div>
+
+
+  <!-- DAILY CHALLENGE ANALYTICS -->
+  <script>
+
+    function trackDailyChallenge() {
+
+      if (typeof gtag === 'function') {
+
+        gtag('event', 'daily_challenge_click', {
+          'challenge_type': 'color',
+          'difficulty': 'medium',
+          'location': 'homepage'
+        });
+
+      }
+
+    }
+
+  </script>
+
+
+</body>
+</html>
