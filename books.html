@@ -14,10 +14,17 @@
   <link rel="stylesheet" href="/style.css?v=8" />
 
   <style>
-    .book-buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
-    .play-btn.pdf-btn { background: #fa5c5c; }
-    .play-btn.pdf-btn:hover { background: #ff7676; }
-    .book-tag { display: inline-block; font-size: 12px; font-weight: 700; color: #1f5fe0; margin-bottom: 6px; }
+    .book-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:24px; margin:0 auto 40px; }
+    .book-card { background:#f4f4f4; border-radius:22px; padding:20px; box-shadow:0 10px 24px rgba(0,0,0,0.18); display:flex; flex-direction:column; text-align:left; transition:transform .2s; }
+    .book-card:hover { transform:translateY(-5px); }
+    .book-cover { display:block; width:100%; max-width:230px; height:auto; aspect-ratio:600/776; margin:0 auto; border-radius:6px; box-shadow:0 6px 16px rgba(0,0,0,0.25); background:#ddd; }
+    .book-tag { font-size:12px; font-weight:700; color:#1f5fe0; margin:16px 0 4px; }
+    .book-card h3 { color:#111; font-size:21px; margin:0 0 8px; }
+    .book-card p { color:#4b4b4b; font-size:14px; line-height:1.5; margin:0 0 12px; flex-grow:1; }
+    .book-buttons { display:flex; flex-wrap:wrap; gap:8px; }
+    .book-buttons .play-btn { margin-top:0; font-size:14px; padding:9px 14px; }
+    .play-btn.pdf-btn { background:#fa5c5c; }
+    .play-btn.pdf-btn:hover { background:#ff7676; }
   </style>
 
   <!-- Google Analytics -->
@@ -62,68 +69,48 @@
       <h2 class="section-title">Sudoku Multiverse Puzzle Books</h2>
 
       <p class="section-subtitle">
-        Take the puzzles off the screen. Get a paperback, or download a printable PDF and print at home.
+        Take the puzzles off the screen. Buy the paperback on Amazon, or buy the printable PDF on itch.io and print at home.
       </p>
 
 
-      <div class="game-list">
+      <div class="book-grid">
 
-        <!-- KANJI MASTER -->
-        <div class="game-card home-game-card">
-          <div class="game-card-icon">🀄</div>
-          <span class="book-tag">FOR EXPERIENCED SOLVERS</span>
+        <div class="book-card">
+          <a href="https://www.amazon.com/dp/B0HFG8KLT1" target="_blank" rel="noopener noreferrer" onclick="trackBook('kanji_master','amazon_cover')">
+            <img src="/cover-kanji-master.jpg" class="book-cover" alt="Kanji Sudoku: Master Edition cover" loading="lazy" width="600" height="776">
+          </a>
+          <div class="book-tag">FOR EXPERIENCED SOLVERS</div>
           <h3>Kanji Sudoku: Master Edition</h3>
-          <p>
-            90 original puzzles that use nine Japanese Kanji instead of the numbers 1–9.
-            30 Easy, 30 Medium and 30 Hard, with full solutions.
-          </p>
+          <p>90 original puzzles with nine Japanese Kanji instead of numbers. 30 Easy, 30 Medium, 30 Hard, with full solutions.</p>
           <div class="book-buttons">
-            <a href="https://www.amazon.com/dp/B0HFG8KLT1" class="play-btn"
-               target="_blank" rel="noopener noreferrer"
-               onclick="trackBook('kanji_master','amazon')">Paperback on Amazon</a>
-            <a href="https://sudokumultiverse.itch.io/kanji-sudoku-master-edition" class="play-btn pdf-btn"
-               target="_blank" rel="noopener noreferrer"
-               onclick="trackBook('kanji_master','itch')">Printable PDF</a>
+            <a href="https://www.amazon.com/dp/B0HFG8KLT1" class="play-btn" target="_blank" rel="noopener noreferrer" onclick="trackBook('kanji_master','amazon')">Buy Paperback · Amazon</a>
+            <a href="https://sudokumultiverse.itch.io/kanji-sudoku-master-edition" class="play-btn pdf-btn" target="_blank" rel="noopener noreferrer" onclick="trackBook('kanji_master','itch')">Buy PDF · itch.io</a>
           </div>
         </div>
 
-
-        <!-- KANJI EASY -->
-        <div class="game-card home-game-card">
-          <div class="game-card-icon">🌱</div>
-          <span class="book-tag">FOR BEGINNERS</span>
+        <div class="book-card">
+          <a href="https://www.amazon.com/dp/B0HPQLY6QF" target="_blank" rel="noopener noreferrer" onclick="trackBook('kanji_easy','amazon_cover')">
+            <img src="/cover-kanji-easy.jpg" class="book-cover" alt="Kanji Sudoku: Easy Edition cover" loading="lazy" width="600" height="776">
+          </a>
+          <div class="book-tag">FOR BEGINNERS</div>
           <h3>Kanji Sudoku: Easy Edition</h3>
-          <p>
-            New to Kanji Sudoku? Start here. Gentle puzzles that help you learn the
-            nine Kanji symbols while you solve.
-          </p>
+          <p>50 original easy puzzles. The gentle way to learn the nine Kanji symbols while you solve.</p>
           <div class="book-buttons">
-            <a href="https://www.amazon.com/dp/B0HPQLY6QF" class="play-btn"
-               target="_blank" rel="noopener noreferrer"
-               onclick="trackBook('kanji_easy','amazon')">Paperback on Amazon</a>
-            <a href="https://sudokumultiverse.itch.io/kanji-sudoku-easy-volume-1" class="play-btn pdf-btn"
-               target="_blank" rel="noopener noreferrer"
-               onclick="trackBook('kanji_easy','itch')">Printable PDF</a>
+            <a href="https://www.amazon.com/dp/B0HPQLY6QF" class="play-btn" target="_blank" rel="noopener noreferrer" onclick="trackBook('kanji_easy','amazon')">Buy Paperback · Amazon</a>
+            <a href="https://sudokumultiverse.itch.io/kanji-sudoku-easy-volume-1" class="play-btn pdf-btn" target="_blank" rel="noopener noreferrer" onclick="trackBook('kanji_easy','itch')">Buy PDF · itch.io</a>
           </div>
         </div>
 
-
-        <!-- COLOR KIDS -->
-        <div class="game-card home-game-card">
-          <div class="game-card-icon">🎨</div>
-          <span class="book-tag">FOR KIDS</span>
+        <div class="book-card">
+          <a href="https://www.amazon.com/dp/B0HFG3HRWG" target="_blank" rel="noopener noreferrer" onclick="trackBook('color_kids','amazon_cover')">
+            <img src="/cover-color-kids.jpg" class="book-cover" alt="Color Sudoku for Kids cover" loading="lazy" width="600" height="776">
+          </a>
+          <div class="book-tag">FOR KIDS</div>
           <h3>Color Sudoku for Kids</h3>
-          <p>
-            Sudoku with colors instead of numbers. 40 colorful 6×6 puzzles across Easy,
-            Medium and Hard, plus two bonus 9×9 challenges. Large circles for coloring in.
-          </p>
+          <p>Sudoku with colors instead of numbers. 40 colorful 6×6 puzzles in Easy, Medium and Hard, plus two bonus 9×9 challenges.</p>
           <div class="book-buttons">
-            <a href="https://www.amazon.com/dp/B0HFG3HRWG" class="play-btn"
-               target="_blank" rel="noopener noreferrer"
-               onclick="trackBook('color_kids','amazon')">Paperback on Amazon</a>
-            <a href="https://sudokumultiverse.itch.io/color-sudoku-for-kids" class="play-btn pdf-btn"
-               target="_blank" rel="noopener noreferrer"
-               onclick="trackBook('color_kids','itch')">Printable PDF</a>
+            <a href="https://www.amazon.com/dp/B0HFG3HRWG" class="play-btn" target="_blank" rel="noopener noreferrer" onclick="trackBook('color_kids','amazon')">Buy Paperback · Amazon</a>
+            <a href="https://sudokumultiverse.itch.io/color-sudoku-for-kids" class="play-btn pdf-btn" target="_blank" rel="noopener noreferrer" onclick="trackBook('color_kids','itch')">Buy PDF · itch.io</a>
           </div>
         </div>
 
