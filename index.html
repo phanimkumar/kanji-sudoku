@@ -26,17 +26,88 @@
     gtag('config', 'G-TTLG5QWZY1');
   </script>
   <style>
-    .book-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:24px; margin:0 auto 40px; }
-    .book-card { background:#f4f4f4; border-radius:22px; padding:20px; box-shadow:0 10px 24px rgba(0,0,0,0.18); display:flex; flex-direction:column; text-align:left; transition:transform .2s; }
-    .book-card:hover { transform:translateY(-5px); }
-    .book-cover { display:block; width:100%; max-width:230px; height:auto; aspect-ratio:600/776; margin:0 auto; border-radius:6px; box-shadow:0 6px 16px rgba(0,0,0,0.25); background:#ddd; }
-    .book-tag { font-size:12px; font-weight:700; color:#1f5fe0; margin:16px 0 4px; }
-    .book-card h3 { color:#111; font-size:21px; margin:0 0 8px; }
-    .book-card p { color:#4b4b4b; font-size:14px; line-height:1.5; margin:0 0 12px; flex-grow:1; }
-    .book-buttons { display:flex; flex-wrap:wrap; gap:8px; }
-    .book-buttons .play-btn { margin-top:0; font-size:14px; padding:9px 14px; }
-    .play-btn.pdf-btn { background:#fa5c5c; }
-    .play-btn.pdf-btn:hover { background:#ff7676; }
+    /* ===== HOME PAGE (v2) ===== */
+    .h-wrap { max-width:1100px; margin:0 auto; text-align:left; }
+    .h-section { margin:56px 0; }
+    .h-head { text-align:center; margin-bottom:24px; }
+    .h-head h2 { font-size:28px; margin:0 0 6px; color:#fff; }
+    .h-head p { margin:0; color:#9db5df; font-size:15px; }
+
+    /* Hero */
+    .h-hero { display:grid; grid-template-columns:1.2fr 1fr; gap:48px; align-items:center; margin:36px 0 20px; }
+    .h-eyebrow { color:#ffd65a; font-size:13px; font-weight:700; letter-spacing:.12em; }
+    .h-hero h2 { font-size:44px; line-height:1.12; margin:12px 0 16px; color:#fff; }
+    .h-hero h2 span { color:#ffd65a; }
+    .h-hero p { color:#b8c7e3; font-size:17px; line-height:1.6; margin:0 0 26px; max-width:520px; }
+    .h-cta { display:flex; flex-wrap:wrap; gap:12px; }
+    .h-btn { display:inline-block; padding:13px 22px; border-radius:12px; font-weight:700; font-size:16px; text-decoration:none; transition:transform .15s, background .15s; }
+    .h-btn:hover { transform:translateY(-2px); }
+    .h-btn-gold { background:#ffd65a; color:#111 !important; }
+    .h-btn-ghost { border:1px solid rgba(255,214,90,.6); color:#ffd65a !important; background:rgba(255,214,90,.06); }
+    .h-daily-note { margin-top:14px; font-size:13px; color:#8ea3c7; }
+
+    .h-board { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; max-width:340px; margin:0 auto; padding:18px; border-radius:22px;
+               background:rgba(255,255,255,.04); border:1px solid rgba(111,177,255,.25); box-shadow:0 20px 50px rgba(0,0,0,.45); }
+    .h-board div { aspect-ratio:1; display:flex; align-items:center; justify-content:center; font-size:40px; color:#e8eefc;
+                   background:#13213d; border-radius:12px; font-family:"Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",serif; }
+    .h-board .on { background:#ffd65a; color:#111; box-shadow:0 0 24px rgba(255,214,90,.45); }
+    .h-board .dim { color:transparent; background:#0d1830; border:1px dashed rgba(111,177,255,.3); }
+
+    /* Game cards */
+    .h-games { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+    .h-game { position:relative; display:block; text-decoration:none; border-radius:20px; padding:22px; background:rgba(255,255,255,.05);
+              border:1px solid rgba(255,255,255,.1); transition:transform .2s, border-color .2s; }
+    .h-game:hover { transform:translateY(-6px); border-color:#ffd65a; }
+    .h-badge { position:absolute; top:14px; right:14px; background:#ffd65a; color:#111; font-size:11px; font-weight:800; padding:4px 9px; border-radius:20px; }
+    .h-mini { display:grid; grid-template-columns:repeat(3,52px); gap:6px; justify-content:center; padding:16px 0 18px; }
+    .h-mini span { width:52px; height:52px; display:flex; align-items:center; justify-content:center; border-radius:10px; background:#13213d; font-size:26px; color:#e8eefc; }
+    .h-mini.kanji span { font-family:"Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",serif; }
+    .h-mini.royal span { font-size:32px; color:#f3d98b; font-variant-emoji:text; font-family:"Segoe UI Symbol","DejaVu Sans",serif; }
+    .h-mini.color span i { width:30px; height:30px; border-radius:50%; display:block; }
+    .h-game h3 { color:#fff; font-size:22px; margin:0 0 6px; }
+    .h-game p { color:#a9b9d6; font-size:14px; line-height:1.55; margin:0 0 14px; }
+    .h-play { color:#ffd65a; font-weight:700; font-size:15px; }
+
+    /* Books */
+    .h-books { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
+    .h-book { text-align:center; }
+    .h-book img { width:100%; max-width:210px; height:auto; aspect-ratio:600/776; display:block; margin:0 auto 14px; border-radius:6px;
+                  box-shadow:0 18px 40px rgba(0,0,0,.55); transition:transform .2s; }
+    .h-book a:hover img { transform:translateY(-6px) rotate(-1deg); }
+    .h-book h3 { color:#fff; font-size:17px; margin:0 0 4px; }
+    .h-book .tag { color:#9db5df; font-size:13px; margin:0 0 12px; }
+    .h-book-btns { display:flex; justify-content:center; flex-wrap:wrap; gap:8px; }
+    .h-small { padding:8px 14px; font-size:13px; border-radius:10px; font-weight:700; text-decoration:none; }
+    .h-small.amz { background:#ffd65a; color:#111 !important; }
+    .h-small.pdf { border:1px solid #fa5c5c; color:#ff8a8a !important; }
+
+    /* App band */
+    .h-app { display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap; padding:26px 30px; border-radius:20px;
+             background:linear-gradient(135deg,rgba(31,95,224,.35),rgba(31,95,224,.08)); border:1px solid rgba(111,177,255,.35); }
+    .h-app h3 { margin:0 0 4px; font-size:22px; color:#fff; }
+    .h-app p { margin:0; color:#b8c7e3; font-size:14px; }
+    .h-app .store-buttons { margin:0; }
+
+    /* Articles */
+    .h-reads { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+    .h-read { display:block; text-decoration:none; padding:20px; border-radius:16px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); transition:border-color .2s; }
+    .h-read:hover { border-color:#6fb1ff; }
+    .h-read strong { display:block; color:#fff; font-size:16px; margin-bottom:6px; }
+    .h-read span { color:#a9b9d6; font-size:14px; line-height:1.5; }
+    .h-read em { display:block; margin-top:10px; color:#6fb1ff; font-style:normal; font-weight:600; font-size:14px; }
+
+    @media (max-width:820px) {
+      .h-hero { grid-template-columns:1fr; text-align:center; gap:28px; }
+      .h-hero h2 { font-size:32px; }
+      .h-hero p { margin-left:auto; margin-right:auto; }
+      .h-cta { justify-content:center; }
+      .h-board { max-width:260px; }
+      .h-board div { font-size:30px; }
+      .h-games, .h-books, .h-reads { grid-template-columns:1fr; }
+      .h-books { gap:40px; }
+      .h-app { justify-content:center; text-align:center; }
+      .h-section { margin:44px 0; }
+    }
   </style>
 </head>
 
@@ -47,15 +118,9 @@
 
     <!-- HEADER -->
     <div class="title-container">
-      <img src="logo.png"
-           class="app-logo"
-           alt="Sudoku Multiverse logo" />
-
-      <h1 class="game-title">
-        Sudoku Multiverse
-      </h1>
+      <img src="logo.png" class="app-logo" alt="Sudoku Multiverse logo" />
+      <h1 class="game-title">Sudoku Multiverse</h1>
     </div>
-
 
     <!-- NAVIGATION -->
     <div class="nav-links">
@@ -70,329 +135,192 @@
       <a href="/history-of-sudoku.html">📜 History</a>
     </div>
 
+    <div class="h-wrap">
 
-    <!-- DAILY CHALLENGE -->
-    <section class="daily-home">
-
-      <div class="daily-home-text">
-        <span class="daily-label">⭐ TODAY'S DAILY CHALLENGE</span>
-
-        <h2>Color Sudoku • Medium</h2>
-
-        <p>
-          A fresh puzzle every day. Test your logic and see how quickly
-          you can solve today's challenge.
-        </p>
-      </div>
-
-      <a href="/Color.html?daily=1"
-         class="daily-play-btn"
-         onclick="trackDailyChallenge()">
-        Play Today's Challenge
-      </a>
-
-    </section>
-
-
-    <!-- GAME SELECTION -->
-    <section class="games-section">
-
-      <h2 class="section-title">Choose Your Challenge</h2>
-
-      <p class="section-subtitle">
-        Three ways to play Sudoku. Same logic. Different challenge.
-      </p>
-
-
-      <div class="game-list">
-
-        <!-- KANJI -->
-        <div class="game-card home-game-card">
-
-          <div class="game-card-icon">🀄</div>
-
-          <h3>Kanji Sudoku</h3>
-
+      <!-- HERO -->
+      <section class="h-hero">
+        <div>
+          <div class="h-eyebrow">SUDOKU, BEYOND NUMBERS</div>
+          <h2>Same logic.<br><span>New symbols.</span></h2>
           <p>
-            Replace numbers with Japanese Kanji characters and challenge
-            your pattern recognition and memory.
+            Solve Sudoku with Japanese Kanji, chess pieces or colors. Each one makes
+            your brain see the grid in a new way. Free to play, right in your browser.
           </p>
+          <div class="h-cta">
+            <a href="/kanji.html" class="h-btn h-btn-gold">Play Kanji Sudoku</a>
+            <a href="/Color.html?daily=1" class="h-btn h-btn-ghost" onclick="trackDailyChallenge()">⭐ Today's Challenge</a>
+          </div>
+          <div class="h-daily-note">Daily Challenge: Color Sudoku • Medium. A fresh puzzle every day.</div>
+        </div>
 
-          <a href="/kanji.html" class="play-btn">
-            Play Kanji Sudoku
+        <div class="h-board" aria-hidden="true">
+          <div>水</div><div>木</div><div class="dim">火</div>
+          <div>山</div><div class="on">空</div><div>月</div>
+          <div class="dim">花</div><div>風</div><div>日</div>
+        </div>
+      </section>
+
+
+      <!-- GAMES -->
+      <section class="h-section">
+        <div class="h-head">
+          <h2>Choose Your Challenge</h2>
+          <p>Three ways to play. Same rules, a different challenge each time.</p>
+        </div>
+
+        <div class="h-games">
+
+          <a href="/kanji.html" class="h-game">
+            <span class="h-badge">MOST PLAYED</span>
+            <div class="h-mini kanji"><span>水</span><span>木</span><span>火</span><span>山</span><span>空</span><span>月</span><span>花</span><span>風</span><span>日</span></div>
+            <h3>Kanji Sudoku</h3>
+            <p>Nine Japanese Kanji replace the numbers 1–9. A real test of pattern recognition and memory.</p>
+            <span class="h-play">Play now →</span>
+          </a>
+
+          <a href="/Royal.html" class="h-game">
+            <div class="h-mini royal"><span>♔</span><span>♕</span><span>♖</span><span>♗</span><span>♘&#xFE0E;</span><span>♙</span><span>♚</span><span>♛</span><span>♜</span></div>
+            <h3>Royal Sudoku</h3>
+            <p>Sudoku meets chess. Solve the grid with chess pieces instead of numbers.</p>
+            <span class="h-play">Play now →</span>
+          </a>
+
+          <a href="/Color.html" class="h-game">
+            <div class="h-mini color">
+              <span><i style="background:#e53935"></i></span><span><i style="background:#fb8c00"></i></span><span><i style="background:#fdd835"></i></span>
+              <span><i style="background:#43a047"></i></span><span><i style="background:#1e88e5"></i></span><span><i style="background:#8e24aa"></i></span>
+              <span><i style="background:#ec407a"></i></span><span><i style="background:#00acc1"></i></span><span><i style="background:#f5f5f5"></i></span>
+            </div>
+            <h3>Color Sudoku</h3>
+            <p>Colors instead of numbers. Great for visual thinkers and for kids.</p>
+            <span class="h-play">Play now →</span>
           </a>
 
         </div>
+      </section>
 
 
-        <!-- ROYAL -->
-        <div class="game-card home-game-card">
-
-          <div class="game-card-icon">♔</div>
-
-          <h3>Royal Sudoku</h3>
-
-          <p>
-            Sudoku meets chess. Solve the grid using chess pieces instead
-            of numbers for a different strategic challenge.
-          </p>
-
-          <a href="/Royal.html" class="play-btn">
-            Play Royal Sudoku
-          </a>
-
+      <!-- BOOKS -->
+      <section class="h-section">
+        <div class="h-head">
+          <h2>Take the Puzzles Offline</h2>
+          <p>Paperbacks on Amazon. Printable PDFs on itch.io.</p>
         </div>
 
+        <div class="h-books">
 
-        <!-- COLOR -->
-        <div class="game-card home-game-card">
+          <div class="h-book">
+            <a href="https://www.amazon.com/dp/B0HFG8KLT1" target="_blank" rel="noopener noreferrer" onclick="trackBook('kanji_master','amazon_cover')">
+              <img src="/cover-kanji-master.jpg" alt="Kanji Sudoku: Master Edition cover" loading="lazy" width="600" height="776">
+            </a>
+            <h3>Kanji Sudoku: Master Edition</h3>
+            <div class="tag">90 puzzles · Easy to Hard</div>
+            <div class="h-book-btns">
+              <a href="https://www.amazon.com/dp/B0HFG8KLT1" class="h-small amz" target="_blank" rel="noopener noreferrer" onclick="trackBook('kanji_master','amazon')">Paperback · Amazon</a>
+              <a href="https://sudokumultiverse.itch.io/kanji-sudoku-master-edition" class="h-small pdf" target="_blank" rel="noopener noreferrer" onclick="trackBook('kanji_master','itch')">PDF · itch.io</a>
+            </div>
+          </div>
 
-          <div class="game-card-icon">🎨</div>
+          <div class="h-book">
+            <a href="https://www.amazon.com/dp/B0HPQLY6QF" target="_blank" rel="noopener noreferrer" onclick="trackBook('kanji_easy','amazon_cover')">
+              <img src="/cover-kanji-easy.jpg" alt="Kanji Sudoku: Easy Edition cover" loading="lazy" width="600" height="776">
+            </a>
+            <h3>Kanji Sudoku: Easy Edition</h3>
+            <div class="tag">50 puzzles · For beginners</div>
+            <div class="h-book-btns">
+              <a href="https://www.amazon.com/dp/B0HPQLY6QF" class="h-small amz" target="_blank" rel="noopener noreferrer" onclick="trackBook('kanji_easy','amazon')">Paperback · Amazon</a>
+              <a href="https://sudokumultiverse.itch.io/kanji-sudoku-easy-volume-1" class="h-small pdf" target="_blank" rel="noopener noreferrer" onclick="trackBook('kanji_easy','itch')">PDF · itch.io</a>
+            </div>
+          </div>
 
-          <h3>Color Sudoku</h3>
-
-          <p>
-            Solve Sudoku through colors instead of numbers and put your
-            visual memory and logical reasoning to work.
-          </p>
-
-          <a href="/Color.html" class="play-btn">
-            Play Color Sudoku
-          </a>
+          <div class="h-book">
+            <a href="https://www.amazon.com/dp/B0HFG3HRWG" target="_blank" rel="noopener noreferrer" onclick="trackBook('color_kids','amazon_cover')">
+              <img src="/cover-color-kids.jpg" alt="Color Sudoku for Kids cover" loading="lazy" width="600" height="776">
+            </a>
+            <h3>Color Sudoku for Kids</h3>
+            <div class="tag">42 puzzles · 6×6 and 9×9</div>
+            <div class="h-book-btns">
+              <a href="https://www.amazon.com/dp/B0HFG3HRWG" class="h-small amz" target="_blank" rel="noopener noreferrer" onclick="trackBook('color_kids','amazon')">Paperback · Amazon</a>
+              <a href="https://sudokumultiverse.itch.io/color-sudoku-for-kids" class="h-small pdf" target="_blank" rel="noopener noreferrer" onclick="trackBook('color_kids','itch')">PDF · itch.io</a>
+            </div>
+          </div>
 
         </div>
-
-      </div>
-
-    </section>
+      </section>
 
 
-    <!-- PUZZLE BOOKS -->
-    <section class="games-section">
-
-      <h2 class="section-title">Puzzle Books</h2>
-
-      <p class="section-subtitle">
-        Enjoy the puzzles on paper. Paperbacks on Amazon, printable PDFs on itch.io.
-      </p>
-
-      <div class="book-grid">
-
-        <div class="book-card">
-          <a href="https://www.amazon.com/dp/B0HFG8KLT1" target="_blank" rel="noopener noreferrer" onclick="trackBook('kanji_master','amazon_cover')">
-            <img src="/cover-kanji-master.jpg" class="book-cover" alt="Kanji Sudoku: Master Edition cover" loading="lazy" width="600" height="776">
-          </a>
-          <div class="book-tag">FOR EXPERIENCED SOLVERS</div>
-          <h3>Kanji Sudoku: Master Edition</h3>
-          <p>90 original puzzles with nine Japanese Kanji instead of numbers. 30 Easy, 30 Medium, 30 Hard, with full solutions.</p>
-          <div class="book-buttons">
-            <a href="https://www.amazon.com/dp/B0HFG8KLT1" class="play-btn" target="_blank" rel="noopener noreferrer" onclick="trackBook('kanji_master','amazon')">Buy Paperback · Amazon</a>
-            <a href="https://sudokumultiverse.itch.io/kanji-sudoku-master-edition" class="play-btn pdf-btn" target="_blank" rel="noopener noreferrer" onclick="trackBook('kanji_master','itch')">Buy PDF · itch.io</a>
+      <!-- APP -->
+      <section class="h-section">
+        <div class="h-app">
+          <div>
+            <h3>Kanji Sudoku on your phone</h3>
+            <p>Play offline, anytime. Free on Android and iPhone.</p>
+          </div>
+          <div class="store-buttons">
+            <a href="https://play.google.com/store/apps/details?id=com.swayamkrushi.kanjisudoku&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" class="store-btn google-store">
+              <span class="store-icon">▶</span>
+              <span><small>GET IT ON</small><strong>Google Play</strong></span>
+            </a>
+            <a href="https://apps.apple.com/pl/app/kanji-sudoku/id6764883146" target="_blank" rel="noopener noreferrer" class="store-btn apple-store">
+              <span class="store-icon">●</span>
+              <span><small>Download on the</small><strong>App Store</strong></span>
+            </a>
           </div>
         </div>
+      </section>
 
-        <div class="book-card">
-          <a href="https://www.amazon.com/dp/B0HPQLY6QF" target="_blank" rel="noopener noreferrer" onclick="trackBook('kanji_easy','amazon_cover')">
-            <img src="/cover-kanji-easy.jpg" class="book-cover" alt="Kanji Sudoku: Easy Edition cover" loading="lazy" width="600" height="776">
-          </a>
-          <div class="book-tag">FOR BEGINNERS</div>
-          <h3>Kanji Sudoku: Easy Edition</h3>
-          <p>50 original easy puzzles. The gentle way to learn the nine Kanji symbols while you solve.</p>
-          <div class="book-buttons">
-            <a href="https://www.amazon.com/dp/B0HPQLY6QF" class="play-btn" target="_blank" rel="noopener noreferrer" onclick="trackBook('kanji_easy','amazon')">Buy Paperback · Amazon</a>
-            <a href="https://sudokumultiverse.itch.io/kanji-sudoku-easy-volume-1" class="play-btn pdf-btn" target="_blank" rel="noopener noreferrer" onclick="trackBook('kanji_easy','itch')">Buy PDF · itch.io</a>
-          </div>
+
+      <!-- ARTICLES -->
+      <section class="h-section">
+        <div class="h-head">
+          <h2>Explore Sudoku</h2>
+          <p>Short reads to help you solve faster.</p>
         </div>
-
-        <div class="book-card">
-          <a href="https://www.amazon.com/dp/B0HFG3HRWG" target="_blank" rel="noopener noreferrer" onclick="trackBook('color_kids','amazon_cover')">
-            <img src="/cover-color-kids.jpg" class="book-cover" alt="Color Sudoku for Kids cover" loading="lazy" width="600" height="776">
+        <div class="h-reads">
+          <a href="/sudoku-strategy-guide.html" class="h-read">
+            <strong>🧩 Sudoku Strategy Guide</strong>
+            <span>Solving techniques, from beginner basics to advanced strategies.</span>
+            <em>Read →</em>
           </a>
-          <div class="book-tag">FOR KIDS</div>
-          <h3>Color Sudoku for Kids</h3>
-          <p>Sudoku with colors instead of numbers. 40 colorful 6×6 puzzles in Easy, Medium and Hard, plus two bonus 9×9 challenges.</p>
-          <div class="book-buttons">
-            <a href="https://www.amazon.com/dp/B0HFG3HRWG" class="play-btn" target="_blank" rel="noopener noreferrer" onclick="trackBook('color_kids','amazon')">Buy Paperback · Amazon</a>
-            <a href="https://sudokumultiverse.itch.io/color-sudoku-for-kids" class="play-btn pdf-btn" target="_blank" rel="noopener noreferrer" onclick="trackBook('color_kids','itch')">Buy PDF · itch.io</a>
-          </div>
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- APP DOWNLOADS -->
-    <section class="app-download-section">
-
-      <div class="download-heading">
-        Play Kanji Sudoku on Your Phone
-      </div>
-
-      <div class="store-buttons">
-
-        <a href="https://play.google.com/store/apps/details?id=com.swayamkrushi.kanjisudoku&pcampaignid=web_share"
-           target="_blank"
-           rel="noopener noreferrer"
-           class="store-btn google-store">
-
-          <span class="store-icon">▶</span>
-
-          <span>
-            <small>GET IT ON</small>
-            <strong>Google Play</strong>
-          </span>
-
-        </a>
-
-
-        <a href="https://apps.apple.com/pl/app/kanji-sudoku/id6764883146"
-           target="_blank"
-           rel="noopener noreferrer"
-           class="store-btn apple-store">
-
-          <span class="store-icon">●</span>
-
-          <span>
-            <small>Download on the</small>
-            <strong>App Store</strong>
-          </span>
-
-        </a>
-
-      </div>
-
-    </section>
-
-
-    <!-- SHORT INTRODUCTION -->
-    <section class="home-about">
-
-      <h2>Discover the Multiverse of Sudoku</h2>
-
-      <p>
-        Sudoku Multiverse takes the familiar logic of Sudoku beyond numbers.
-        Solve puzzles using Japanese Kanji, chess pieces, or colors — each
-        variation gives your brain a different visual and logical challenge.
-      </p>
-
-    </section>
-
-
-    <!-- LEARNING ARTICLES -->
-    <section class="learning-section">
-
-      <h2 class="section-title">
-        Explore Sudoku
-      </h2>
-
-      <div class="feature-list">
-
-
-        <div class="feature-item">
-
-          <strong>
-            🧠 Memory & Concentration
-          </strong>
-
-          <p>
-            Explore how Sudoku exercises focus, working memory and logical
-            thinking.
-          </p>
-
-          <a href="/memory-and-concentration.html"
-             class="play-btn">
-            Read Article
+          <a href="/memory-and-concentration.html" class="h-read">
+            <strong>🧠 Memory &amp; Concentration</strong>
+            <span>How Sudoku exercises focus, working memory and logical thinking.</span>
+            <em>Read →</em>
           </a>
-
-        </div>
-
-
-        <div class="feature-item">
-
-          <strong>
-            📜 History of Sudoku
-          </strong>
-
-          <p>
-            Discover how Sudoku evolved from mathematical logic into one of
-            the world's most popular puzzles.
-          </p>
-
-          <a href="/history-of-sudoku.html"
-             class="play-btn">
-            Read History
+          <a href="/history-of-sudoku.html" class="h-read">
+            <strong>📜 History of Sudoku</strong>
+            <span>How a mathematical idea became one of the world's favourite puzzles.</span>
+            <em>Read →</em>
           </a>
-
         </div>
+      </section>
 
-
-        <div class="feature-item">
-
-          <strong>
-            🧩 Sudoku Strategy Guide
-          </strong>
-
-          <p>
-            Learn solving techniques from beginner fundamentals through
-            advanced Sudoku strategies.
-          </p>
-
-          <a href="/sudoku-strategy-guide.html"
-             class="play-btn">
-            Strategy Guide
-          </a>
-
-        </div>
-
-
-      </div>
-
-    </section>
+    </div>
 
   </div>
 
 
   <!-- FOOTER -->
   <div class="footer-links">
-
-    <p class="footer-copyright">
-      © 2026 Sudoku Multiverse
-    </p>
-
+    <p class="footer-copyright">© 2026 Sudoku Multiverse</p>
     <a href="/privacy.html">Privacy Policy</a> |
     <a href="/about.html">About</a> |
     <a href="/contact.html">Contact</a> |
+    <a href="/books.html">Books</a> |
     <a href="/how-to-play.html">How to Play</a> |
     <a href="/sudoku-strategy-guide.html">Strategy Guide</a> |
     <a href="/memory-and-concentration.html">Brain Benefits</a> |
     <a href="/history-of-sudoku.html">History</a>
-
   </div>
 
 
-  <!-- DAILY CHALLENGE ANALYTICS -->
+  <!-- ANALYTICS EVENTS -->
   <script>
-
     function trackDailyChallenge() {
-
       if (typeof gtag === 'function') {
-
-        gtag('event', 'daily_challenge_click', {
-          'challenge_type': 'color',
-          'difficulty': 'medium',
-          'location': 'homepage'
-        });
-
+        gtag('event', 'daily_challenge_click', { 'challenge_type': 'color', 'difficulty': 'medium', 'location': 'homepage' });
       }
-
     }
-
-  </script>
-
-
-  <!-- BOOK CLICK ANALYTICS -->
-  <script>
     function trackBook(book, store) {
       if (typeof gtag === 'function') {
         gtag('event', 'book_click', { 'book': book, 'store': store });
