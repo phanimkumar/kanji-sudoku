@@ -6,6 +6,19 @@ const symbols = typeof SYMBOLS !== "undefined"
   ? SYMBOLS
   : ["水","木","火","山","空","月","日","花","風"];
 
+/* ================= KANJI MEANINGS ================= */
+
+const KANJI_INFO = {
+  "水": "water · mizu", "木": "tree · ki", "火": "fire · hi",
+  "山": "mountain · yama", "空": "sky · sora", "月": "moon · tsuki",
+  "日": "sun · hi", "花": "flower · hana", "風": "wind · kaze"
+};
+
+function showMeaning(sym) {
+  const el = document.getElementById("symbol-meaning");
+  if (el && KANJI_INFO[sym]) el.textContent = sym + "  =  " + KANJI_INFO[sym];
+}
+
 /* ================= STATE ================= */
 
 let board = [];
@@ -302,7 +315,11 @@ function createNumpad() {
 
     btn.textContent = symbols[i - 1];
 
+    if (KANJI_INFO[symbols[i - 1]]) btn.title = KANJI_INFO[symbols[i - 1]];
+
     btn.onclick = () => {
+
+      showMeaning(symbols[i - 1]);
 
       if (!selectedCell || gameOver) return;
 

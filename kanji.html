@@ -7,7 +7,7 @@
   <title>Kanji Sudoku</title>
 
   <meta name="description"
-  content="Play Kanji Sudoku online. A unique Sudoku game using Japanese symbols instead of numbers.">
+  content="Play Kanji Sudoku online free. Sudoku with nine Japanese kanji instead of numbers, with their meanings and readings. Great kanji recognition practice.">
 
   
 
@@ -91,16 +91,75 @@ gtag('config', 'G-TTLG5QWZY1');
 
   </div>
 
-  <div class="about-section">
+  <div class="about-section kj-about">
+    <style>
+      .kj-about { text-align:left; max-width:760px; margin-left:auto; margin-right:auto; }
+      .kj-about h2 { text-align:center; }
+      .kj-about a { color:#6fb1ff; }
+      .kj-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:18px 0 26px; }
+      .kj-cell { display:flex; flex-direction:column; align-items:center; padding:12px 6px; border-radius:12px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); }
+      .kj-char { font-size:34px; line-height:1.2; font-family:"Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",serif; }
+      .kj-en { font-weight:700; margin-top:4px; }
+      .kj-ro { font-size:13px; opacity:.75; font-style:italic; }
+      .kj-steps { padding-left:20px; line-height:1.7; }
+      .kj-books { display:flex; gap:22px; justify-content:center; flex-wrap:wrap; margin-top:14px; }
+      .kj-book { text-align:center; width:170px; text-decoration:none; color:inherit; }
+      .kj-book img { width:150px; height:auto; aspect-ratio:600/776; border-radius:5px; box-shadow:0 12px 28px rgba(0,0,0,.5); display:block; margin:0 auto 8px; }
+      .kj-book span { font-size:14px; font-weight:600; }
+    </style>
+
     <h2>About Kanji Sudoku</h2>
 
     <p>
-      Kanji Sudoku is a unique variation of the classic Sudoku puzzle where numbers are replaced with Japanese symbols.
+      Kanji Sudoku is a variation of the classic Sudoku puzzle where the numbers 1–9 are replaced with
+      nine Japanese kanji. The rules stay the same, but your brain has to recognise shapes instead of
+      numbers, which makes it a fresh challenge for Sudoku fans and good recognition practice for
+      Japanese learners.
     </p>
 
-    <p>
-      This version enhances pattern recognition and provides a fresh gameplay experience compared to traditional Sudoku.
-    </p>
+    <h2>The Nine Kanji</h2>
+    <p>Tap a symbol while playing to see its meaning. Here are all nine, with their English meaning and Japanese reading:</p>
+
+    <div class="kj-grid">
+        <div class="kj-cell"><span class="kj-char">水</span><span class="kj-en">water</span><span class="kj-ro">mizu</span></div>
+        <div class="kj-cell"><span class="kj-char">木</span><span class="kj-en">tree</span><span class="kj-ro">ki</span></div>
+        <div class="kj-cell"><span class="kj-char">火</span><span class="kj-en">fire</span><span class="kj-ro">hi</span></div>
+        <div class="kj-cell"><span class="kj-char">山</span><span class="kj-en">mountain</span><span class="kj-ro">yama</span></div>
+        <div class="kj-cell"><span class="kj-char">空</span><span class="kj-en">sky</span><span class="kj-ro">sora</span></div>
+        <div class="kj-cell"><span class="kj-char">月</span><span class="kj-en">moon</span><span class="kj-ro">tsuki</span></div>
+        <div class="kj-cell"><span class="kj-char">日</span><span class="kj-en">sun</span><span class="kj-ro">hi</span></div>
+        <div class="kj-cell"><span class="kj-char">花</span><span class="kj-en">flower</span><span class="kj-ro">hana</span></div>
+        <div class="kj-cell"><span class="kj-char">風</span><span class="kj-en">wind</span><span class="kj-ro">kaze</span></div>
+    </div>
+
+    <h2>How to Play</h2>
+    <ol class="kj-steps">
+      <li>Fill the 9×9 grid so every row contains each of the nine kanji exactly once.</li>
+      <li>Every column must also contain each kanji once.</li>
+      <li>Each of the nine 3×3 boxes must contain each kanji once.</li>
+      <li>Select a cell, then tap a kanji below the board. You have three lives and two hints.</li>
+    </ol>
+    <p>New to Sudoku? Read the full <a href="/how-to-play.html">How to Play guide</a> or the <a href="/sudoku-strategy-guide.html">Strategy Guide</a>.</p>
+
+    <h2>Kanji Sudoku Books</h2>
+    <p style="text-align:center">Prefer pen and paper? Get the puzzles as a paperback or printable PDF.</p>
+    <div class="kj-books">
+      <a class="kj-book" href="https://www.amazon.com/dp/B0HPQLY6QF" target="_blank" rel="noopener noreferrer" onclick="trackBook('kanji_easy','kanji_page')">
+        <img src="/cover-kanji-easy.jpg" alt="Kanji Sudoku: Easy Edition cover" loading="lazy" width="600" height="776">
+        <span>Easy Edition · 50 puzzles</span>
+      </a>
+      <a class="kj-book" href="https://www.amazon.com/dp/B0HFG8KLT1" target="_blank" rel="noopener noreferrer" onclick="trackBook('kanji_master','kanji_page')">
+        <img src="/cover-kanji-master.jpg" alt="Kanji Sudoku: Master Edition cover" loading="lazy" width="600" height="776">
+        <span>Master Edition · 90 puzzles</span>
+      </a>
+    </div>
+    <p style="text-align:center"><a href="/books.html">See all books and PDF editions →</a></p>
+
+    <script>
+      function trackBook(book, store) {
+        if (typeof gtag === 'function') gtag('event', 'book_click', { 'book': book, 'store': store });
+      }
+    </script>
   </div>
 
  <!-- Adsterra Native Banner -->
